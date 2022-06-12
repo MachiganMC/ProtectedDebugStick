@@ -1,0 +1,33 @@
+#-- Interfaces name sorted by click --
+
+Rotation: #(right click)
+  Orientable:
+    "Applies on woods, defines their axes"
+  Directional:
+    "Applies on stairs, defines their rotation"
+
+Reversed: #(left click)
+  Type:
+    "Applies on slab, defines their position"
+  Bisected:
+    "Applies on stairs, defines their direction (up or down)"
+
+Special: #(shift + right click)
+  Shape:
+    "Applies on stairs, defines their shapes"
+  Persistent:
+    "Applies on leaves, defines if they can disappear or not"
+  MultipleFacing: #(enable/disable the face that the player scope)
+    "Applies on mushroom blocks, defines what faces are 'colored' in mushroom texture"
+  Lightable:
+    "Applies on redstone lamps, defines if they are lighted up or turned off"
+  RedstoneWire: #(idem than rotation but depending on the scoped face)
+    "Applies on redstone wire, defines their shape (witch sides are/aren't connected)"
+
+Creative: #(shift + left click)
+  Waterlogged:
+    "Applies on a lot of blocks, defines if they are filled with water"
+  Powerable:
+    "Applies on redstone component, defines if they are powered or not"
+  Ageable:
+    "Applies on plants, defines if their age"

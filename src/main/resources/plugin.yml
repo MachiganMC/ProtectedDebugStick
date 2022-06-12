@@ -1,0 +1,145 @@
+name: ProtectedDebugStick
+author: Machigan
+version: BETA
+main: be.machigan.protecteddebugstick.ProtectedDebugStick
+
+depend:
+  - GriefPrevention
+api-version: 1.18
+
+commands:
+  pds:
+    description: Allows player to give a protected debug stick or reload the plugin
+    usage: Somes arguments are not existing
+    aliases:
+      - protected-debug-stick
+
+
+
+permissions:
+  pds.*:
+    description: Allows player to have all permissions of the plugin
+    default: false
+    children:
+      pds.command.*: true
+      pds.properties.*: true
+      pds.items: true
+
+  pds.command.*:
+    description: Allows player to use all the argument of the command /PDS
+    default: op
+    children:
+      pds.command.use: true
+      pds.command.give: true
+      pds.command.reloadConfig: true
+
+  pds.properties.*:
+    description: Allows player to modify all the properties of a bloc
+    default: false
+    children:
+      pds.properties.roation: true
+      pds.properties.reversed: true
+      pds.properties.special: true
+      pds.properties.creative: true
+
+  pds.properties.rotation:
+    description: Allows player to modify all the properties of the rotations properties (right click)
+    default: true
+    children:
+      pds.properties.orientable: true
+      pds.properties.directional: true
+  pds.properties.reversed:
+    description: Allows player to modify all the properties of the reversed properties (left click)
+    default: true
+    children:
+      pds.properties.type: true
+      pds.properties.bisected: true
+  pds.properties.special:
+    description: Allows player to modify all the special properties (shift + right click)
+    default: true
+    children:
+      pds.properties.shape.*: true
+      pds.properties.persistent: true
+      pds.proprties.multipleFacing: true
+      pds.properties.lightable: true
+      pds.properties.redstonewire: true
+  pds.properties.creative:
+    description: Allows player to modify all the creative (considered) properties (shift + left click)
+    default: false
+    children:
+      pds.properties.waterlogged: true
+      pds.properties.powerable: true
+      pds.properties.ageable: true
+
+  pds.items:
+    description: Allows player to use all items
+    default: false
+    children:
+      pds.inpsector.use: true
+      pds.debugstick.use: true
+
+
+  pds.command.use:
+    description: Allows player to use the command /PDS
+    default: op
+  pds.command.give:
+    description: Allows player to use the command /PDS give
+    default: op
+  pds.command.reloadConfig:
+    description: Allows player to use the command /PDS reloadconfig
+    default: op
+
+  pds.inspector.use:
+    description: Allows player to use the inspector item
+    default: op
+
+  pds.debugstick.use:
+    description: Allows player to use the debugstick item
+    default: true
+
+  pds.properties.orientable:
+    description: Allows player to modify the orientable property
+    default: true
+  pds.properties.directional:
+    description: Allows playert to the directional property
+    default: true
+  pds.properties.type:
+    description: Allows player to modify the type property
+    default: true
+  pds.properties.bisected:
+    description: Allows player to modify the bisected property
+    default: true
+
+  pds.properties.shape.*:
+    description: Allows player to modify the shape property of all blocks
+    default: true
+    children:
+      pds.properties.shape.stairs: true
+      pds.properties.shape.rails: true
+  pds.properties.shape.stairs:
+    description: Allows player to modify the shape property of the stairs
+    default: true
+  pds.properties.shape.rails:
+    description: Allows player to modify the shape property of the rails
+    default: true
+  pds.properties.persistent:
+    description: Allows player to modify the persistent property
+    default: true
+  pds.properties.multipleFacing:
+    description: Allows player to modify the multiple facing property
+    default: true
+  pds.properties.lightable:
+    description: Allows player to modify the lightable property
+    default: true
+  pds.properties.redstonewire:
+    description: Allows player to modify the redstonewire property
+    default: true
+  pds.properties.waterlogged:
+    description: Allows player to modify the waterlog property
+    default: false
+  pds.properties.powerable:
+    description: Allows player to modify the power property
+    default: false
+  pds.properties.ageable:
+    description: Allows player to modify the age property
+    default: false

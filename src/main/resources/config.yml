@@ -1,0 +1,162 @@
+
+
+prefix: "&e&lINFO &8|&r"
+
+items:
+  basicDebugStick:
+    material: "BAMBOO"
+    name: "<s:33FFBB>&lBRANCHE DE DÉBOGAGE<e:33FFBB>"
+    lore: #{durability}
+      - "&6&m-------------------------------"
+      - "&7Cette branche est tombée du grand"
+      - "&7arbre Bogdeh."
+      - ""
+      - "&7Elle semble fragile et risque de"
+      - "&7se casser facilement, mais elle a l'air"
+      - "&7de renfermer un grand pouvoir ..."
+      - "&6&m-------------------------------"
+      - ""
+      - "&aUtilisations restantes : &e{durability}"
+
+    hideEnchants: true
+    hideAttributes: true
+    hidePotionEffets: true
+    hideDye: true
+    isUnbreakable: true
+    hideUnbreakable: true
+    hidePlacedOn: true
+
+  infinityDebugStick:
+    material: "DEAD_BUSH"
+    name: "<s:E60000>&lRACINE DE<e:FFD919><s:FFD919>&l DÉBOGAGE<e:E60000>"
+    lore:
+      - "<s:8000FF>&m-----------------------------<e:8000FF>"
+      - "&7Cette racine vient du grand arbre"
+      - "&7Bogdeh !"
+      - ""
+      - "&7Une racine de ce légendaire arbre"
+      - "&7s'auto-alimente. Cette relique"
+      - "&7inestimable ne se cassera donc"
+      - "&7jamais !"
+      - "<s:8000FF>&m-----------------------------<e:8000FF>"
+      - ""
+      - "&aUtilisations restantes : &e∞"
+
+    # Il n'est pas nécessaire de rajouter "minecraft:" devant l'enchantement, le plugin le fait tout seul
+    enchants:
+      - "unbreaking"
+    hideEnchants: true
+    hideAttributes: true
+    hidePotionEffets: true
+    hideDye: true
+    isUnbreakable: true
+    hideUnbreakable: false
+    hidePlacedOn: true
+
+  inspector:
+    material: "GOLD_INGOT"
+    name: "<s:FF8C19>&lINSPECTEUR DE BLOC<e:FF8C19>"
+    lore:
+      - "<s:FFD919>&m--------------------------<e:FFD919>"
+      - "&7Hé mais qui voilà ? Inspecteur"
+      - "&7Gadget !"
+      - "&7Hum humm... Version du cube ..."
+      - "<s:FFD919>&m--------------------------<e:FFD919>"
+      - ""
+      - "&c» &lCLIQUE GAUCHE :"
+      - "&7&opour connaître ses propriétés"
+      - ""
+      - "&a» &lCLIQUE DROIT :"
+      - "&7&opour connaître ses implémentations"
+    enchants:
+      - "unbreaking"
+
+    hideEnchants: false
+    hideAttributes: true
+    hidePotionEffets: true
+    hideDye: true
+    isUnbreakable: true
+    hideUnbreakable: false
+    hidePlacedOn: true
+
+settings:
+  #Les dommages de durabilité dont le basic debug stick va prendre à chaque modification de cette propriété
+  durability:
+    orientable: 1
+    directional: 1
+    type: 1
+    bisected: 1
+    shape: 1
+    persistent: 3
+    multipleFacing: 1
+    lightable: 5
+    redstoneWire: 2
+    waterlogged: 3
+    powerable: 10
+    ageable: 20
+
+  blacklist:
+    - BIRCH_LOG
+    - test
+
+messages: #{prefix}, {player}
+  #{block}, {property}, {value}, {durability} -> Ce champ n'est pas obligatoire
+  successChat:
+  #{block}, {property}, {value}, {durability} -> Ce champ n'est pas obligatoire
+  successHotbar: "{prefix} &aPropriété &e{property} &achangée en &e{value}"
+
+  #{block} -> Ce champ n'est pas obligatoire
+  blacklisted: "{prefix} &cCe bloc n'est pas autorisé à la modification"
+
+  onBreak: "{prefix} &c&oCRAK !\n
+  &aVotre branche de débogage s'est cassée après que vous en ayez trop abusée ...
+  \n&7&oTu nous manqueras petite branche ..."
+
+  noPlayerClaim: "{prefix} &cCe claim ne t'appartient pas, {player} ! Tu essayes de faire quoi ?"
+  noTurnable: "{prefix} &cCe bloc n'est pas tournable"
+  noReversed: "{prefix} &cCe bloc n'est pas retournable"
+  noSpecial: "{prefix} &cCe bloc n'a pas de propriétés spéciales"
+  noCreative: "{prefix} &cCe bloc n'a pas de propriétés puissantes"
+  #{durability}, {needed}
+  notEnoughDurability: "{prefix} &aVotre debug stick n'a pas assez de durabilité &7(&e&o{durability}&7) &apour modifier ce bloc &7(&e&o{needed} min.&7)"
+
+  command:
+    notEnoughArg: "{prefix} &cVeuillez précisez l'action à effectuer"
+    noCommandFound: "{prefix} &cAucune commande n'a été trouvée"
+    arg:
+      give:
+        notEnoughArg: "{prefix} &cVeuillez préciser le pseudo d'un joueur connecté"
+        #{arg}
+        playerNotFound: "{prefix} &aLe joueur &e{arg} &an'est pas connecté"
+        #{arg}
+        whatToGive: "{prefix} &aVeuillez préciser quel item à donner à &e{arg}"
+        #{arg}, {item}
+        badItem: "{prefix} &aL'objet &e{item} &an'existe pas"
+        #{arg}, {item}
+        whatDurability: "{prefix} &aVeuillez préciser la durabilité du debug stick basic"
+        #{arg}, {item}, {durability}
+        badDurability: "{prefix} &aLa durabilité &e{durability} &aest invalide ! Veuillez préciser un nombre &eentier &aplus grand que &e0&a !"
+        #{arg}, {item}
+        success: "{prefix} &aVous avez donné un &e{item} &aà &e{arg} &aavec succès !"
+      reloadConfig:
+        success: "{prefix} &aLa configuration est désormais à jour !"
+
+
+
+
+  noPerm: #{perm}
+    #{property}
+    noPermProperty: "{prefix} &cTu n'as pas la permission de modifier cette propriété"
+    noPermCommand: "{prefix} &cTu n'as pas la permission d'utiliser cette commande"
+    noPermArgGive: "{prefix} &cTu n'as pas la permission cet argument"
+    noPermReloadConfig: "{prefix} &cTu n'as pas la permission de reload la config"
+
+
+
+
+
+
+
+
+
+
