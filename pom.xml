@@ -26,12 +26,6 @@
                     <exclude>config_fr.yml</exclude>
                 </excludes>
             </resource>
-            <resource>
-                <directory>/</directory>
-                <excludes>
-                    <exclude>README.MD</exclude>
-                </excludes>
-            </resource>
         </resources>
     </build>
 
