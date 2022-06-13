@@ -1,4 +1,4 @@
-
+![icon](https://github.com/MachiganMC/ProtectedDebugStick/blob/master/src/main/resources/icon.png?raw=true)
 
 ## Welcome :
 Welcome to the official GitHub of the plugin **ProtectedDebugStick** !
