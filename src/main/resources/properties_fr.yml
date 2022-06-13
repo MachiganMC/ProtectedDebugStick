@@ -1,33 +1,33 @@
 #-- Nom des interfaces triées par clique --
 
 Rotation: #(clique droit)
-Orientable:
-    "S'applique aux bûches, définit leur sens"
-Directional:
-    "S'applique aux escaliers, définit leur rotation"
+  Orientable:
+      "S'applique aux bûches, définit leur sens"
+  Directional:
+      "S'applique aux escaliers, définit leur rotation"
 
 Reversed: #(clique gauche)
-Type:
-    "S'applique aux dalles, définit leur position"
-Bisected:
-    "S'applique aux escaliers, définit leur sens (vers le haut ou vers le bas)"
+  Type:
+      "S'applique aux dalles, définit leur position"
+  Bisected:
+      "S'applique aux escaliers, définit leur sens (vers le haut ou vers le bas)"
 
 Special: #(shift + clique droit)
-Shape:
-  "S'applique aux escaliers, définit leur forme"
-Persistent:
-    "S'applique aux feuilles, définit si elles peuvent disparaître ou non"
-MultipleFacing: #(activer/désactiver la face que le joueur vise)
-    "S'applique aux blocs de champignons, définit quelles faces sont en 'champignons'"
-Lightable:
-    "S'applique aux lampes de redstone, définit si elles sont allumées ou non"
-RedstoneWire: #(comme rotation, mais dépendant de la face regardée)
-    "S'applique au fils de redstone, définit la forme du fil"
+  Shape:
+    "S'applique aux escaliers, définit leur forme"
+  Persistent:
+      "S'applique aux feuilles, définit si elles peuvent disparaître ou non"
+  MultipleFacing: #(activer/désactiver la face que le joueur vise)
+      "S'applique aux blocs de champignons, définit quelles faces sont en 'champignons'"
+  Lightable:
+      "S'applique aux lampes de redstone, définit si elles sont allumées ou non"
+  RedstoneWire: #(comme rotation, mais dépendant de la face regardée)
+      "S'applique au fils de redstone, définit la forme du fil"
 
 Creative: #(shift + clique gauche)
-Waterlogged:
-    "S'applique à beaucoup de blocs, définit si ils possèdent de l'eau ou pas"
-Powerable:
-    "S'applique au blocs en rapport à la redstone, défini si ils sont activés ou non"
-Ageable:
-    "S'applique aux plantes, définis leur âge"
+  Waterlogged:
+      "S'applique à beaucoup de blocs, définit si ils possèdent de l'eau ou pas"
+  Powerable:
+      "S'applique au blocs en rapport à la redstone, défini si ils sont activés ou non"
+  Ageable:
+      "S'applique aux plantes, définis leur âge"

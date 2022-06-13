@@ -22,6 +22,14 @@
                 <excludes>
                     <exclude>properties_fr.yml</exclude>
                     <exclude>properties_en.yml</exclude>
+                    <exclude>icon.png</exclude>
+                    <exclude>config_fr.yml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>/</directory>
+                <excludes>
+                    <exclude>README.MD</exclude>
                 </excludes>
             </resource>
         </resources>

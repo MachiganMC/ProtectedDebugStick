@@ -1,48 +1,109 @@
+#                               #                                                                                                         #
+#                               #                                                                                                         #
+#                               #                                                                                                         #
+#                               ###########################################################################################################
+#                               #                                                                                                         #
+#                               #   ░█████╗░░█████╗░███╗░░██╗███████╗██╗░██████╗░██╗░░░██╗██████╗░░█████╗░████████╗██╗░█████╗░███╗░░██╗   #
+#                               #   ██╔══██╗██╔══██╗████╗░██║██╔════╝██║██╔════╝░██║░░░██║██╔══██╗██╔══██╗╚══██╔══╝██║██╔══██╗████╗░██║   #
+#                               #   ██║░░╚═╝██║░░██║██╔██╗██║█████╗░░██║██║░░██╗░██║░░░██║██████╔╝███████║░░░██║░░░██║██║░░██║██╔██╗██║   #
+#                               #   ██║░░██╗██║░░██║██║╚████║██╔══╝░░██║██║░░╚██╗██║░░░██║██╔══██╗██╔══██║░░░██║░░░██║██║░░██║██║╚████║   #
+#                               #   ╚█████╔╝╚█████╔╝██║░╚███║██║░░░░░██║╚██████╔╝╚██████╔╝██║░░██║██║░░██║░░░██║░░░██║╚█████╔╝██║░╚███║   #
+#                               #   ░╚════╝░░╚════╝░╚═╝░░╚══╝╚═╝░░░░░╚═╝░╚═════╝░░╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░╚════╝░╚═╝░░╚══╝   #
+#                               #                                                                                                         #
+#                               ###########################################################################################################
+#
+#
+#
+# Welcome to the configuration EN of the plugin ! You'll find here a guide to configure the plugin !
+# Si vous êtes un francophone, une aide de configuration en français est disponible dans le fichier
+# "config_fr.yml" dans le dossier ressources.
+#
+#
+# First, the plugin allow you to use the Minecraft color code. For example, if you want to put the test
+# in red, you have to use "&4" before the text (all allowed color code are here : https://minecraft.tools/fr/color-code.php)
+# But you can alose generate a gradient (=variation of one color A to another color B) in a chars string
+# by using the code : "<s:[code RGB of the first color]>[your chars string]<e:[code RGB of the second color]>"
+# Example :
+# I want  a gradient from light blue (code : 80FFFF) to pink (code : FF99FF) for the following sentence : "demonstration of a gradient"
+# I'll have the following code :
+#    <s:80FFFF>demonstration of a gradient<e:FF99FF>
+# Note that you can use format code in you sentence (like italic or bold) to add before your sentence to color,
+# so for our example before, if I want to have my gradient in bold, I'll have :
+#    <s:80FFFF>&ldemonstration of a gradient<e:FF99FF>
+#
+#
+#The plugin use "intern variable" allowing you to personnalise your messages. Each variable name is between "{" and "}"
+#(e.g.: "{player}"). Values depending on the situation and all can't be used everywhere, but here is the mainly used :
+#  {prefix} : return the prefix of the plugin (configured by you)
+#  {player} : return the sender name of the command
+#  {perm} : return the name of the permission that the player doesn't have to use a command
+#
+# You have to know that the inter variables {player} and {prefix} can be used everywhere in the "messages" field. And that
+# {perm} can be used everywhere in the "noPerm" field.
+# An intern variable is written above the field name when she can be used in this field.
 
 
-prefix: "&e&lINFO &8|&r"
+# Prefix of the plugin, defines the value of {prefix}
+prefix: "&3[&6&lP&eD-S&3]&r"
 
+# Defines the 3 items of the plugin, the settings are the sames for the three items
 items:
   basicDebugStick:
+    # The material of the object (e.g. : ARROW)
     material: "BAMBOO"
-    name: "<s:33FFBB>&lBRANCHE DE DÉBOGAGE<e:33FFBB>"
-    lore: #{durability}
-      - "&6&m-------------------------------"
-      - "&7Cette branche est tombée du grand"
-      - "&7arbre Bogdeh."
-      - ""
-      - "&7Elle semble fragile et risque de"
-      - "&7se casser facilement, mais elle a l'air"
-      - "&7de renfermer un grand pouvoir ..."
-      - "&6&m-------------------------------"
-      - ""
-      - "&aUtilisations restantes : &e{durability}"
 
+    # The name of the object.
+    name: "<s:33FFBB>&lBASIC DEBUG STICK<e:33FFBB>"
+
+    # His lore, his description. Each element of the list is a line of the lore.
+    lore: #{durability}
+      - ""
+      - "&e&lRIGHT-CLICK &7&oto edit rotations properties"
+      - "&a&lLEFT-CLICK &7&oto edit reverses properties"
+      - "&c&lSHIFT + RIGHT-CLICK &7&oto edit specials properties"
+      - "&9&lSHIFT + LEFT-CLICK &7&oto edit creatives properties"
+      - ""
+      - "&aUses left : &e{durability}"
+
+    # Enchant(s) of the items, each element represent an enchant. You don't have to add the  "minecraft:" before
+    # the name of the enchant. It's not necessary for an item to have an enchant.
+    enchants:
+
+    # Flags of the item to enable (true) or disable (false)
+    # Hide enchants
     hideEnchants: true
+
+    # Hide attributes (example : +2 attack damage)
     hideAttributes: true
+
+    # Hide potion effect
     hidePotionEffets: true
+
+    # Hide if the item is dyed or not
     hideDye: true
+
+    # Give the flag "unbreakable" to the item (this field don't change the properties of the item, it's juste cosmetic)
     isUnbreakable: true
+
+    # Hide if the item is unbreakable
     hideUnbreakable: true
+
+    # Hide if the item can be placed only on some blocks
     hidePlacedOn: true
 
   infinityDebugStick:
     material: "DEAD_BUSH"
     name: "<s:E60000>&lRACINE DE<e:FFD919><s:FFD919>&l DÉBOGAGE<e:E60000>"
     lore:
-      - "<s:8000FF>&m-----------------------------<e:8000FF>"
-      - "&7Cette racine vient du grand arbre"
-      - "&7Bogdeh !"
       - ""
-      - "&7Une racine de ce légendaire arbre"
-      - "&7s'auto-alimente. Cette relique"
-      - "&7inestimable ne se cassera donc"
-      - "&7jamais !"
-      - "<s:8000FF>&m-----------------------------<e:8000FF>"
+      - "&e&lRIGHT-CLICK &7&oto edit rotations properties"
+      - "&a&lLEFT-CLICK &7&oto edit reverses properties"
+      - "&c&lSHIFT + RIGHT-CLICK &7&oto edit specials properties"
+      - "&9&lSHIFT + LEFT-CLICK &7&oto edit creatives properties"
       - ""
-      - "&aUtilisations restantes : &e∞"
+      - "&aUse left : &e∞"
 
-    # Il n'est pas nécessaire de rajouter "minecraft:" devant l'enchantement, le plugin le fait tout seul
+
     enchants:
       - "unbreaking"
     hideEnchants: true
@@ -55,19 +116,11 @@ items:
 
   inspector:
     material: "GOLD_INGOT"
-    name: "<s:FF8C19>&lINSPECTEUR DE BLOC<e:FF8C19>"
+    name: "<s:FF8C19>&lINSPECTOR<e:FF8C19>"
     lore:
-      - "<s:FFD919>&m--------------------------<e:FFD919>"
-      - "&7Hé mais qui voilà ? Inspecteur"
-      - "&7Gadget !"
-      - "&7Hum humm... Version du cube ..."
-      - "<s:FFD919>&m--------------------------<e:FFD919>"
       - ""
-      - "&c» &lCLIQUE GAUCHE :"
-      - "&7&opour connaître ses propriétés"
-      - ""
-      - "&a» &lCLIQUE DROIT :"
-      - "&7&opour connaître ses implémentations"
+      - "&a&lRIGHT-CLICK &7&oto have implementations"
+      - "&c&lLEFT-CLICK &7&oto have values of properties"
     enchants:
       - "unbreaking"
 
@@ -80,7 +133,8 @@ items:
     hidePlacedOn: true
 
 settings:
-  #Les dommages de durabilité dont le basic debug stick va prendre à chaque modification de cette propriété
+  # The damage that the durability will take when the debug stick modify this property.
+  # (see in the file "properties_en.yml" in the folder ressources, the definition of each property)
   durability:
     orientable: 1
     directional: 1
@@ -95,61 +149,55 @@ settings:
     powerable: 10
     ageable: 20
 
+  # List of materials that can't be modified
   blacklist:
-    - BIRCH_LOG
-    - test
 
 messages: #{prefix}, {player}
-  #{block}, {property}, {value}, {durability} -> Ce champ n'est pas obligatoire
+  #{block}, {property}, {value}, {durability} -> This field isn't necessary
   successChat:
-  #{block}, {property}, {value}, {durability} -> Ce champ n'est pas obligatoire
-  successHotbar: "{prefix} &aPropriété &e{property} &achangée en &e{value}"
+  #{block}, {property}, {value}, {durability} -> This field isn't necessary
+  successHotbar: "{prefix} &Properties &e{property} &acchanged to &e{value}"
 
-  #{block} -> Ce champ n'est pas obligatoire
-  blacklisted: "{prefix} &cCe bloc n'est pas autorisé à la modification"
+  #{block} -> This field isn't necessary
+  blacklisted: "{prefix} &cThis block is blacklisted"
 
-  onBreak: "{prefix} &c&oCRAK !\n
-  &aVotre branche de débogage s'est cassée après que vous en ayez trop abusée ...
-  \n&7&oTu nous manqueras petite branche ..."
+  onBreak: "{prefix} &c&oCRAK !\n&aYou basic debug stick has just broke"
 
-  noPlayerClaim: "{prefix} &cCe claim ne t'appartient pas, {player} ! Tu essayes de faire quoi ?"
-  noTurnable: "{prefix} &cCe bloc n'est pas tournable"
-  noReversed: "{prefix} &cCe bloc n'est pas retournable"
-  noSpecial: "{prefix} &cCe bloc n'a pas de propriétés spéciales"
-  noCreative: "{prefix} &cCe bloc n'a pas de propriétés puissantes"
+  noPlayerClaim: "{prefix} &cYou don't have permission to edit this clam"
+  noTurnable: "{prefix} &cCThis block isn't turntable"
+  noReversed: "{prefix} &cThis block can't ben reversed"
+  noSpecial: "{prefix} &cThis block doesn't have specials properties"
+  noCreative: "{prefix} &cThis block doesn't have creatives properties"
   #{durability}, {needed}
-  notEnoughDurability: "{prefix} &aVotre debug stick n'a pas assez de durabilité &7(&e&o{durability}&7) &apour modifier ce bloc &7(&e&o{needed} min.&7)"
+  notEnoughDurability: "{prefix} &aYou debug stick doesn't have enough durability &7(&e&o{durability}&7) &ato edit this block &7(&e&o{needed} min.&7)"
 
   command:
-    notEnoughArg: "{prefix} &cVeuillez précisez l'action à effectuer"
-    noCommandFound: "{prefix} &cAucune commande n'a été trouvée"
+    notEnoughArg: "{prefix} &cPlease, specify the action to execute"
+    noCommandFound: "{prefix} &cNo command has been found"
     arg:
       give:
-        notEnoughArg: "{prefix} &cVeuillez préciser le pseudo d'un joueur connecté"
+        notEnoughArg: "{prefix} &cPlease, specify the username of an online player"
         #{arg}
         playerNotFound: "{prefix} &aLe joueur &e{arg} &an'est pas connecté"
         #{arg}
-        whatToGive: "{prefix} &aVeuillez préciser quel item à donner à &e{arg}"
+        whatToGive: "{prefix} &aPlease specify the item to give to &e{arg}"
         #{arg}, {item}
-        badItem: "{prefix} &aL'objet &e{item} &an'existe pas"
+        badItem: "{prefix} &aThe itel &e{item} &adoesn't exist"
         #{arg}, {item}
-        whatDurability: "{prefix} &aVeuillez préciser la durabilité du debug stick basic"
+        whatDurability: "{prefix} &aPlease specify the durability of the &ebasic debug stick &ato give to &e{arg}"
         #{arg}, {item}, {durability}
-        badDurability: "{prefix} &aLa durabilité &e{durability} &aest invalide ! Veuillez préciser un nombre &eentier &aplus grand que &e0&a !"
+        badDurability: "{prefix} &aThe durability &e{durability} &aisn't valid ! Please specify an &einteger &abiggest than &e0&a !"
         #{arg}, {item}
-        success: "{prefix} &aVous avez donné un &e{item} &aà &e{arg} &aavec succès !"
+        success: "{prefix} &aYou have given &e{item} &ato &e{arg} &awith success !"
       reloadConfig:
-        success: "{prefix} &aLa configuration est désormais à jour !"
-
-
-
+        success: "{prefix} &aThe config is up now !"
 
   noPerm: #{perm}
     #{property}
-    noPermProperty: "{prefix} &cTu n'as pas la permission de modifier cette propriété"
-    noPermCommand: "{prefix} &cTu n'as pas la permission d'utiliser cette commande"
-    noPermArgGive: "{prefix} &cTu n'as pas la permission cet argument"
-    noPermReloadConfig: "{prefix} &cTu n'as pas la permission de reload la config"
+    noPermProperty: "{prefix} &cYou don't have permission to modify this property"
+    noPermCommand: "{prefix} &cYou don't have permission to use this command"
+    noPermArgGive: "{prefix} &cYou don't have permission to give items"
+    noPermReloadConfig: "{prefix} &cYou don't have permission to reload the config"
 
 
 

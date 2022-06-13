@@ -2,6 +2,7 @@ package be.machigan.protecteddebugstick.def;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.utils.Utils;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -50,12 +51,20 @@ public class DebugStick implements Cloneable {
             m = Material.matchMaterial(ProtectedDebugStick.config.getString(path + "material"));
 
             if (m == null) {
-                Utils.log("Material for basic debug stick is incorrect. Setting to stick.", Utils.LOG_WARNING);
-                m = Material.STICK;
+                Utils.log("Material for basic debug stick is incorrect. Setting to scute.", Utils.LOG_WARNING);
+                m = Material.SCUTE;
+            }
+            if (m.equals(GriefPrevention.instance.config_claims_investigationTool)) {
+                Utils.log("Warning, the item of basic debug stick is the same that the investigation tool of GriefPrevention. Some " +
+                        "conflicts errors can appear", Utils.LOG_WARNING);
+            }
+            if (m.equals(GriefPrevention.instance.config_claims_modificationTool)) {
+                Utils.log("Warning, the item of basic debug stick is the same that the claim tool of GriefPrevention. Some " +
+                        "conflicts errors can appear", Utils.LOG_WARNING);
             }
         } catch (IllegalArgumentException ignored) {
-            Utils.log("Path of material for basic debug stick : \"" + path + "material\" hasn't been found. Setting to stick", Utils.LOG_WARNING);
-            m = Material.STICK;
+            Utils.log("Path of material for basic debug stick : \"" + path + "material\" hasn't been found. Setting to scute", Utils.LOG_WARNING);
+            m = Material.SCUTE;
         }
 
         debugStick = new ItemStack(m);
@@ -119,12 +128,20 @@ public class DebugStick implements Cloneable {
         try {
             m = Material.matchMaterial(ProtectedDebugStick.config.getString(path + "material"));
             if (m == null) {
-                m = Material.STICK;
-                Utils.log("Material for infinity debug stick is invalid. Setting to stick.", Utils.LOG_WARNING);
+                m = Material.SCUTE;
+                Utils.log("Material for infinity debug stick is invalid. Setting to scute.", Utils.LOG_WARNING);
+            }
+            if (m.equals(GriefPrevention.instance.config_claims_investigationTool)) {
+                Utils.log("Warning, the item of infinity debug stick is the same that the investigation tool of GriefPrevention. Some " +
+                        "conflicts errors can appear", Utils.LOG_WARNING);
+            }
+            if (m.equals(GriefPrevention.instance.config_claims_modificationTool)) {
+                Utils.log("Warning, the item of infinity debug stick is the same that the claim tool of GriefPrevention. Some " +
+                        "conflicts errors can appear", Utils.LOG_WARNING);
             }
         } catch (IllegalArgumentException ignored) {
-            m = Material.STICK;
-            Utils.log("Path of material of infintiy debug stick : \"" + path + "material\" hasn't been found. Setting to stick.", Utils.LOG_WARNING);
+            m = Material.SCUTE;
+            Utils.log("Path of material of infinity debug stick : \"" + path + "material\" hasn't been found. Setting to scute.", Utils.LOG_WARNING);
         }
         infinityDebugStick = new ItemStack(m);
 
@@ -192,6 +209,14 @@ public class DebugStick implements Cloneable {
             if (m == null) {
                 m = Material.GOLD_INGOT;
                 Utils.log("The material of the inspector is invalid. Setting to gold ingot.", Utils.LOG_WARNING);
+            }
+            if (m.equals(GriefPrevention.instance.config_claims_investigationTool)) {
+                Utils.log("Warning, the item of inspector is the same that the investigation tool of GriefPrevention. Some " +
+                        "conflicts errors can appear", Utils.LOG_WARNING);
+            }
+            if (m.equals(GriefPrevention.instance.config_claims_modificationTool)) {
+                Utils.log("Warning, the item of inspector is the same that the claim tool of GriefPrevention. Some " +
+                        "conflicts errors can appear", Utils.LOG_WARNING);
             }
         } catch (IllegalArgumentException ignored) {
             m = Material.GOLD_INGOT;

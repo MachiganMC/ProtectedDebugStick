@@ -1,7 +1,8 @@
 name: ProtectedDebugStick
 author: Machigan
-version: BETA
+version: 1.0.0
 main: be.machigan.protecteddebugstick.ProtectedDebugStick
+database: false
 
 depend:
   - GriefPrevention

@@ -49,7 +49,7 @@ public enum Durability {
         String path = "settings.durability.";
         int dura = ProtectedDebugStick.config.getInt(path + name);
         if (dura < 0) {
-            Utils.log("Cannot set the durability of " + name + " to 0. Setting by default.", Utils.LOG_WARNING);
+            Utils.log("Cannot set the durability of " + name + " below 0. Setting by default.", Utils.LOG_WARNING);
             return;
         }
         d.durability = dura;

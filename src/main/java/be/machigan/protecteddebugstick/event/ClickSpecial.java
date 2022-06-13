@@ -153,47 +153,76 @@ public class ClickSpecial implements Listener {
                 } catch (NullPointerException ignored){}
                 return;
             }
-            switch (((Rail) data).getShape()) {
-                case ASCENDING_NORTH:
-                    ((Rail) data).setShape(Rail.Shape.ASCENDING_EAST);
-                    value = "ASCENDING_EAST";
-                    break;
-                case ASCENDING_EAST:
-                    ((Rail) data).setShape(Rail.Shape.ASCENDING_SOUTH);
-                    value = "ASCENDING_SOUTH";
-                    break;
-                case ASCENDING_SOUTH:
-                    ((Rail) data).setShape(Rail.Shape.ASCENDING_WEST);
-                    value = "ASCENDING_WEST";
-                    break;
-                case ASCENDING_WEST:
-                    ((Rail) data).setShape(Rail.Shape.NORTH_EAST);
-                    value = "NORTH_EAST";
-                    break;
-                case NORTH_EAST:
-                    ((Rail) data).setShape(Rail.Shape.NORTH_SOUTH);
-                    value = "NORTH_SOUTH";
-                    break;
-                case NORTH_SOUTH:
-                    ((Rail) data).setShape(Rail.Shape.NORTH_WEST);
-                    value = "NORTH_WEST";
-                    break;
-                case NORTH_WEST:
-                    ((Rail) data).setShape(Rail.Shape.EAST_WEST);
-                    value = "EAST_WEST";
-                    break;
-                case EAST_WEST:
-                    ((Rail) data).setShape(Rail.Shape.SOUTH_EAST);
-                    value = "SOUTH_EST";
-                    break;
-                case SOUTH_EAST:
-                    ((Rail) data).setShape(Rail.Shape.SOUTH_WEST);
-                    value = "SOUTH_WEST";
-                    break;
-                case SOUTH_WEST:
-                    ((Rail) data).setShape(Rail.Shape.ASCENDING_NORTH);
-                    value = "ASCENDING_NORTH";
-                    break;
+            if (((Rail) data).getShapes().size() == 10) {
+                switch (((Rail) data).getShape()) {
+                    case ASCENDING_NORTH:
+                        ((Rail) data).setShape(Rail.Shape.ASCENDING_EAST);
+                        value = "ASCENDING_EAST";
+                        break;
+                    case ASCENDING_EAST:
+                        ((Rail) data).setShape(Rail.Shape.ASCENDING_SOUTH);
+                        value = "ASCENDING_SOUTH";
+                        break;
+                    case ASCENDING_SOUTH:
+                        ((Rail) data).setShape(Rail.Shape.ASCENDING_WEST);
+                        value = "ASCENDING_WEST";
+                        break;
+                    case ASCENDING_WEST:
+                        ((Rail) data).setShape(Rail.Shape.NORTH_EAST);
+                        value = "NORTH_EAST";
+                        break;
+                    case NORTH_EAST:
+                        ((Rail) data).setShape(Rail.Shape.NORTH_SOUTH);
+                        value = "NORTH_SOUTH";
+                        break;
+                    case NORTH_SOUTH:
+                        ((Rail) data).setShape(Rail.Shape.NORTH_WEST);
+                        value = "NORTH_WEST";
+                        break;
+                    case NORTH_WEST:
+                        ((Rail) data).setShape(Rail.Shape.EAST_WEST);
+                        value = "EAST_WEST";
+                        break;
+                    case EAST_WEST:
+                        ((Rail) data).setShape(Rail.Shape.SOUTH_EAST);
+                        value = "SOUTH_EST";
+                        break;
+                    case SOUTH_EAST:
+                        ((Rail) data).setShape(Rail.Shape.SOUTH_WEST);
+                        value = "SOUTH_WEST";
+                        break;
+                    case SOUTH_WEST:
+                        ((Rail) data).setShape(Rail.Shape.ASCENDING_NORTH);
+                        value = "ASCENDING_NORTH";
+                        break;
+                }
+            } else if (((Rail) data).getShapes().size() == 6) {
+                switch (((Rail) data).getShape()) {
+                    case NORTH_SOUTH:
+                        ((Rail) data).setShape(Rail.Shape.EAST_WEST);
+                        value = "EAST_WEST";
+                        break;
+                    case EAST_WEST:
+                        ((Rail) data).setShape(Rail.Shape.ASCENDING_EAST);
+                        value = "ASCENDING_EAST";
+                        break;
+                    case ASCENDING_EAST:
+                        ((Rail) data).setShape(Rail.Shape.ASCENDING_WEST);
+                        value = "ASCENDING_WEST";
+                        break;
+                    case ASCENDING_WEST:
+                        ((Rail) data).setShape(Rail.Shape.ASCENDING_NORTH);
+                        value = "ASCENDING_NORTH";
+                        break;
+                    case ASCENDING_NORTH:
+                        ((Rail) data).setShape(Rail.Shape.ASCENDING_SOUTH);
+                        value = "ASCENDING_SOUTH";
+                        break;
+                    case ASCENDING_SOUTH:
+                        ((Rail) data).setShape(Rail.Shape.NORTH_SOUTH);
+                        value = "NORTH_SOUTH";
+                        break;
+                }
             }
             e.getClickedBlock().setBlockData(data);
             DebugStick.removeDurability(e.getPlayer(), Durability.SHAPE.value());
@@ -297,18 +326,23 @@ public class ClickSpecial implements Listener {
                 return;
             }
 
-            if (e.getBlockFace().equals(BlockFace.UP)) {
-                return;
+            BlockFace blockFace = e.getBlockFace();
+            if (!((MultipleFacing) data).getAllowedFaces().contains(BlockFace.UP) && e.getBlockFace().equals(BlockFace.UP)) {
+                blockFace = (BlockFace) ((MultipleFacing) data).getAllowedFaces().toArray()[new Random().nextInt(((MultipleFacing) data).getAllowedFaces().size())];
             }
-            ((MultipleFacing) data).setFace(e.getBlockFace(), !((MultipleFacing) data).hasFace(e.getBlockFace()));
-            value = Boolean.toString(((MultipleFacing) data).hasFace(e.getBlockFace())).toUpperCase();
+            if (!((MultipleFacing) data).getAllowedFaces().contains(BlockFace.DOWN) && e.getBlockFace().equals(BlockFace.DOWN)) {
+                blockFace = (BlockFace) ((MultipleFacing) data).getAllowedFaces().toArray()[new Random().nextInt(((MultipleFacing) data).getAllowedFaces().size())];
+            }
+
+            ((MultipleFacing) data).setFace(blockFace, !((MultipleFacing) data).hasFace(blockFace));
+            value = Boolean.toString(((MultipleFacing) data).hasFace(blockFace)).toUpperCase();
             e.getClickedBlock().setBlockData(data);
             DebugStick.removeDurability(e.getPlayer(), Durability.MULTIPLEFACING.value());
             try {
                 e.getPlayer().sendMessage(Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successChat")
                         .replace("{prefix}", ProtectedDebugStick.prefix)
                         .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
-                        .replace("{property}", e.getBlockFace().toString().toLowerCase() + " facing").replace("{value}", value)
+                        .replace("{property}", blockFace.toString().toLowerCase() + " facing").replace("{value}", value)
                         .replace("{durability}", Integer.toString(Durability.MULTIPLEFACING.value()))));
             } catch (NullPointerException ignored) {}
             try {
@@ -317,7 +351,7 @@ public class ClickSpecial implements Listener {
                         Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successHotbar"))
                                 .replace("{prefix}", ProtectedDebugStick.prefix)
                                 .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
-                                .replace("{property}", e.getBlockFace().toString().toLowerCase() + " facing").replace("{value}", value)
+                                .replace("{property}", blockFace.toString().toLowerCase() + " facing").replace("{value}", value)
                                 .replace("{durability}", Integer.toString(Durability.MULTIPLEFACING.value()))));
             } catch (NullPointerException ignored) {}
 
