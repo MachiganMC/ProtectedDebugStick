@@ -5,6 +5,8 @@ Rotation: #(right click)
     "Applies on woods, defines their axes"
   Directional:
     "Applies on stairs, defines their rotation"
+  Rotatable:
+    "Applies on sign and heads, defines their rotation"
 
 Reversed: #(left click)
   Type:
@@ -31,3 +33,7 @@ Creative: #(shift + left click)
     "Applies on redstone component, defines if they are powered or not"
   Ageable:
     "Applies on plants, defines if their age"
+  Sapling:
+    "Applies on saplings, defines their stage"
+  Beehive:
+    "Applies on bee nest and beehive, sets the stage of honey "

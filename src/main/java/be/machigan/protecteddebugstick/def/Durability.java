@@ -7,6 +7,7 @@ public enum Durability {
 
     ORIENTABLE(1),
     DIRECTIONAL(1),
+    ROTATABLE(1),
     TYPE(1),
     BISECTED(1),
     SHAPE(1),
@@ -16,7 +17,9 @@ public enum Durability {
     REDSTONEWIRE(2),
     WATERLOGGED(3),
     POWERABLE(10),
-    AGEABLE(20);
+    AGEABLE(20),
+    SAPLING(10),
+    BEEHIVE(5);
 
 
     private int durability;
@@ -32,6 +35,7 @@ public enum Durability {
     public static void init() {
         settingFromConfig(ORIENTABLE, "orientable");
         settingFromConfig(DIRECTIONAL, "directional");
+        settingFromConfig(ROTATABLE, "rotatable");
         settingFromConfig(TYPE, "type");
         settingFromConfig(BISECTED, "bisected");
         settingFromConfig(SHAPE, "shape");
@@ -42,6 +46,8 @@ public enum Durability {
         settingFromConfig(WATERLOGGED, "waterlogged");
         settingFromConfig(POWERABLE, "powerable");
         settingFromConfig(AGEABLE, "ageable");
+        settingFromConfig(SAPLING, "sapling");
+        settingFromConfig(BEEHIVE, "beehive");
 
     }
 

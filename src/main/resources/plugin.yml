@@ -49,6 +49,7 @@ permissions:
     children:
       pds.properties.orientable: true
       pds.properties.directional: true
+      pds.properties.rotatable: true
   pds.properties.reversed:
     description: Allows player to modify all the properties of the reversed properties (left click)
     default: true
@@ -71,6 +72,8 @@ permissions:
       pds.properties.waterlogged: true
       pds.properties.powerable: true
       pds.properties.ageable: true
+      pds.properties.sapling: true
+      pds.properties.beehive: true
 
   pds.items:
     description: Allows player to use all items
@@ -102,7 +105,10 @@ permissions:
     description: Allows player to modify the orientable property
     default: true
   pds.properties.directional:
-    description: Allows playert to the directional property
+    description: Allows playert to modify the directional property
+    default: true
+  pds.properties.rotatable:
+    description: Allows player to modify the rotatable property
     default: true
   pds.properties.type:
     description: Allows player to modify the type property
@@ -143,4 +149,10 @@ permissions:
     default: false
   pds.properties.ageable:
     description: Allows player to modify the age property
+    default: false
+  pds.properties.sapling:
+    description: Allows player to modify the stage of sapling
+    default: false
+  pds.properties.beehive:
+    description: Allows player to set the honey levem
     default: false

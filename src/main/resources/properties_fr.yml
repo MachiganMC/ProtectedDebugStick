@@ -2,32 +2,38 @@
 
 Rotation: #(clique droit)
   Orientable:
-      "S'applique aux bûches, définit leur sens"
+    "S'applique aux bûches, définit leur sens"
   Directional:
-      "S'applique aux escaliers, définit leur rotation"
+    "S'applique aux escaliers, définit leur rotation"
+  Rotatable:
+    "S'applique sur les panneaux et les têtes, définis leur rotation"
 
 Reversed: #(clique gauche)
   Type:
-      "S'applique aux dalles, définit leur position"
+    "S'applique aux dalles, définit leur position"
   Bisected:
-      "S'applique aux escaliers, définit leur sens (vers le haut ou vers le bas)"
+    "S'applique aux escaliers, définit leur sens (vers le haut ou vers le bas)"
 
 Special: #(shift + clique droit)
   Shape:
     "S'applique aux escaliers, définit leur forme"
   Persistent:
-      "S'applique aux feuilles, définit si elles peuvent disparaître ou non"
+    "S'applique aux feuilles, définit si elles peuvent disparaître ou non"
   MultipleFacing: #(activer/désactiver la face que le joueur vise)
-      "S'applique aux blocs de champignons, définit quelles faces sont en 'champignons'"
+    "S'applique aux blocs de champignons, définit quelles faces sont en 'champignons'"
   Lightable:
-      "S'applique aux lampes de redstone, définit si elles sont allumées ou non"
+    "S'applique aux lampes de redstone, définit si elles sont allumées ou non"
   RedstoneWire: #(comme rotation, mais dépendant de la face regardée)
-      "S'applique au fils de redstone, définit la forme du fil"
+    "S'applique au fils de redstone, définit la forme du fil"
 
 Creative: #(shift + clique gauche)
   Waterlogged:
-      "S'applique à beaucoup de blocs, définit si ils possèdent de l'eau ou pas"
+    "S'applique à beaucoup de blocs, définit si ils possèdent de l'eau ou pas"
   Powerable:
-      "S'applique au blocs en rapport à la redstone, défini si ils sont activés ou non"
+    "S'applique au blocs en rapport à la redstone, défini si ils sont activés ou non"
   Ageable:
-      "S'applique aux plantes, définis leur âge"
+    "S'applique aux plantes, définis leur âge"
+  Sapling:
+    "S'applique sur les pousses, définit leur statut de pousse"
+  Beehive:
+    "S'applique sur les ruches et les nids d'abeilles, définit leur niveau de miel"

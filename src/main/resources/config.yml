@@ -58,15 +58,22 @@ items:
     # His lore, his description. Each element of the list is a line of the lore.
     lore: #{durability}
       - ""
-      - "&e&lRIGHT-CLICK &7&oto edit rotations properties"
-      - "&a&lLEFT-CLICK &7&oto edit reverses properties"
-      - "&c&lSHIFT + RIGHT-CLICK &7&oto edit specials properties"
-      - "&9&lSHIFT + LEFT-CLICK &7&oto edit creatives properties"
+      - "&e&lRIGHT-CLICK"
+      - " &7&oto edit rotations properties"
+      - ""
+      - "&a&lLEFT-CLICK"
+      - " &7&oto edit reverses properties"
+      - ""
+      - "&c&lSHIFT + RIGHT-CLICK"
+      - " &7&oto edit specials properties"
+      - ""
+      - "&9&lSHIFT + LEFT-CLICK"
+      - " &7&oto edit creatives properties"
       - ""
       - "&aUses left : &e{durability}"
 
     # Enchant(s) of the items, each element represent an enchant. You don't have to add the  "minecraft:" before
-    # the name of the enchant. It's not necessary for an item to have an enchant.
+    # the name of to enchant. It's not necessary for an item to have an enchant.
     enchants:
 
     # Flags of the item to enable (true) or disable (false)
@@ -96,10 +103,17 @@ items:
     name: "<s:E60000>&lRACINE DE<e:FFD919><s:FFD919>&l DÉBOGAGE<e:E60000>"
     lore:
       - ""
-      - "&e&lRIGHT-CLICK &7&oto edit rotations properties"
-      - "&a&lLEFT-CLICK &7&oto edit reverses properties"
-      - "&c&lSHIFT + RIGHT-CLICK &7&oto edit specials properties"
-      - "&9&lSHIFT + LEFT-CLICK &7&oto edit creatives properties"
+      - "&e&lRIGHT-CLICK"
+      - " &7&oto edit rotations properties"
+      - ""
+      - "&a&lLEFT-CLICK"
+      - " &7&oto edit reverses properties"
+      - ""
+      - "&c&lSHIFT + RIGHT-CLICK"
+      - " &7&oto edit specials properties"
+      - ""
+      - "&9&lSHIFT + LEFT-CLICK"
+      - " &7&oto edit creatives properties"
       - ""
       - "&aUse left : &e∞"
 
@@ -138,6 +152,7 @@ settings:
   durability:
     orientable: 1
     directional: 1
+    rotatable: 1
     type: 1
     bisected: 1
     shape: 1
@@ -148,6 +163,7 @@ settings:
     waterlogged: 3
     powerable: 10
     ageable: 20
+    sapling: 10
 
   # List of materials that can't be modified
   blacklist:
@@ -156,7 +172,7 @@ messages: #{prefix}, {player}
   #{block}, {property}, {value}, {durability} -> This field isn't necessary
   successChat:
   #{block}, {property}, {value}, {durability} -> This field isn't necessary
-  successHotbar: "{prefix} &Properties &e{property} &acchanged to &e{value}"
+  successHotbar: "{prefix} &aProperties &e{property} &achanged to &e{value}"
 
   #{block} -> This field isn't necessary
   blacklisted: "{prefix} &cThis block is blacklisted"
@@ -164,7 +180,7 @@ messages: #{prefix}, {player}
   onBreak: "{prefix} &c&oCRAK !\n&aYou basic debug stick has just broke"
 
   noPlayerClaim: "{prefix} &cYou don't have permission to edit this clam"
-  noTurnable: "{prefix} &cCThis block isn't turntable"
+  noTurnable: "{prefix} &cThis block isn't turntable"
   noReversed: "{prefix} &cThis block can't ben reversed"
   noSpecial: "{prefix} &cThis block doesn't have specials properties"
   noCreative: "{prefix} &cThis block doesn't have creatives properties"

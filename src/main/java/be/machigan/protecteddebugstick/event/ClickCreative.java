@@ -11,6 +11,8 @@ import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Powerable;
 import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.type.Beehive;
+import org.bukkit.block.data.type.Sapling;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -217,6 +219,120 @@ public class ClickCreative implements Listener {
             }
             return;
         }
+
+        if (data instanceof Sapling) {
+            if (!e.getPlayer().hasPermission("pds.properties.sapling")) {
+                e.getPlayer().sendMessage(Utils.configColor("messages.noPerm.noPermProperty").replace("{prefix}", ProtectedDebugStick.prefix)
+                        .replace("{perm}", "pds.properties.sapling").replace("{property}", "stage"));
+                return;
+            }
+            if (!DebugStick.canUse(e.getPlayer().getInventory().getItemInMainHand(), Durability.SAPLING.value())) {
+                e.getPlayer().sendMessage(Utils.configColor("messages.notEnoughDurability").replace("{prefix}", ProtectedDebugStick.prefix)
+                        .replace("{player}", e.getPlayer().getName())
+                        .replace("{durability}", Integer.toString(DebugStick.getDurability(e.getPlayer().getInventory().getItemInMainHand())))
+                        .replace("{needed}", Integer.toString(Durability.SAPLING.value())));
+                return;
+            }
+            if (DebugStick.blacklist.contains(e.getClickedBlock().getBlockData().getMaterial().toString())) {
+                try {
+                    e.getPlayer().sendMessage(Utils.replaceColor(ProtectedDebugStick.config.getString("messages.blacklisted"))
+                            .replace("{prefix}", ProtectedDebugStick.prefix)
+                            .replace("{player}", e.getPlayer().getName()).replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString()));
+                } catch (NullPointerException ignored){}
+                return;
+            }
+
+            if (((Sapling) data).getStage() == ((Sapling) data).getMaximumStage()) {
+                ((Sapling) data).setStage(0);
+                value = "0";
+            } else {
+                ((Sapling) data).setStage(((Sapling) data).getStage() + 1);
+                value = Integer.toString(((Sapling) data).getStage());
+            }
+            e.getClickedBlock().setBlockData(data);
+            DebugStick.removeDurability(e.getPlayer(), Durability.SAPLING.value());
+            try {
+                e.getPlayer().sendMessage(Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successChat")
+                        .replace("{prefix}", ProtectedDebugStick.prefix)
+                        .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
+                        .replace("{property}", "stage").replace("{value}", value)
+                        .replace("{durability}", Integer.toString(Durability.SAPLING.value()))));
+            } catch (NullPointerException ignored) {}
+            try {
+
+                e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
+                        Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successHotbar"))
+                                .replace("{prefix}", ProtectedDebugStick.prefix)
+                                .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
+                                .replace("{property}", "stage").replace("{value}", value)
+                                .replace("{durability}", Integer.toString(Durability.SAPLING.value()))));
+            } catch (NullPointerException ignored) {}
+
+            if (DebugStick.willBreak(e.getPlayer().getInventory().getItemInMainHand())) {
+                e.getPlayer().getInventory().setItemInMainHand(null);
+                e.getPlayer().sendMessage(Utils.configColor("messages.onBreak").replace("{prefix}", ProtectedDebugStick.prefix)
+                        .replace("{player}", e.getPlayer().getName()));
+            }
+            return;
+        }
+
+        if (data instanceof Beehive) {
+            if (!e.getPlayer().hasPermission("pds.properties.beehive")) {
+                e.getPlayer().sendMessage(Utils.configColor("messages.noPerm.noPermProperty").replace("{prefix}", ProtectedDebugStick.prefix)
+                        .replace("{perm}", "pds.properties.beehive").replace("{property}", "honey level"));
+                return;
+            }
+            if (!DebugStick.canUse(e.getPlayer().getInventory().getItemInMainHand(), Durability.BEEHIVE.value())) {
+                e.getPlayer().sendMessage(Utils.configColor("messages.notEnoughDurability").replace("{prefix}", ProtectedDebugStick.prefix)
+                        .replace("{player}", e.getPlayer().getName())
+                        .replace("{durability}", Integer.toString(DebugStick.getDurability(e.getPlayer().getInventory().getItemInMainHand())))
+                        .replace("{needed}", Integer.toString(Durability.BEEHIVE.value())));
+                return;
+            }
+            if (DebugStick.blacklist.contains(e.getClickedBlock().getBlockData().getMaterial().toString())) {
+                try {
+                    e.getPlayer().sendMessage(Utils.replaceColor(ProtectedDebugStick.config.getString("messages.blacklisted"))
+                            .replace("{prefix}", ProtectedDebugStick.prefix)
+                            .replace("{player}", e.getPlayer().getName()).replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString()));
+                } catch (NullPointerException ignored){}
+                return;
+            }
+
+            if (((Beehive) data).getHoneyLevel() == ((Beehive) data).getMaximumHoneyLevel()) {
+                ((Beehive) data).setHoneyLevel(0);
+                value = "0";
+            } else {
+                ((Beehive) data).setHoneyLevel(((Beehive) data).getHoneyLevel() + 1);
+                value = Integer.toString(((Beehive) data).getHoneyLevel());
+            }
+            e.getClickedBlock().setBlockData(data);
+            DebugStick.removeDurability(e.getPlayer(), Durability.BEEHIVE.value());
+            try {
+                e.getPlayer().sendMessage(Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successChat")
+                        .replace("{prefix}", ProtectedDebugStick.prefix)
+                        .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
+                        .replace("{property}", "honey level").replace("{value}", value)
+                        .replace("{durability}", Integer.toString(Durability.BEEHIVE.value()))));
+            } catch (NullPointerException ignored) {}
+            try {
+
+                e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
+                        Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successHotbar"))
+                                .replace("{prefix}", ProtectedDebugStick.prefix)
+                                .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
+                                .replace("{property}", "honey level").replace("{value}", value)
+                                .replace("{durability}", Integer.toString(Durability.BEEHIVE.value()))));
+            } catch (NullPointerException ignored) {}
+
+            if (DebugStick.willBreak(e.getPlayer().getInventory().getItemInMainHand())) {
+                e.getPlayer().getInventory().setItemInMainHand(null);
+                e.getPlayer().sendMessage(Utils.configColor("messages.onBreak").replace("{prefix}", ProtectedDebugStick.prefix)
+                        .replace("{player}", e.getPlayer().getName()));
+            }
+            return;
+
+        }
+
 
         e.getPlayer().sendMessage(Utils.configColor("messages.noCreative").replace("{prefix}", ProtectedDebugStick.prefix)
                 .replace("{player}", e.getPlayer().getName()));
