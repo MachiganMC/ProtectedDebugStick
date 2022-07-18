@@ -2,6 +2,7 @@ package be.machigan.protecteddebugstick;
 
 import be.machigan.protecteddebugstick.command.CommandPDS;
 import be.machigan.protecteddebugstick.command.TabPDS;
+import be.machigan.protecteddebugstick.def.RecipeHandler;
 import be.machigan.protecteddebugstick.event.*;
 import be.machigan.protecteddebugstick.utils.Utils;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -18,7 +19,8 @@ public class ProtectedDebugStick extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        config = instance.getConfig();
+        this.saveDefaultConfig();
+        config = this.getConfig();
 
         getServer().getPluginManager().registerEvents(new ClickRotation(), this);
         getServer().getPluginManager().registerEvents(new ClickReversed(), this);
@@ -39,12 +41,16 @@ public class ProtectedDebugStick extends JavaPlugin {
             getPluginLoader().disablePlugin(this);
 
         }
-        Utils.log("Enable");
         try {
             ProtectedDebugStick.prefix = Utils.replaceColor(ProtectedDebugStick.config.getString("prefix"));
         } catch (NullPointerException ignored) {
             prefix = Utils.replaceColor(ProtectedDebugStick.PREFIX);
         }
+
+        RecipeHandler.register();
+
+        Utils.log("Enable");
+
     }
 
     @Override

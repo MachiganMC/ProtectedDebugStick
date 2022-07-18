@@ -164,9 +164,64 @@ settings:
     powerable: 10
     ageable: 20
     sapling: 10
+    beehive: 5
+    wall: 1
+    snowable: 3
+    distance: 1
+    layers: 1
 
   # List of materials that can't be modified
   blacklist:
+
+  # Write in the console when a player changes a property
+  logConsole: false
+
+  # Write in apart file when a player changes a property
+  logFile: false
+
+  # Prevent the player when his debug stick will break
+  # The message in the chat and in the hotbar aren't necessaries to be set (if you want only one message)
+  preventPlayerWhenBreaking:
+    enable: true
+
+    # Send the message one time (true) or each time the player will use the debug stick and his durability
+    # is below or equal to the durability settled (false)
+    sendOneTime: false
+    durability: 5
+    # {prefix}, {property}, {durability}, {player}, {value}, {block}
+    messageChat: "{prefix} &cBe careful &4{player} &c! Your debug stick has &4{durability} &cleft, he will be break soon !"
+    messageHotbar:
+
+# Here you can create recipes for the debug stick of the plugin
+# To create a recipe, you have to create a new field in the recipes section and name
+# it like you want (different name per recipe).
+# In this new field,  you have to have 2 children fields : 'durability' -> the durability of the debug stick (use -1 for
+# the infinity debug stick) and the 'craft' field composed of number representing the slot in a crafting table like this :
+#
+#   / / / / / / /
+#   / 1 / 2 / 3 /    / / / / / / / / /
+#   / 4 / 5 / 6 / -> /the debug stick/
+#   / 7 / 8 / 9 /    / / / / / / / / /
+#   / / / / / / /
+#
+# You must not use all slot but each slot that you want to use, represent a material
+# here is for you 2 examples of recipes :
+recipes:
+#  first:
+#    durability: 10
+#    craft:
+#      2: "BAMBOO"
+#      5: "BAMBOO"
+#      8: "BAMBOO"
+#  infinity:
+#    durability: -1
+#    craft:
+#      1: "DIAMOND"
+#      3: "EMERALD"
+
+
+
+
 
 messages: #{prefix}, {player}
   #{block}, {property}, {value}, {durability} -> This field isn't necessary
@@ -198,7 +253,7 @@ messages: #{prefix}, {player}
         #{arg}
         whatToGive: "{prefix} &aPlease specify the item to give to &e{arg}"
         #{arg}, {item}
-        badItem: "{prefix} &aThe itel &e{item} &adoesn't exist"
+        badItem: "{prefix} &aThe item &e{item} &adoesn't exist"
         #{arg}, {item}
         whatDurability: "{prefix} &aPlease specify the durability of the &ebasic debug stick &ato give to &e{arg}"
         #{arg}, {item}, {durability}

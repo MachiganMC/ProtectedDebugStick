@@ -1,6 +1,6 @@
 name: ProtectedDebugStick
 author: Machigan
-version: 1.0.0
+version: 1.1.0
 main: be.machigan.protecteddebugstick.ProtectedDebugStick
 database: false
 
@@ -61,10 +61,12 @@ permissions:
     default: true
     children:
       pds.properties.shape.*: true
-      pds.properties.persistent: true
       pds.proprties.multipleFacing: true
       pds.properties.lightable: true
       pds.properties.redstonewire: true
+      pds.properties.wall: true
+      pds.properties.snowable: true
+      pds.properties.distance: true
   pds.properties.creative:
     description: Allows player to modify all the creative (considered) properties (shift + left click)
     default: false
@@ -74,6 +76,7 @@ permissions:
       pds.properties.ageable: true
       pds.properties.sapling: true
       pds.properties.beehive: true
+      pds.properties.persistent: true
 
   pds.items:
     description: Allows player to use all items
@@ -131,7 +134,7 @@ permissions:
     default: true
   pds.properties.persistent:
     description: Allows player to modify the persistent property
-    default: true
+    default: false
   pds.properties.multipleFacing:
     description: Allows player to modify the multiple facing property
     default: true
@@ -156,3 +159,15 @@ permissions:
   pds.properties.beehive:
     description: Allows player to set the honey levem
     default: false
+  pds.properties.wall:
+    description: Allows player to modify the wall property
+    default: true
+  pds.properties.snowable:
+    description: Allows player to modify the snowable property
+    default: true
+  pds.properties.distance:
+    description: Allows player to modify the distance property
+    default: true
+  pds.properties.layers:
+    description: allows player to modify the layers property
+    default: true

@@ -5,8 +5,6 @@ import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.def.Durability;
 import be.machigan.protecteddebugstick.utils.Utils;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Slab;
@@ -26,7 +24,7 @@ public class ClickReversed implements Listener {
         if (!e.getHand().equals(EquipmentSlot.HAND)) {
             return;
         }
-        if (!DebugStick.isPlayerHasDS(e.getPlayer())) {
+        if (DebugStick.playerHasNotDS(e.getPlayer())) {
             return;
         }
         e.setCancelled(true);
@@ -56,11 +54,11 @@ public class ClickReversed implements Listener {
         if (data instanceof Slab) {
             if (!e.getPlayer().hasPermission("pds.properties.type")) {
                 e.getPlayer().sendMessage(Utils.configColor("messages.noPerm.noPermProperty").replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{player}", e.getPlayer().getName().replace("{property}", "type"))
+                        .replace("{player}", e.getPlayer().getName()).replace("{property}", "type")
                         .replace("{perm}", "pds.properties.type"));
                 return;
             }
-            if (!DebugStick.canUse(e.getPlayer().getInventory().getItemInMainHand(), Durability.TYPE.value())) {
+            if (DebugStick.canNotUse(e.getPlayer().getInventory().getItemInMainHand(), Durability.TYPE)) {
                 e.getPlayer().sendMessage(Utils.configColor("messages.notEnoughDurability").replace("{prefix}", ProtectedDebugStick.prefix)
                         .replace("{player}", e.getPlayer().getName())
                         .replace("{durability}", Integer.toString(DebugStick.getDurability(e.getPlayer().getInventory().getItemInMainHand())))
@@ -87,39 +85,18 @@ public class ClickReversed implements Listener {
                     break;
             }
             e.getClickedBlock().setBlockData(data);
-            DebugStick.removeDurability(e.getPlayer(), Durability.TYPE.value());
-            try {
-                e.getPlayer().sendMessage(Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successChat")
-                        .replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
-                        .replace("{property}", "type").replace("{value}", value)
-                        .replace("{durability}", Integer.toString(Durability.TYPE.value()))));
-            } catch (NullPointerException ignored) {}
-            try {
-
-                e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
-                        Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successHotbar"))
-                                .replace("{prefix}", ProtectedDebugStick.prefix)
-                                .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
-                                .replace("{property}", "type").replace("{value}", value)
-                                .replace("{durability}", Integer.toString(Durability.TYPE.value()))));
-            } catch (NullPointerException ignored) {}
-
-            if (DebugStick.willBreak(e.getPlayer().getInventory().getItemInMainHand())) {
-                e.getPlayer().getInventory().setItemInMainHand(null);
-                e.getPlayer().sendMessage(Utils.configColor("messages.onBreak").replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{player}", e.getPlayer().getName()));
-            }
+            DebugStick.afterUse(e.getPlayer(), e.getClickedBlock(), "type", value, Durability.TYPE);
             return;
         }
 
         if (data instanceof Bisected) {
             if (!e.getPlayer().hasPermission("pds.properties.bisected")) {
                 e.getPlayer().sendMessage(Utils.configColor("messages.noPerm.noPermProperty").replace("{prefix}", ProtectedDebugStick.prefix)
+                        .replace("{player}", e.getPlayer().getName())
                         .replace("{perm}", "pds.properties.bisected").replace("{property}", "bisected"));
                 return;
             }
-            if (!DebugStick.canUse(e.getPlayer().getInventory().getItemInMainHand(), Durability.BISECTED.value())) {
+            if (DebugStick.canNotUse(e.getPlayer().getInventory().getItemInMainHand(), Durability.BISECTED)) {
                 e.getPlayer().sendMessage(Utils.configColor("messages.notEnoughDurability").replace("{prefix}", ProtectedDebugStick.prefix)
                         .replace("{player}", e.getPlayer().getName())
                         .replace("{durability}", Integer.toString(DebugStick.getDurability(e.getPlayer().getInventory().getItemInMainHand())))
@@ -145,28 +122,7 @@ public class ClickReversed implements Listener {
                     value = "TOP";
             }
             e.getClickedBlock().setBlockData(data);
-            DebugStick.removeDurability(e.getPlayer(), Durability.BISECTED.value());
-            try {
-                e.getPlayer().sendMessage(Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successChat")
-                        .replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
-                        .replace("{property}", "half").replace("{value}", value)
-                        .replace("{durability}", Integer.toString(Durability.BISECTED.value()))));
-            } catch (NullPointerException ignored) {}
-            try {
-
-                e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
-                        Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successHotbar"))
-                                .replace("{prefix}", ProtectedDebugStick.prefix)
-                                .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
-                                .replace("{property}", "half").replace("{value}", value)
-                                .replace("{durability}", Integer.toString(Durability.BISECTED.value()))));
-            } catch (NullPointerException ignored) {}
-            if (DebugStick.willBreak(e.getPlayer().getInventory().getItemInMainHand())) {
-                e.getPlayer().getInventory().setItemInMainHand(null);
-                e.getPlayer().sendMessage(Utils.configColor("messages.onBreak").replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{player}", e.getPlayer().getName()));
-            }
+            DebugStick.afterUse(e.getPlayer(), e.getClickedBlock(), "half", value, Durability.BISECTED);
             return;
         }
 

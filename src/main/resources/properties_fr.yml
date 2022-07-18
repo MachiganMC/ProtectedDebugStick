@@ -17,14 +17,20 @@ Reversed: #(clique gauche)
 Special: #(shift + clique droit)
   Shape:
     "S'applique aux escaliers, définit leur forme"
-  Persistent:
-    "S'applique aux feuilles, définit si elles peuvent disparaître ou non"
   MultipleFacing: #(activer/désactiver la face que le joueur vise)
     "S'applique aux blocs de champignons, définit quelles faces sont en 'champignons'"
   Lightable:
     "S'applique aux lampes de redstone, définit si elles sont allumées ou non"
   RedstoneWire: #(comme rotation, mais dépendant de la face regardée)
     "S'applique au fils de redstone, définit la forme du fil"
+  Wall: #(idem que pour MultipleFacing, mais pour les murets)
+    "S'applique sur les murets, définit quelles faces sont 'connectées'"
+  Snowable:
+    "S'applique sur les blocs d'herbe, définit si le bloc est considéré comme 'couvert de neige'"
+  Distance:
+    "S'applique sur les feuilles, définit à quelle distance d'un arbre la feuille va dispraître (si elle n'est pas 'persistente')"
+  Laters:
+    "S'applique sur les couches de neiges, définit la taille des couches"
 
 Creative: #(shift + clique gauche)
   Waterlogged:
@@ -37,3 +43,5 @@ Creative: #(shift + clique gauche)
     "S'applique sur les pousses, définit leur statut de pousse"
   Beehive:
     "S'applique sur les ruches et les nids d'abeilles, définit leur niveau de miel"
+  Persistent:
+    "S'applique aux feuilles, définit si elles peuvent disparaître ou non"

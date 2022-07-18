@@ -19,7 +19,11 @@ public enum Durability {
     POWERABLE(10),
     AGEABLE(20),
     SAPLING(10),
-    BEEHIVE(5);
+    BEEHIVE(5),
+    WALL(1),
+    SNOWABLE(3),
+    DISTANCE(1),
+    LAYERS(1);
 
 
     private int durability;
@@ -48,6 +52,10 @@ public enum Durability {
         settingFromConfig(AGEABLE, "ageable");
         settingFromConfig(SAPLING, "sapling");
         settingFromConfig(BEEHIVE, "beehive");
+        settingFromConfig(WALL, "wall");
+        settingFromConfig(SNOWABLE, "snowable");
+        settingFromConfig(DISTANCE, "distance");
+        settingFromConfig(LAYERS, "layers");
 
     }
 

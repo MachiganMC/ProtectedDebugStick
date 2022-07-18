@@ -17,14 +17,20 @@ Reversed: #(left click)
 Special: #(shift + right click)
   Shape:
     "Applies on stairs, defines their shapes"
-  Persistent:
-    "Applies on leaves, defines if they can disappear or not"
   MultipleFacing: #(enable/disable the face that the player scope)
-    "Applies on mushroom blocks, defines what faces are 'colored' in mushroom texture"
+    "Applies on mushroom blocks, defines which faces are 'colored' in mushroom texture"
   Lightable:
     "Applies on redstone lamps, defines if they are lighted up or turned off"
   RedstoneWire: #(idem than rotation but depending on the scoped face)
     "Applies on redstone wire, defines their shape (witch sides are/aren't connected)"
+  Wall: #(idem than MultipleFacing but on tha walls)
+    "Applies on walls, defines which faces are 'connected'"
+  Snowable:
+    "Applies on grass block, defines if the block is snowy or not"
+  Distance:
+    "Applies on leaves, defines how far the block is from tree has to be to disappear (if they aren't 'persistent')"
+  Layers:
+    "Applies on snow, defines their layers of snow"
 
 Creative: #(shift + left click)
   Waterlogged:
@@ -37,3 +43,5 @@ Creative: #(shift + left click)
     "Applies on saplings, defines their stage"
   Beehive:
     "Applies on bee nest and beehive, sets the stage of honey "
+  Persistent:
+    "Applies on leaves, defines if they can disappear or not"

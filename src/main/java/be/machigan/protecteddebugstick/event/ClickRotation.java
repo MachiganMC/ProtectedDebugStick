@@ -5,8 +5,6 @@ import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.def.Durability;
 import be.machigan.protecteddebugstick.utils.Utils;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Axis;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
@@ -27,9 +25,10 @@ public class ClickRotation implements Listener {
             return;
         }
         if (!e.getHand().equals(EquipmentSlot.HAND)) {
+            e.setCancelled(true);
             return;
         }
-        if (!DebugStick.isPlayerHasDS(e.getPlayer())) {
+        if (DebugStick.playerHasNotDS(e.getPlayer())) {
             return;
         }
         e.setCancelled(true);
@@ -60,11 +59,11 @@ public class ClickRotation implements Listener {
         if (data instanceof Orientable) {
             if (!e.getPlayer().hasPermission("pds.properties.orientable")) {
                 e.getPlayer().sendMessage(Utils.configColor("messages.noPerm.noPermProperty").replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{player}", e.getPlayer().getName().replace("{property}", "orientable"))
+                        .replace("{player}", e.getPlayer().getName()).replace("{property}", "orientable")
                         .replace("{perm}", "pds.properties.orientable"));
                 return;
             }
-            if (!DebugStick.canUse(e.getPlayer().getInventory().getItemInMainHand(), Durability.ORIENTABLE.value())) {
+            if (DebugStick.canNotUse(e.getPlayer().getInventory().getItemInMainHand(), Durability.ORIENTABLE)) {
                 e.getPlayer().sendMessage(Utils.configColor("messages.notEnoughDurability").replace("{prefix}", ProtectedDebugStick.prefix)
                         .replace("{player}", e.getPlayer().getName())
                         .replace("{durability}", Integer.toString(DebugStick.getDurability(e.getPlayer().getInventory().getItemInMainHand())))
@@ -95,38 +94,17 @@ public class ClickRotation implements Listener {
                     break;
             }
             e.getClickedBlock().setBlockData(data);
-            DebugStick.removeDurability(e.getPlayer(), Durability.ORIENTABLE.value());
-            try {
-                e.getPlayer().sendMessage(Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successChat")
-                        .replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
-                        .replace("{property}", "axis").replace("{value}", value)
-                        .replace("{durability}", Integer.toString(Durability.ORIENTABLE.value()))));
-            } catch (NullPointerException ignored) {}
-            try {
-
-                e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
-                        Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successHotbar"))
-                                .replace("{prefix}", ProtectedDebugStick.prefix)
-                                .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
-                                .replace("{property}", "axis").replace("{value}", value)
-                                .replace("{durability}", Integer.toString(Durability.ORIENTABLE.value()))));
-            } catch (NullPointerException ignored) {}
-
-            if (DebugStick.willBreak(e.getPlayer().getInventory().getItemInMainHand())) {
-                e.getPlayer().getInventory().setItemInMainHand(null);
-                e.getPlayer().sendMessage(Utils.configColor("messages.onBreak").replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{player}", e.getPlayer().getName()));
-            }
+            DebugStick.afterUse(e.getPlayer(), e.getClickedBlock(), "axis", value, Durability.ORIENTABLE);
             return;
         }
         if (data instanceof Directional) {
             if (!e.getPlayer().hasPermission("pds.properties.orientable")) {
                 e.getPlayer().sendMessage(Utils.configColor("messages.noPerm.noPermProperty").replace("{prefix}", ProtectedDebugStick.prefix)
+                        .replace("{player}", e.getPlayer().getName())
                         .replace("{perm}", "pds.properties.orientable").replace("{property}", "directional"));
                 return;
             }
-            if (!DebugStick.canUse(e.getPlayer().getInventory().getItemInMainHand(), Durability.DIRECTIONAL.value())) {
+            if (DebugStick.canNotUse(e.getPlayer().getInventory().getItemInMainHand(), Durability.DIRECTIONAL)) {
                 e.getPlayer().sendMessage(Utils.configColor("messages.notEnoughDurability").replace("{prefix}", ProtectedDebugStick.prefix)
                         .replace("{player}", e.getPlayer().getName())
                         .replace("{durability}", Integer.toString(DebugStick.getDurability(e.getPlayer().getInventory().getItemInMainHand())))
@@ -190,39 +168,18 @@ public class ClickRotation implements Listener {
                 }
             }
             e.getClickedBlock().setBlockData(data);
-            DebugStick.removeDurability(e.getPlayer(), Durability.DIRECTIONAL.value());
-            try {
-                e.getPlayer().sendMessage(Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successChat")
-                        .replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
-                        .replace("{property}", "facing").replace("{value}", value)
-                        .replace("{durability}", Integer.toString(Durability.DIRECTIONAL.value()))));
-            } catch (NullPointerException ignored) {}
-            try {
-
-                e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
-                        Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successHotbar"))
-                                .replace("{prefix}", ProtectedDebugStick.prefix)
-                                .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
-                                .replace("{property}", "facing").replace("{value}", value)
-                                .replace("{durability}", Integer.toString(Durability.DIRECTIONAL.value()))));
-            } catch (NullPointerException ignored) {}
-
-            if (DebugStick.willBreak(e.getPlayer().getInventory().getItemInMainHand())) {
-                e.getPlayer().getInventory().setItemInMainHand(null);
-                e.getPlayer().sendMessage(Utils.configColor("messages.onBreak").replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{player}", e.getPlayer().getName()));
-            }
+            DebugStick.afterUse(e.getPlayer(), e.getClickedBlock(), "facing", value, Durability.DIRECTIONAL);
             return;
         }
 
         if (data instanceof Rotatable) {
             if (!e.getPlayer().hasPermission("pds.properties.rotatable")) {
                 e.getPlayer().sendMessage(Utils.configColor("messages.noPerm.noPermProperty").replace("{prefix}", ProtectedDebugStick.prefix)
+                        .replace("{player}", e.getPlayer().getName())
                         .replace("{perm}", "pds.properties.rotatable").replace("{property}", "rotatable"));
                 return;
             }
-            if (!DebugStick.canUse(e.getPlayer().getInventory().getItemInMainHand(), Durability.ROTATABLE.value())) {
+            if (DebugStick.canNotUse(e.getPlayer().getInventory().getItemInMainHand(), Durability.ROTATABLE)) {
                 e.getPlayer().sendMessage(Utils.configColor("messages.notEnoughDurability").replace("{prefix}", ProtectedDebugStick.prefix)
                         .replace("{player}", e.getPlayer().getName())
                         .replace("{durability}", Integer.toString(DebugStick.getDurability(e.getPlayer().getInventory().getItemInMainHand())))
@@ -247,6 +204,7 @@ public class ClickRotation implements Listener {
                 case NORTH_NORTH_EAST:
                     ((Rotatable) data).setRotation(BlockFace.NORTH_EAST);
                     value = "NORTH_EAST";
+                    break;
                 case NORTH_EAST:
                     ((Rotatable) data).setRotation(BlockFace.EAST_NORTH_EAST);
                     value = "EAST_NORTH_EAST";
@@ -306,29 +264,7 @@ public class ClickRotation implements Listener {
 
             }
             e.getClickedBlock().setBlockData(data);
-            DebugStick.removeDurability(e.getPlayer(), Durability.ROTATABLE.value());
-            try {
-                e.getPlayer().sendMessage(Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successChat")
-                        .replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
-                        .replace("{property}", "rotatable").replace("{value}", value)
-                        .replace("{durability}", Integer.toString(Durability.ROTATABLE.value()))));
-            } catch (NullPointerException ignored) {}
-            try {
-
-                e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
-                        Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successHotbar"))
-                                .replace("{prefix}", ProtectedDebugStick.prefix)
-                                .replace("{block}", e.getClickedBlock().getBlockData().getMaterial().toString())
-                                .replace("{property}", "rotatable").replace("{value}", value)
-                                .replace("{durability}", Integer.toString(Durability.ROTATABLE.value()))));
-            } catch (NullPointerException ignored) {}
-
-            if (DebugStick.willBreak(e.getPlayer().getInventory().getItemInMainHand())) {
-                e.getPlayer().getInventory().setItemInMainHand(null);
-                e.getPlayer().sendMessage(Utils.configColor("messages.onBreak").replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{player}", e.getPlayer().getName()));
-            }
+            DebugStick.afterUse(e.getPlayer(), e.getClickedBlock(), "rotatable", value, Durability.ROTATABLE);
             return;
         }
 

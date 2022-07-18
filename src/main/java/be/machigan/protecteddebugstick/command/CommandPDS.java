@@ -3,6 +3,7 @@ package be.machigan.protecteddebugstick.command;
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.def.Durability;
+import be.machigan.protecteddebugstick.def.RecipeHandler;
 import be.machigan.protecteddebugstick.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -101,8 +102,16 @@ public class CommandPDS implements CommandExecutor {
                         .replace("{player}", commandSender.getName()).replace("{perm}", "pds.command.reloadConfig"));
                 return true;
             }
+            ProtectedDebugStick.instance.reloadConfig();
+            ProtectedDebugStick.config = ProtectedDebugStick.instance.getConfig();
             DebugStick.init();
             Durability.init();
+            RecipeHandler.register();
+            try {
+                ProtectedDebugStick.prefix = Utils.replaceColor(ProtectedDebugStick.config.getString("prefix"));
+            } catch (NullPointerException ignored) {
+                ProtectedDebugStick.prefix = Utils.replaceColor(ProtectedDebugStick.PREFIX);
+            }
             commandSender.sendMessage(Utils.configColor("messages.command.arg.reloadConfig.success").replace("{prefix}", ProtectedDebugStick.prefix)
                     .replace("{player}", commandSender.getName()));
             return true;

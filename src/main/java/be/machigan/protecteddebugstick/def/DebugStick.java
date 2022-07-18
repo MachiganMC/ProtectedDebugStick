@@ -3,9 +3,12 @@ package be.machigan.protecteddebugstick.def;
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.utils.Utils;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -13,6 +16,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,8 +47,6 @@ public class DebugStick implements Cloneable {
     }
 
     public static void init() {
-
-
         String path = "items.basicDebugStick.";
         Material m;
         blacklist = ProtectedDebugStick.config.getStringList("settings.blacklist");
@@ -274,11 +282,7 @@ public class DebugStick implements Cloneable {
 
             inspector.setItemMeta(itemMeta);
 
-
         }
-
-
-
     }
 
     public static ItemStack getDebugStick(int durability) {
@@ -342,34 +346,34 @@ public class DebugStick implements Cloneable {
 
     }
 
-    public static boolean isPlayerHasDS(Player player) {
+    public static boolean playerHasNotDS(Player player) {
         if (player.getInventory().getItemInMainHand() == null) {
-            return false;
+            return true;
         }
         ItemMeta itemMeta = player.getInventory().getItemInMainHand().getItemMeta();
         if (itemMeta == null) {
-            return false;
+            return true;
         }
 
-        return itemMeta.getPersistentDataContainer().has(DURABILITY_KEY, PersistentDataType.INTEGER);
+        return !itemMeta.getPersistentDataContainer().has(DURABILITY_KEY, PersistentDataType.INTEGER);
     }
 
-    public static boolean canUse(ItemStack item, int durability) {
+    public static boolean canNotUse(ItemStack item, Durability durability) {
         if (item == null) {
-            return false;
+            return true;
         }
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta == null) {
-            return false;
+            return true;
         }
         if (!itemMeta.getPersistentDataContainer().has(DURABILITY_KEY, PersistentDataType.INTEGER)) {
-            return false;
+            return true;
         }
         int current = itemMeta.getPersistentDataContainer().get(DURABILITY_KEY, PersistentDataType.INTEGER);
         if (current == -1) {
-            return true;
+            return false;
         }
-        return (current >= durability);
+        return (current < durability.value());
     }
 
     public static int getDurability(ItemStack item) {
@@ -399,6 +403,125 @@ public class DebugStick implements Cloneable {
         }
         int current = itemMeta.getPersistentDataContainer().get(DURABILITY_KEY, PersistentDataType.INTEGER);
         return current == 0;
+    }
+
+
+    /**
+     * Use this method after that the player uses the debug stick (after the applying of the data)
+     * @param player The player who has use the debug stick
+     * @param block The block who has been modified
+     * @param property The property who has been changed
+     * @param value The new value of the property
+     * @param durability The durability to remove from the debug stick
+     */
+    public static void afterUse(Player player, Block block, String property, String value, Durability durability) {
+        DebugStick.removeDurability(player, durability.value());
+        try {
+            player.sendMessage(Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successChat")
+                    .replace("{prefix}", ProtectedDebugStick.prefix)
+                    .replace("{block}", block.getBlockData().getMaterial().toString())
+                    .replace("{property}", property).replace("{value}", value)
+                    .replace("{durability}", Integer.toString(durability.value()))));
+        } catch (NullPointerException ignored) {}
+        try {
+
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
+                    Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successHotbar"))
+                            .replace("{prefix}", ProtectedDebugStick.prefix)
+                            .replace("{block}", block.getBlockData().getMaterial().toString())
+                            .replace("{property}", property).replace("{value}", value)
+                            .replace("{durability}", Integer.toString(durability.value()))));
+        } catch (NullPointerException ignored) {}
+
+        if (DebugStick.willBreak(player.getInventory().getItemInMainHand())) {
+            player.getInventory().setItemInMainHand(null);
+            player.sendMessage(Utils.configColor("messages.onBreak").replace("{prefix}", ProtectedDebugStick.prefix)
+                    .replace("{player}", player.getName()));
+
+        } else if (ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.enable")) {
+            int dsDurability = DebugStick.getDurability(player.getInventory().getItemInMainHand());
+            String messageChat = null;
+            TextComponent messageHotbar = null;
+            try {
+                messageChat = Utils.replaceColor(ProtectedDebugStick.config.getString("settings.preventPlayerWhenBreaking.messageChat")
+                                .replace("{prefix}", ProtectedDebugStick.prefix)
+                                .replace("{player}", player.getName())
+                                .replace("{durability}", Integer.toString(dsDurability)))
+                        .replace("{property}", property)
+                        .replace("{value}", value).replace("{block}", block.getBlockData().getMaterial().toString());
+            } catch (NullPointerException ignored){}
+            try {
+                messageHotbar =  new TextComponent(Utils.replaceColor(ProtectedDebugStick.config.getString(
+                                "settings.preventPlayerWhenBreaking.messageHotbar"
+                        )).replace("{player}", player.getName()).replace("{durability}", Integer.toString(dsDurability))
+                        .replace("{property}", property).replace("{value}", value)
+                        .replace("{block}", block.getBlockData().getMaterial().toString()));
+            } catch (NullPointerException ignored) {}
+
+
+            if (dsDurability != -1) {
+                if (!(ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.sendOneTime")) &&
+                        dsDurability <= ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability")) {
+                    if (messageChat != null) {
+                        player.sendMessage(messageChat);
+                    }
+                    if (messageHotbar != null) {
+                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, messageHotbar);
+                    }
+                } else if ((ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.sendOneTime")) &&
+                        (dsDurability + durability.value() > ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability")) &&
+                        (dsDurability <= ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability"))) {
+                    if (messageChat != null) {
+                        player.sendMessage(messageChat);
+                    }
+                    if (messageHotbar != null) {
+                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, messageHotbar);
+                    }
+                }
+
+            }
+
+        }
+
+        if (ProtectedDebugStick.config.getBoolean("settings.logConsole")) {
+//            Utils.log("LOG : " + player.getName() + " has changed the property \"" + property + "\" in  of the block \"" + block.getBlockData().getMaterial()
+//                    + "\" in coordinates : '" + block.getLocation().getBlockX() + " " + block.getLocation().getBlockY() + " "
+//                    + block.getLocation().getBlockZ() + "' in the world " + "\"" + block.getLocation().getWorld().getUID() +
+//                    "\" (" + block.getLocation().getWorld().getName() + ")");
+            Utils.log("[LOG] " + player.getName() + " -> {" + property + "} = \"" + value + "\" at '" + block.getLocation().getBlockX() + " " +
+                    block.getLocation().getBlockY() + " " + block.getLocation().getBlockZ() + "' [" + block.getBlockData().getMaterial() + "] in the world \"" +
+                    block.getLocation().getWorld().getUID() + "\" [" + block.getLocation().getWorld().getName() + "]");
+        }
+
+        if (ProtectedDebugStick.config.getBoolean("settings.logFile")) {
+            if (Files.notExists(Paths.get(ProtectedDebugStick.instance.getDataFolder() + "/logs"))) {
+                if (!new File(ProtectedDebugStick.instance.getDataFolder(), "/logs").mkdir()) {
+                    Utils.log("Error during the creation of the folder of the logs. Disabling the log file features", Utils.LOG_SEVERE);
+                    ProtectedDebugStick.config.set("settings.logFile", false);
+                    ProtectedDebugStick.instance.saveConfig();
+                    return;
+                }
+            }
+
+            File logFile = new File(ProtectedDebugStick.instance.getDataFolder(), "/logs/" + LocalDate.now() + ".txt");
+            try {
+                if (logFile.createNewFile()) {
+                    Utils.log("Creating a new log file for today");
+                }
+                LocalDateTime now = LocalDateTime.now();
+                FileWriter log = new FileWriter(logFile, true);
+                log.write("[" + now.getHour() + ":" + now.getMinute() + ":" + now.getSecond() + "] " +
+                        player.getName() + " -> {" + property + "} = \"" + value + "\" at '" + block.getLocation().getBlockX() + " " +
+                        block.getLocation().getBlockY() + " " + block.getLocation().getBlockZ() + "' [" + block.getBlockData().getMaterial() + "] in the world \"" +
+                        block.getLocation().getWorld().getUID() + "\" [" + block.getLocation().getWorld().getName() + "]\n");
+                log.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Utils.log("Unable to write in the log file. Disabling the log file feature", Utils.LOG_SEVERE);
+                ProtectedDebugStick.config.set("settings.logFile", false);
+                ProtectedDebugStick.instance.saveConfig();
+            }
+        }
     }
 
 

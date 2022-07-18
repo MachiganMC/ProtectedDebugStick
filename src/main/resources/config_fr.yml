@@ -167,9 +167,61 @@ settings:
     waterlogged: 3
     powerable: 10
     ageable: 20
+    beehive: 5
+    wall: 1
+    snowable: 3
+    distance: 1
+    layers: 1
 
   # Liste des matériaux à ne pas pouvoir être modifiés par le debug stick
   blacklist:
+
+  # Écrit dans la console quand un joueur change une propriété
+  logConsole: false
+
+  # Écrit dans un fichier à part quand un joueur change une propriété
+  logFile: false
+
+    # Previent le joueur quand son debug stick va casser
+    # Le message dans le tchat et dans la hotbar ne sont pas obligatoires (si vous voulez en envoyer qu'un)
+  preventPlayerWhenBreaking:
+    enable: true
+
+    # Envoie le message qu'une seule fois quand la durabilité passe en dessous du seuil (true)
+    # ou à chaque fois que la durabilité diminue, une fois que celle-ci est en dessous du seuil (false)
+    sendOneTime: false
+    durability: 5
+    # {prefix}, {property}, {durability}, {player}
+    messageChat: "{prefix} &aTa branche de débogage va bientôt casser &7(&e&o{durability} rest.&7) &a!"
+    messageHotbar:
+
+# Ici vous allez pouvoir créer des recettes de fabrication pour les debug stick
+# Pour créer une nouvelle recette, vous devez créer une nouvelle section et la nommer
+# comme bon vous semble (un nom différent par recette).
+# Dans cette nouvelle section, 2 sections enfantes doivent se trouver : 'durability' -> la durabilité du debug stick
+# (utilisez -1 pour le infinity debug stick) et la section 'craft' composé de 1 ou plusieurs nombres représentants les
+# slots de la table de craft comme dans le schéma ci-dessous :
+#
+#   / / / / / / /
+#   / 1 / 2 / 3 /    / / / / / / / / /
+#   / 4 / 5 / 6 / -> /le débug stick /
+#   / 7 / 8 / 9 /    / / / / / / / / /
+#   / / / / / / /
+#
+# Vous n'êtes pas obligé d'utiliser tous les slots de la table de craft, mais chaque slot utilisé représente 1 matériel
+# Si dessous, voici 2 exemples de recettes afin de vous guidez dans la fabrication des votres :
+recipes:
+#  first:
+#    durability: 10
+#    craft:
+#      2: "BAMBOO"
+#      5: "BAMBOO"
+#      8: "BAMBOO"
+#  infinity:
+#    durability: -1
+#    craft:
+#      1: "DIAMOND"
+#      3: "EMERALD"
 
 messages: #{prefix}, {player}
   #{block}, {property}, {value}, {durability} -> Ce champ n'est pas obligatoire
