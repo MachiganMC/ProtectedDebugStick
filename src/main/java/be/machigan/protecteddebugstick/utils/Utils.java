@@ -20,11 +20,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utils {
     final public static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -82,28 +84,14 @@ public class Utils {
             text = text.replace("<s:" + b1 + ">" + w + "<e:" + b2 + ">", colored);
         }
 
-        return text.replace("&0", "" + ChatColor.BLACK)
-                .replace("&1", "" + ChatColor.DARK_BLUE)
-                .replace("&2", "" + ChatColor.DARK_GREEN)
-                .replace("&3", "" + ChatColor.DARK_AQUA)
-                .replace("&4", "" + ChatColor.DARK_RED)
-                .replace("&5", "" + ChatColor.DARK_PURPLE)
-                .replace("&6", "" + ChatColor.GOLD)
-                .replace("&7", "" + ChatColor.GRAY)
-                .replace("&8", "" + ChatColor.DARK_GRAY)
-                .replace("&9", "" + ChatColor.BLUE)
-                .replace("&a", "" + ChatColor.GREEN)
-                .replace("&b", "" + ChatColor.AQUA)
-                .replace("&c", "" + ChatColor.RED)
-                .replace("&d", "" + ChatColor.LIGHT_PURPLE)
-                .replace("&e", "" + ChatColor.YELLOW)
-                .replace("&f", "" + ChatColor.WHITE)
-                .replace("&k", "" + ChatColor.MAGIC)
-                .replace("&l", "" + ChatColor.BOLD)
-                .replace("&m", "" + ChatColor.STRIKETHROUGH)
-                .replace("&n", "" + ChatColor.UNDERLINE)
-                .replace("&o", "" + ChatColor.ITALIC)
-                .replace("&r", "" + ChatColor.RESET);
+        Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            String hex = text.substring(matcher.start(), matcher.end());
+            text = text.replace(hex, net.md_5.bungee.api.ChatColor.of(hex).toString());
+            matcher = pattern.matcher(text);
+        }
+        return ChatColor.translateAlternateColorCodes('&', text);
     }
 
 
@@ -234,25 +222,9 @@ public class Utils {
      * Converts a LocalDateTime object into a Date object
      * @param ldt The local date time object you want to convert
      * @return The local date time object converted
-     * @throws java.text.ParseException If the format of the Date is bad
      */
-    public static Date convertLocalDateTime(LocalDateTime ldt) throws java.text.ParseException {
-        String dateS = ldt.getYear() + "-" + ldt.getMonthValue() + "-" + ldt.getDayOfMonth() +
-                " " + ldt.getHour() + ":" + ldt.getMinute() + ":" + ldt.getSecond();
-
-        return DATE_FORMAT.parse(dateS);
-    }
-
-
-    /**
-     * Converts a LocalDate object into a Date object
-     * @param ld The local date object you want to convert
-     * @return The local date object converted into Date object
-     * @throws java.text.ParseException If the format of the Date is bad
-     */
-    public static Date convertLocalDate(LocalDate ld) throws java.text.ParseException {
-        String dateS = ld.getYear() + "-" + ld.getMonthValue() + "-" + ld.getDayOfMonth() + " 00:00:00";
-        return DATE_FORMAT.parse(dateS);
+    public static Date convertLocalDateTime(LocalDateTime ldt) {
+        return Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
     }
 
 
