@@ -146,29 +146,30 @@ items:
     hideUnbreakable: false
     hidePlacedOn: true
 
-settings:
+Settings:
   # The damage that the durability will take when the debug stick modify this property.
   # (see in the file "properties_en.yml" in the folder ressources, the definition of each property)
-  durability:
-    orientable: 1
-    directional: 1
-    rotatable: 1
-    type: 1
-    bisected: 1
-    shape: 1
-    persistent: 3
-    multipleFacing: 1
-    lightable: 5
-    redstoneWire: 2
-    waterlogged: 3
-    powerable: 10
-    ageable: 20
-    sapling: 10
-    beehive: 5
-    wall: 1
-    snowable: 3
-    distance: 1
-    layers: 1
+  Durability:
+    ORIENTABLE: 1
+    DIRECTIONAL: 1
+    ROTATABLE: 1
+    SLAB: 1
+    BISECTED: 1
+    SHAPE_STAIRS: 1
+    SHAPE_RAIL: 1
+    PERSISTENT: 3
+    MULTIPLEFACING: 1
+    LIGHTABLE: 5
+    REDSTONEWIRE: 2
+    WATERLOGGED: 3
+    POWERABLE: 10
+    AGEABLE: 20
+    SAPLING: 10
+    BEEHIVE: 5
+    WALL: 1
+    SNOWABLE: 3
+    DISTANCE: 1
+    LAYERS: 1
 
   # List of materials that can't be modified
   blacklist:

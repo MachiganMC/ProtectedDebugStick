@@ -1,7 +1,7 @@
 package be.machigan.protecteddebugstick.def;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
-import be.machigan.protecteddebugstick.utils.Utils;
+import be.machigan.protecteddebugstick.utils.Tools;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -20,7 +20,7 @@ public class RecipeHandler {
         for (ShapedRecipe recipe : recipes) {
             Bukkit.addRecipe(recipe);
         }
-        Utils.log(recipes.size() + " recipes has been registered");
+        Tools.log(recipes.size() + " recipes has been registered");
 
     }
 
@@ -40,7 +40,7 @@ public class RecipeHandler {
             try {
                 fields = ProtectedDebugStick.config.getConfigurationSection("recipes." + key + ".craft").getKeys(false);
             } catch (NullPointerException ignored) {
-                Utils.log("Recipes \"" + key + "\" has no slot. Ignoring the recipe", Utils.LOG_WARNING);
+                Tools.log("Recipes \"" + key + "\" has no slot. Ignoring the recipe", Tools.LOG_WARNING);
                 removed.add(key);
                 continue;
             }
@@ -56,7 +56,7 @@ public class RecipeHandler {
         searchRecipes();
         List<ShapedRecipe> recipeList = new ArrayList<>();
         for (String key : recipesName) {
-            NamespacedKey namespacedKey = new NamespacedKey(ProtectedDebugStick.instance, key);
+            NamespacedKey namespacedKey = new NamespacedKey(ProtectedDebugStick.getInstance(), key);
             ItemStack ds;
             if (ProtectedDebugStick.config.getInt("recipes." + key + ".durability") == -1) {
                 ds = DebugStick.getInfinityDebugStick();
@@ -68,7 +68,7 @@ public class RecipeHandler {
             try {
                 shapeSet = ProtectedDebugStick.config.getConfigurationSection("recipes." + key + ".craft").getKeys(false);
             } catch (NullPointerException ignored) {
-                Utils.log("Recipes \"" + key + "\" has no slot. Ignoring the recipe", Utils.LOG_WARNING);
+                Tools.log("Recipes \"" + key + "\" has no slot. Ignoring the recipe", Tools.LOG_WARNING);
                 continue;
             }
 
@@ -87,8 +87,8 @@ public class RecipeHandler {
                         recipe.setIngredient(Integer.toString(i).toCharArray()[0], m);
                     } else {
                         recipe.setIngredient(Integer.toString(i).toCharArray()[0], Material.BARRIER);
-                        Utils.log("The material \"" + ProtectedDebugStick.config.getString("recipes." + key + ".craft." + i) + "\" doesn't" +
-                                " exist from the recipe \"" + key + "\" (slot N°" + i + ") ! This slot has been replaces by a barrier block", Utils.LOG_WARNING);
+                        Tools.log("The material \"" + ProtectedDebugStick.config.getString("recipes." + key + ".craft." + i) + "\" doesn't" +
+                                " exist from the recipe \"" + key + "\" (slot N°" + i + ") ! This slot has been replaces by a barrier block", Tools.LOG_WARNING);
                     }
                 } catch (IllegalArgumentException ignored) {
                 }

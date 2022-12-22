@@ -1,0 +1,24 @@
+
+
+OnUse:
+  NoPerm:
+    # When the player wants to modify a property, but has not ce permission
+    # to modify the property
+    # PH :
+    # {property} : the property that the player wants to edit
+    # {perm} : the name of the permission
+    Property:  "{prefix} &cYou don't have permission to modify this property !"
+
+  # When the player wants to modify a property, but his debug stick doesn't have enough
+  # durability
+  # PH :
+  # {property} : the property that the player wants to modify,
+  # {need} : the durability that the property needs to be modified
+  #
+  NotEnoughDurability: "{prefix} &cYour debug hasn't enough durability &7"
+
+  # When the block that the player wants to edit is in the blacklist
+  # PH:
+  # {property} : the property that the player wants to edit
+  # {block} : the block (material) that the player wants to edit
+  BlackListed: "{prefix} &cThis block cannot be edited !"

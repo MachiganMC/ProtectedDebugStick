@@ -6,7 +6,7 @@
 
     <groupId>be.machigan</groupId>
     <artifactId>ProtectedDebugStick</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -38,6 +38,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -47,17 +51,21 @@
             <version>1.18.1-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.github.TechFortress</groupId>
-            <artifactId>GriefPrevention</artifactId>
-            <version>16.18</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>23.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.9.2</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>

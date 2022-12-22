@@ -1,0 +1,34 @@
+package be.machigan.protecteddebugstick.property.action;
+
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Stairs;
+import org.jetbrains.annotations.NotNull;
+
+public class ShapeStairsAction implements PropertyAction{
+    @Override
+    public @NotNull String modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
+        Stairs stairsData = (Stairs) data;
+
+        switch (stairsData.getShape()) {
+            case STRAIGHT:
+                stairsData.setShape(Stairs.Shape.INNER_RIGHT);
+                break;
+            case INNER_RIGHT:
+                stairsData.setShape(Stairs.Shape.OUTER_LEFT);
+                break;
+            case OUTER_LEFT:
+                stairsData.setShape(Stairs.Shape.INNER_LEFT);
+                break;
+            case INNER_LEFT:
+                stairsData.setShape(Stairs.Shape.OUTER_RIGHT);
+                break;
+            case OUTER_RIGHT:
+                stairsData.setShape(Stairs.Shape.STRAIGHT);
+                break;
+        }
+
+        block.setBlockData(stairsData);
+        return stairsData.getShape().name();
+    }
+}

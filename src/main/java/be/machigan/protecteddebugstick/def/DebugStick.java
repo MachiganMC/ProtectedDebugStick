@@ -1,8 +1,8 @@
 package be.machigan.protecteddebugstick.def;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
-import be.machigan.protecteddebugstick.utils.Utils;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import be.machigan.protecteddebugstick.property.Property;
+import be.machigan.protecteddebugstick.utils.Tools;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -31,14 +31,14 @@ public class DebugStick implements Cloneable {
     public static ItemStack debugStick;
     public static ItemStack infinityDebugStick;
     public static ItemStack inspector;
-    public static List<String> blacklist;
-    final public static NamespacedKey DURABILITY_KEY = new NamespacedKey(ProtectedDebugStick.instance, "debug-stick-durability");
-    final public static NamespacedKey INSPECTOR_KEY = new NamespacedKey(ProtectedDebugStick.instance, "inspector");
+    public static List<Material> blacklist = new ArrayList<>();
+    final public static NamespacedKey DURABILITY_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-durability");
+    final public static NamespacedKey INSPECTOR_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "inspector");
     final public static List<String> ITEMS = new ArrayList<>(Arrays.asList("basic", "infinity", "inspector"));
 
     static {
         init();
-        Durability.init();
+        Property.init();
     }
 
     @Override
@@ -49,57 +49,52 @@ public class DebugStick implements Cloneable {
     public static void init() {
         String path = "items.basicDebugStick.";
         Material m;
-        blacklist = ProtectedDebugStick.config.getStringList("settings.blacklist");
-        blacklist.forEach((String s) -> {
-            if (Material.matchMaterial(s) == null) {
-                Utils.log("The material \"" + s + "\" of the blacklist isn't a valid material.", Utils.LOG_WARNING);
+        List<String> blacklistStr = ProtectedDebugStick.config.getStringList("settings.blacklist");
+        blacklistStr.forEach((String s) -> {
+            Material material = Material.matchMaterial(s);
+            if (material == null) {
+                Tools.log("The material \"" + s + "\" of the blacklist isn't a valid material.", Tools.LOG_WARNING);
+            } else {
+                blacklist.add(material);
             }
         });
         try {
             m = Material.matchMaterial(ProtectedDebugStick.config.getString(path + "material"));
 
             if (m == null) {
-                Utils.log("Material for basic debug stick is incorrect. Setting to scute.", Utils.LOG_WARNING);
+                Tools.log("Material for basic debug stick is incorrect. Setting to scute.", Tools.LOG_WARNING);
                 m = Material.SCUTE;
             }
-            if (m.equals(GriefPrevention.instance.config_claims_investigationTool)) {
-                Utils.log("Warning, the item of basic debug stick is the same that the investigation tool of GriefPrevention. Some " +
-                        "conflicts errors can appear", Utils.LOG_WARNING);
-            }
-            if (m.equals(GriefPrevention.instance.config_claims_modificationTool)) {
-                Utils.log("Warning, the item of basic debug stick is the same that the claim tool of GriefPrevention. Some " +
-                        "conflicts errors can appear", Utils.LOG_WARNING);
-            }
         } catch (IllegalArgumentException ignored) {
-            Utils.log("Path of material for basic debug stick : \"" + path + "material\" hasn't been found. Setting to scute", Utils.LOG_WARNING);
+            Tools.log("Path of material for basic debug stick : \"" + path + "material\" hasn't been found. Setting to scute", Tools.LOG_WARNING);
             m = Material.SCUTE;
         }
 
         debugStick = new ItemStack(m);
         ItemMeta dbMeta = debugStick.getItemMeta();
         if (dbMeta != null) {
-            dbMeta.setDisplayName(Utils.configColor(path + "name"));
+            dbMeta.setDisplayName(Tools.configColor(path + "name"));
             List<String> lore;
             try {
                 lore = ProtectedDebugStick.config.getStringList(path + "lore");
             } catch (NullPointerException ignored) {
-                Utils.log("Path of lore of basic debug stick : \"" + path + "lore\" hasn't been found. Setting lore as empty", Utils.LOG_WARNING);
+                Tools.log("Path of lore of basic debug stick : \"" + path + "lore\" hasn't been found. Setting lore as empty", Tools.LOG_WARNING);
                 lore = new ArrayList<>();
             }
-            lore.replaceAll(s -> s = Utils.replaceColor(s));
+            lore.replaceAll(s -> s = Tools.replaceColor(s));
             dbMeta.setLore(lore);
 
             try {
                 for (String enchant : ProtectedDebugStick.config.getStringList(path + "enchants")) {
                     Enchantment e = Enchantment.getByKey(NamespacedKey.fromString("minecraft:" + enchant.toLowerCase()));
                     if (e == null) {
-                        Utils.log("The enchant \"" + enchant + "\" from \"" + path + "enchants\" doesn't exist");
+                        Tools.log("The enchant \"" + enchant + "\" from \"" + path + "enchants\" doesn't exist");
                         continue;
                     }
                     dbMeta.addEnchant(e, 1, true);
                 }
             } catch (NullPointerException ignored) {
-                Utils.log("Path to enchants list of basic debug stick : \"" + path + "enchants\" hasn't been found. Setting with no enchant.", Utils.LOG_WARNING);
+                Tools.log("Path to enchants list of basic debug stick : \"" + path + "enchants\" hasn't been found. Setting with no enchant.", Tools.LOG_WARNING);
             }
 
             if (ProtectedDebugStick.config.getBoolean(path + "hideEnchants")) {
@@ -125,10 +120,10 @@ public class DebugStick implements Cloneable {
             debugStick.setItemMeta(dbMeta);
         } else {
             for (int i = 0; i < 3; i++) {
-                Utils.log("Item meta of basic debug stick hasn't been found. Disabling the plugin. THIS IS NOT NORMAL ! " +
-                        "Look at the material, if the material is AIR, a item meta can't be found", Utils.LOG_SEVERE);
+                Tools.log("Item meta of basic debug stick hasn't been found. Disabling the plugin. THIS IS NOT NORMAL ! " +
+                        "Look at the material, if the material is AIR, a item meta can't be found", Tools.LOG_SEVERE);
             }
-            Bukkit.getServer().getPluginManager().disablePlugin(ProtectedDebugStick.instance);
+            Bukkit.getServer().getPluginManager().disablePlugin(ProtectedDebugStick.getInstance());
         }
 
         path = "items.infinityDebugStick.";
@@ -137,33 +132,25 @@ public class DebugStick implements Cloneable {
             m = Material.matchMaterial(ProtectedDebugStick.config.getString(path + "material"));
             if (m == null) {
                 m = Material.SCUTE;
-                Utils.log("Material for infinity debug stick is invalid. Setting to scute.", Utils.LOG_WARNING);
-            }
-            if (m.equals(GriefPrevention.instance.config_claims_investigationTool)) {
-                Utils.log("Warning, the item of infinity debug stick is the same that the investigation tool of GriefPrevention. Some " +
-                        "conflicts errors can appear", Utils.LOG_WARNING);
-            }
-            if (m.equals(GriefPrevention.instance.config_claims_modificationTool)) {
-                Utils.log("Warning, the item of infinity debug stick is the same that the claim tool of GriefPrevention. Some " +
-                        "conflicts errors can appear", Utils.LOG_WARNING);
+                Tools.log("Material for infinity debug stick is invalid. Setting to scute.", Tools.LOG_WARNING);
             }
         } catch (IllegalArgumentException ignored) {
             m = Material.SCUTE;
-            Utils.log("Path of material of infinity debug stick : \"" + path + "material\" hasn't been found. Setting to scute.", Utils.LOG_WARNING);
+            Tools.log("Path of material of infinity debug stick : \"" + path + "material\" hasn't been found. Setting to scute.", Tools.LOG_WARNING);
         }
         infinityDebugStick = new ItemStack(m);
 
         ItemMeta ibMeta = infinityDebugStick.getItemMeta();
         if (ibMeta != null) {
-            ibMeta.setDisplayName(Utils.configColor(path + "name"));
+            ibMeta.setDisplayName(Tools.configColor(path + "name"));
 
             List<String> lore;
             try {
                 lore = ProtectedDebugStick.config.getStringList(path + "lore");
-                lore.replaceAll(s -> s = Utils.replaceColor(s));
+                lore.replaceAll(s -> s = Tools.replaceColor(s));
                 ibMeta.setLore(lore);
             } catch (NullPointerException ignored) {
-                Utils.log("The lore of infinity debug stick : \"" + path + "lore\" hasn't been found. Setting to empty.", Utils.LOG_WARNING);
+                Tools.log("The lore of infinity debug stick : \"" + path + "lore\" hasn't been found. Setting to empty.", Tools.LOG_WARNING);
                 lore = new ArrayList<>();
             }
             ibMeta.setLore(lore);
@@ -172,13 +159,13 @@ public class DebugStick implements Cloneable {
                 for (String enchant : ProtectedDebugStick.config.getStringList(path + "enchants")) {
                     Enchantment e = Enchantment.getByKey(NamespacedKey.fromString("minecraft:" + enchant));
                     if (e == null) {
-                        Utils.log("The enchant " + enchant + " doesn't exist.");
+                        Tools.log("The enchant " + enchant + " doesn't exist.");
                         continue;
                     }
                     ibMeta.addEnchant(e, 1, true);
                 }
             } catch (NullPointerException ignored) {
-                Utils.log("Path of enchant list of infinity debug stick : \"" + path  + "enchants \" hasn't been found. Setting with no enchants", Utils.LOG_WARNING);
+                Tools.log("Path of enchant list of infinity debug stick : \"" + path  + "enchants \" hasn't been found. Setting with no enchants", Tools.LOG_WARNING);
             }
 
             if (ProtectedDebugStick.config.getBoolean(path + "hideEnchants")) {
@@ -204,10 +191,10 @@ public class DebugStick implements Cloneable {
             infinityDebugStick.setItemMeta(ibMeta);
         } else {
             for (int i = 0; i < 3; i++) {
-                Utils.log("Item meta of infinty debug stick hasn't been found. Disabling the plugin. THIS IS NOT NORMAL ! " +
-                        "Look at the material, if the material is AIR, a item meta can't be found", Utils.LOG_SEVERE);
+                Tools.log("Item meta of infinty debug stick hasn't been found. Disabling the plugin. THIS IS NOT NORMAL ! " +
+                        "Look at the material, if the material is AIR, a item meta can't be found", Tools.LOG_SEVERE);
             }
-            Bukkit.getServer().getPluginManager().disablePlugin(ProtectedDebugStick.instance);
+            Bukkit.getServer().getPluginManager().disablePlugin(ProtectedDebugStick.getInstance());
         }
 
 
@@ -216,33 +203,25 @@ public class DebugStick implements Cloneable {
             m = Material.matchMaterial(ProtectedDebugStick.config.getString(path + "material"));
             if (m == null) {
                 m = Material.GOLD_INGOT;
-                Utils.log("The material of the inspector is invalid. Setting to gold ingot.", Utils.LOG_WARNING);
-            }
-            if (m.equals(GriefPrevention.instance.config_claims_investigationTool)) {
-                Utils.log("Warning, the item of inspector is the same that the investigation tool of GriefPrevention. Some " +
-                        "conflicts errors can appear", Utils.LOG_WARNING);
-            }
-            if (m.equals(GriefPrevention.instance.config_claims_modificationTool)) {
-                Utils.log("Warning, the item of inspector is the same that the claim tool of GriefPrevention. Some " +
-                        "conflicts errors can appear", Utils.LOG_WARNING);
+                Tools.log("The material of the inspector is invalid. Setting to gold ingot.", Tools.LOG_WARNING);
             }
         } catch (IllegalArgumentException ignored) {
             m = Material.GOLD_INGOT;
-            Utils.log("The material of the inspector : \"" + path + "material\" hasn't been found. Setting to gold ingot.", Utils.LOG_WARNING);
+            Tools.log("The material of the inspector : \"" + path + "material\" hasn't been found. Setting to gold ingot.", Tools.LOG_WARNING);
         }
         inspector = new ItemStack(m);
 
         ItemMeta itemMeta = inspector.getItemMeta();
         if (itemMeta != null) {
-            itemMeta.setDisplayName(Utils.configColor(path + "name"));
+            itemMeta.setDisplayName(Tools.configColor(path + "name"));
 
             List<String> lore;
             try {
                 lore = ProtectedDebugStick.config.getStringList(path + "lore");
-                lore.replaceAll(s -> s = Utils.replaceColor(s));
+                lore.replaceAll(s -> s = Tools.replaceColor(s));
             } catch (NullPointerException ignored) {
                 lore = new ArrayList<>();
-                Utils.log("The lore of the inspector : \"" + path + "name\" hasn't been found. Setting with no lore.", Utils.LOG_WARNING);
+                Tools.log("The lore of the inspector : \"" + path + "name\" hasn't been found. Setting with no lore.", Tools.LOG_WARNING);
             }
             itemMeta.setLore(lore);
 
@@ -250,13 +229,13 @@ public class DebugStick implements Cloneable {
                 for (String enchant : ProtectedDebugStick.config.getStringList(path + "enchants")) {
                     Enchantment e = Enchantment.getByKey(NamespacedKey.fromString(enchant));
                     if (e == null) {
-                        Utils.log("The enchant \"" + enchant + "\" doesn't exist.", Utils.LOG_WARNING);
+                        Tools.log("The enchant \"" + enchant + "\" doesn't exist.", Tools.LOG_WARNING);
                         continue;
                     }
                     itemMeta.addEnchant(e, 1, true);
                 }
             } catch (NullPointerException ignored) {
-                Utils.log("The enchant list of the inspector : \"" + path + "enchants\" hasn't been found. Setting with no enchant.", Utils.LOG_WARNING);
+                Tools.log("The enchant list of the inspector : \"" + path + "enchants\" hasn't been found. Setting with no enchant.", Tools.LOG_WARNING);
             }
 
             if (ProtectedDebugStick.config.getBoolean(path + "hideEnchants")) {
@@ -290,7 +269,7 @@ public class DebugStick implements Cloneable {
         itemMeta.getPersistentDataContainer().set(DURABILITY_KEY, PersistentDataType.INTEGER, durability);
 
         List<String> lore = ProtectedDebugStick.config.getStringList("items.basicDebugStick.lore");
-        lore.replaceAll(s -> s = Utils.replaceColor(s).replace("{durability}", Integer.toString(durability)));
+        lore.replaceAll(s -> s = Tools.replaceColor(s).replace("{durability}", Integer.toString(durability)));
         itemMeta.setLore(lore);
 
         ItemStack i = debugStick.clone();
@@ -331,7 +310,7 @@ public class DebugStick implements Cloneable {
             itemMeta.getPersistentDataContainer().set(DURABILITY_KEY, PersistentDataType.INTEGER, current);
             List<String> lore = ProtectedDebugStick.config.getStringList("items.basicDebugStick.lore");
             int finalCurrent = current;
-            lore.replaceAll(s -> Utils.replaceColor(s).replace("{durability}", Integer.toString(finalCurrent)));
+            lore.replaceAll(s -> Tools.replaceColor(s).replace("{durability}", Integer.toString(finalCurrent)));
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
             player.getInventory().addItem(itemStack);
@@ -340,7 +319,7 @@ public class DebugStick implements Cloneable {
         itemMeta.getPersistentDataContainer().set(DURABILITY_KEY, PersistentDataType.INTEGER, current);
         List<String> lore = ProtectedDebugStick.config.getStringList("items.basicDebugStick.lore");
         int finalCurrent = current;
-        lore.replaceAll(s -> Utils.replaceColor(s).replace("{durability}", Integer.toString(finalCurrent)));
+        lore.replaceAll(s -> Tools.replaceColor(s).replace("{durability}", Integer.toString(finalCurrent)));
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
 
@@ -358,7 +337,7 @@ public class DebugStick implements Cloneable {
         return !itemMeta.getPersistentDataContainer().has(DURABILITY_KEY, PersistentDataType.INTEGER);
     }
 
-    public static boolean canNotUse(ItemStack item, Durability durability) {
+    public static boolean hasNotEnoughDurability(ItemStack item, Property durability) {
         if (item == null) {
             return true;
         }
@@ -373,7 +352,7 @@ public class DebugStick implements Cloneable {
         if (current == -1) {
             return false;
         }
-        return (current < durability.value());
+        return (current < durability.getDurability());
     }
 
     public static int getDurability(ItemStack item) {
@@ -412,30 +391,29 @@ public class DebugStick implements Cloneable {
      * @param block The block who has been modified
      * @param property The property who has been changed
      * @param value The new value of the property
-     * @param durability The durability to remove from the debug stick
      */
-    public static void afterUse(Player player, Block block, String property, String value, Durability durability) {
-        DebugStick.removeDurability(player, durability.value());
+    public static void afterUse(Player player, Block block, String value, Property property) {
+        DebugStick.removeDurability(player, property.getDurability());
         try {
-            player.sendMessage(Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successChat")
+            player.sendMessage(Tools.replaceColor(ProtectedDebugStick.config.getString("messages.successChat")
                     .replace("{prefix}", ProtectedDebugStick.prefix)
                     .replace("{block}", block.getBlockData().getMaterial().toString())
-                    .replace("{property}", property).replace("{value}", value)
-                    .replace("{durability}", Integer.toString(durability.value()))));
+                    .replace("{property}", property.name()).replace("{value}", value)
+                    .replace("{durability}", Integer.toString(property.getDurability()))));
         } catch (NullPointerException ignored) {}
         try {
 
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
-                    Utils.replaceColor(ProtectedDebugStick.config.getString("messages.successHotbar"))
+                    Tools.replaceColor(ProtectedDebugStick.config.getString("messages.successHotbar"))
                             .replace("{prefix}", ProtectedDebugStick.prefix)
                             .replace("{block}", block.getBlockData().getMaterial().toString())
-                            .replace("{property}", property).replace("{value}", value)
-                            .replace("{durability}", Integer.toString(durability.value()))));
+                            .replace("{property}", property.name()).replace("{value}", value)
+                            .replace("{durability}", Integer.toString(property.getDurability()))));
         } catch (NullPointerException ignored) {}
 
         if (DebugStick.willBreak(player.getInventory().getItemInMainHand())) {
             player.getInventory().setItemInMainHand(null);
-            player.sendMessage(Utils.configColor("messages.onBreak").replace("{prefix}", ProtectedDebugStick.prefix)
+            player.sendMessage(Tools.configColor("messages.onBreak").replace("{prefix}", ProtectedDebugStick.prefix)
                     .replace("{player}", player.getName()));
 
         } else if (ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.enable")) {
@@ -443,18 +421,18 @@ public class DebugStick implements Cloneable {
             String messageChat = null;
             TextComponent messageHotbar = null;
             try {
-                messageChat = Utils.replaceColor(ProtectedDebugStick.config.getString("settings.preventPlayerWhenBreaking.messageChat")
+                messageChat = Tools.replaceColor(ProtectedDebugStick.config.getString("settings.preventPlayerWhenBreaking.messageChat")
                                 .replace("{prefix}", ProtectedDebugStick.prefix)
                                 .replace("{player}", player.getName())
                                 .replace("{durability}", Integer.toString(dsDurability)))
-                        .replace("{property}", property)
+                        .replace("{property}", property.name())
                         .replace("{value}", value).replace("{block}", block.getBlockData().getMaterial().toString());
             } catch (NullPointerException ignored){}
             try {
-                messageHotbar =  new TextComponent(Utils.replaceColor(ProtectedDebugStick.config.getString(
+                messageHotbar =  new TextComponent(Tools.replaceColor(ProtectedDebugStick.config.getString(
                                 "settings.preventPlayerWhenBreaking.messageHotbar"
                         )).replace("{player}", player.getName()).replace("{durability}", Integer.toString(dsDurability))
-                        .replace("{property}", property).replace("{value}", value)
+                        .replace("{property}", property.name()).replace("{value}", value)
                         .replace("{block}", block.getBlockData().getMaterial().toString()));
             } catch (NullPointerException ignored) {}
 
@@ -469,7 +447,7 @@ public class DebugStick implements Cloneable {
                         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, messageHotbar);
                     }
                 } else if ((ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.sendOneTime")) &&
-                        (dsDurability + durability.value() > ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability")) &&
+                        (dsDurability + property.getDurability() > ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability")) &&
                         (dsDurability <= ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability"))) {
                     if (messageChat != null) {
                         player.sendMessage(messageChat);
@@ -484,29 +462,25 @@ public class DebugStick implements Cloneable {
         }
 
         if (ProtectedDebugStick.config.getBoolean("settings.logConsole")) {
-//            Utils.log("LOG : " + player.getName() + " has changed the property \"" + property + "\" in  of the block \"" + block.getBlockData().getMaterial()
-//                    + "\" in coordinates : '" + block.getLocation().getBlockX() + " " + block.getLocation().getBlockY() + " "
-//                    + block.getLocation().getBlockZ() + "' in the world " + "\"" + block.getLocation().getWorld().getUID() +
-//                    "\" (" + block.getLocation().getWorld().getName() + ")");
-            Utils.log("[LOG] " + player.getName() + " -> {" + property + "} = \"" + value + "\" at '" + block.getLocation().getBlockX() + " " +
+            Tools.log("[LOG] " + player.getName() + " -> {" + property + "} = \"" + value + "\" at '" + block.getLocation().getBlockX() + " " +
                     block.getLocation().getBlockY() + " " + block.getLocation().getBlockZ() + "' [" + block.getBlockData().getMaterial() + "] in the world \"" +
                     block.getLocation().getWorld().getUID() + "\" [" + block.getLocation().getWorld().getName() + "]");
         }
 
         if (ProtectedDebugStick.config.getBoolean("settings.logFile")) {
-            if (Files.notExists(Paths.get(ProtectedDebugStick.instance.getDataFolder() + "/logs"))) {
-                if (!new File(ProtectedDebugStick.instance.getDataFolder(), "/logs").mkdir()) {
-                    Utils.log("Error during the creation of the folder of the logs. Disabling the log file features", Utils.LOG_SEVERE);
+            if (Files.notExists(Paths.get(ProtectedDebugStick.getInstance().getDataFolder() + "/logs"))) {
+                if (!new File(ProtectedDebugStick.getInstance().getDataFolder(), "/logs").mkdir()) {
+                    Tools.log("Error during the creation of the folder of the logs. Disabling the log file features", Tools.LOG_SEVERE);
                     ProtectedDebugStick.config.set("settings.logFile", false);
-                    ProtectedDebugStick.instance.saveConfig();
+                    ProtectedDebugStick.getInstance().saveConfig();
                     return;
                 }
             }
 
-            File logFile = new File(ProtectedDebugStick.instance.getDataFolder(), "/logs/" + LocalDate.now() + ".txt");
+            File logFile = new File(ProtectedDebugStick.getInstance().getDataFolder(), "/logs/" + LocalDate.now() + ".txt");
             try {
                 if (logFile.createNewFile()) {
-                    Utils.log("Creating a new log file for today");
+                    Tools.log("Creating a new log file for today");
                 }
                 LocalDateTime now = LocalDateTime.now();
                 FileWriter log = new FileWriter(logFile, true);
@@ -517,12 +491,10 @@ public class DebugStick implements Cloneable {
                 log.close();
             } catch (IOException e) {
                 e.printStackTrace();
-                Utils.log("Unable to write in the log file. Disabling the log file feature", Utils.LOG_SEVERE);
+                Tools.log("Unable to write in the log file. Disabling the log file feature", Tools.LOG_SEVERE);
                 ProtectedDebugStick.config.set("settings.logFile", false);
-                ProtectedDebugStick.instance.saveConfig();
+                ProtectedDebugStick.getInstance().saveConfig();
             }
         }
     }
-
-
 }

@@ -1,7 +1,7 @@
 package be.machigan.protecteddebugstick.event;
 
 import be.machigan.protecteddebugstick.def.DebugStick;
-import be.machigan.protecteddebugstick.utils.Utils;
+import be.machigan.protecteddebugstick.utils.Tools;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -47,7 +47,7 @@ public class OnClickInspector implements Listener {
                 message = message.replace("minecraft:" + blocType, "&a&l&n" + blocType.toUpperCase() + " :&r\n\n" +
                         "&8&o   Nothing to see here ...&r");
 
-                e.getPlayer().sendMessage(Utils.replaceColor(start + message + "&r\n" + end));
+                e.getPlayer().sendMessage(Tools.replaceColor(start + message + "&r\n" + end));
                 return;
             }
             message = message.replace("minecraft:" + blocType, "&a&l&n" + blocType.toUpperCase() + " :&r\n\n")
@@ -76,7 +76,7 @@ public class OnClickInspector implements Listener {
                 message = message.replace(line, finalLine);
             }
 
-            e.getPlayer().sendMessage(Utils.replaceColor(start + message + "&r\n" + end));
+            e.getPlayer().sendMessage(Tools.replaceColor(start + message + "&r\n" + end));
             return;
         }
 
@@ -85,7 +85,7 @@ public class OnClickInspector implements Listener {
             for (Class<?> c : e.getClickedBlock().getBlockData().getClass().getInterfaces()) {
                 message.append("   &8» &9").append(c.getName()).append("\n");
             }
-            e.getPlayer().sendMessage(Utils.replaceColor(start + message + end));
+            e.getPlayer().sendMessage(Tools.replaceColor(start + message + end));
         }
 
     }

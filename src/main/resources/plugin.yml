@@ -5,7 +5,8 @@ main: be.machigan.protecteddebugstick.ProtectedDebugStick
 database: false
 
 depend:
-  - GriefPrevention
+  - PlaceHolderAPI
+
 api-version: 1.18
 
 commands:
@@ -54,19 +55,20 @@ permissions:
     description: Allows player to modify all the properties of the reversed properties (left click)
     default: true
     children:
-      pds.properties.type: true
+      pds.properties.slab: true
       pds.properties.bisected: true
   pds.properties.special:
     description: Allows player to modify all the special properties (shift + right click)
     default: true
     children:
       pds.properties.shape.*: true
-      pds.proprties.multipleFacing: true
+      pds.properties.multiplefacing: true
       pds.properties.lightable: true
       pds.properties.redstonewire: true
       pds.properties.wall: true
       pds.properties.snowable: true
       pds.properties.distance: true
+      pds.properties.layers: true
   pds.properties.creative:
     description: Allows player to modify all the creative (considered) properties (shift + left click)
     default: false
@@ -113,8 +115,8 @@ permissions:
   pds.properties.rotatable:
     description: Allows player to modify the rotatable property
     default: true
-  pds.properties.type:
-    description: Allows player to modify the type property
+  pds.properties.slab:
+    description: Allows player to modify the slab property
     default: true
   pds.properties.bisected:
     description: Allows player to modify the bisected property
@@ -125,17 +127,17 @@ permissions:
     default: true
     children:
       pds.properties.shape.stairs: true
-      pds.properties.shape.rails: true
+      pds.properties.shape.rail: true
   pds.properties.shape.stairs:
     description: Allows player to modify the shape property of the stairs
     default: true
-  pds.properties.shape.rails:
-    description: Allows player to modify the shape property of the rails
+  pds.properties.shape.rail:
+    description: Allows player to modify the shape property of the rail
     default: true
   pds.properties.persistent:
     description: Allows player to modify the persistent property
     default: false
-  pds.properties.multipleFacing:
+  pds.properties.multiplefacing:
     description: Allows player to modify the multiple facing property
     default: true
   pds.properties.lightable:

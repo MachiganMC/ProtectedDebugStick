@@ -3,7 +3,9 @@ package be.machigan.protecteddebugstick.utils;
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import org.apache.commons.lang3.StringUtils;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,34 +24,31 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Utils {
+public class Tools {
     final public static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     final public static String LOG_INFO = "info";
     final public static String LOG_WARNING = "warning";
     final public static String LOG_SEVERE = "severe";
 
 
-    /**
-     * Transform your text into a colored text
-     * @param text text you want to color
-     * @return the text that bill be colored
-     */
     public static String replaceColor(String text) {
         String b1;
         String b2;
         String w;
         while (true) {
-            b1 = StringUtils.substringBetween(text, "<s:", ">");
+            b1 = org.apache.commons.lang.StringUtils.substringBetween(text, "<s:", ">");
             if (b1 == null) {
                 break;
             }
-            b2 = StringUtils.substringBetween(text, "<e:", ">");
+            b2 = org.apache.commons.lang.StringUtils.substringBetween(text, "<e:", ">");
             if (b2 == null) {
                 break;
             }
@@ -80,7 +79,7 @@ public class Utils {
                 subS.append(ChatColor.MAGIC);
                 copy = copy.replace("&k", "");
             }
-            String colored = Utils.gradient(copy, b1, b2, subS.toString());
+            String colored = Tools.gradient(copy, b1, b2, subS.toString());
             text = text.replace("<s:" + b1 + ">" + w + "<e:" + b2 + ">", colored);
         }
 
@@ -88,22 +87,37 @@ public class Utils {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             String hex = text.substring(matcher.start(), matcher.end());
-            text = text.replace(hex, net.md_5.bungee.api.ChatColor.of(hex).toString());
+            text = text.replace(hex, net.md_5.bungee.api.ChatColor.of(hex) + "");
             matcher = pattern.matcher(text);
         }
+
         return ChatColor.translateAlternateColorCodes('&', text);
     }
 
+    public static BaseComponent[] replaceColor(TextComponent text) {
+        List<TextComponent> bc = new ArrayList<>();
+        String s = Tools.replaceColor(text.getText());
 
-    /**
-     * Generates a gradient with 2 colors and apply this gradient at each char of the message you want
-     * to color
-     * @param message the message you want to color
-     * @param from the fist RGB color code
-     * @param to the second RGB color code
-     * @param subS a string that you input between the hex color and your char (example: a format code)
-     * @return the message colorized with the gradient
-     */
+        if (!Pattern.compile("§x(§[a-fA-F0-9]){6}").matcher(s).find()) {
+            bc.add(new TextComponent(s));
+        } else {
+            int i = 0;
+            Matcher matcher = Pattern.compile("§x(§[a-fA-F0-9]){6}").matcher(s);
+            bc.add(new TextComponent(s.split("§x(§[a-fA-F0-9]){6}")[0]));
+            while (matcher.find()) {
+                i++;
+                String color = s.substring(matcher.start(), matcher.end());
+                color = color.replace("§x", "").replace("§", "");
+                TextComponent message = new TextComponent(s.split("§x(§[a-fA-F0-9]){6}")[i]);
+                try {
+                    message.setColor(net.md_5.bungee.api.ChatColor.of("#" + color));
+                } catch (IllegalArgumentException ignored) {}
+                bc.add(message);
+            }
+        }
+        return bc.toArray(new BaseComponent[0]);
+    }
+
     public static String gradient(String message, String from, String to, String subS) {
         if (message == null) {
             return message;
@@ -142,7 +156,7 @@ public class Utils {
                 current[1] -= step[1];
                 current[2] -= step[2];
             }
-            return sb.toString();
+            return sb.append(ChatColor.RESET).toString();
 
         } catch (IllegalArgumentException ignored) {
             return message;
@@ -150,17 +164,6 @@ public class Utils {
     }
 
 
-    /**
-     * Generates a gradient with 2 colors and apply this gradient at each char of the message you want
-     * to color
-     * @param message the message you want to color
-     * @param from the fist RGB color code
-     * @param to the second RGB color code
-     * @return the message colorized with the gradient
-     */
-    public static String gradient(String message, String from, String to) {
-        return gradient(message, from, to, "");
-    }
 
 
     /**
@@ -235,10 +238,10 @@ public class Utils {
      */
     public static String configColor(String path) {
         try {
-            return replaceColor(ProtectedDebugStick.instance.getConfig().getString(path));
+            return replaceColor(ProtectedDebugStick.getInstance().getConfig().getString(path));
         } catch (NullPointerException ignored) {
-            log("Warning, the field \"" + path + "\" is empty in the configuration file", Utils.LOG_SEVERE);
-            return Utils.replaceColor(ProtectedDebugStick.PREFIX + "&4Missing section &c&o" + path + " &4in the configuration file");
+            log("Warning, the field \"" + path + "\" is empty in the configuration file", Tools.LOG_SEVERE);
+            return Tools.replaceColor(ProtectedDebugStick.PREFIX + "&4Missing section &c&o" + path + " &4in the configuration file");
         }
     }
 
@@ -248,7 +251,7 @@ public class Utils {
      * @param command The command you to execute
      */
     public void sudo(String command) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(ProtectedDebugStick.instance, () -> Bukkit.getServer().dispatchCommand(
+        Bukkit.getScheduler().scheduleSyncDelayedTask(ProtectedDebugStick.getInstance(), () -> Bukkit.getServer().dispatchCommand(
                 Bukkit.getServer().getConsoleSender(), command), 0);
     }
 
@@ -261,13 +264,13 @@ public class Utils {
     public static void log(String message, String logType) {
         Logger log = Logger.getLogger("Minecraft");
         switch (logType) {
-            case Utils.LOG_INFO:
+            case Tools.LOG_INFO:
                 log.info(ProtectedDebugStick.NAME + " " + message);
                 return;
-            case Utils.LOG_WARNING:
+            case Tools.LOG_WARNING:
                 log.warning(ProtectedDebugStick.NAME + " " + message);
                 return;
-            case Utils.LOG_SEVERE:
+            case Tools.LOG_SEVERE:
                 log.severe(ProtectedDebugStick.NAME + " " + message);
 
         }
@@ -279,7 +282,7 @@ public class Utils {
      * @param message message you want to log
      */
     public static void log(String message) {
-        log(message, Utils.LOG_INFO);
+        log(message, Tools.LOG_INFO);
     }
 
 }
