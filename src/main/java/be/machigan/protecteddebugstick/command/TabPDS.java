@@ -24,7 +24,7 @@ public class TabPDS implements TabCompleter {
                 arg.add("give");
             }
             if (commandSender.hasPermission("pds.command.reloadConfig")) {
-                arg.add("reloadconfig");
+                arg.add("reload-config");
             }
             StringUtil.copyPartialMatches(strings[0], arg, tab);
             return tab;

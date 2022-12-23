@@ -1,24 +1,160 @@
 
 
 OnUse:
+  # When the player wants to edit a block but a plugin doesn't allow the
+  # player to build in this area
+  # This message is not necessary. I recommend you to not write a message
+  # here, because the plugin that doesn't allow the player will already
+  # send one to the player
+  # PH :
+  # {block}
+  PluginPrevent:
+
   NoPerm:
     # When the player wants to modify a property, but has not ce permission
-    # to modify the property
+    # to modify the property.
+    # This message is not necessary.
     # PH :
     # {property} : the property that the player wants to edit
     # {perm} : the name of the permission
     Property:  "{prefix} &cYou don't have permission to modify this property !"
 
   # When the player wants to modify a property, but his debug stick doesn't have enough
-  # durability
+  # durability.
+  # This message is not necessary.
   # PH :
   # {property} : the property that the player wants to modify,
   # {need} : the durability that the property needs to be modified
   #
-  NotEnoughDurability: "{prefix} &cYour debug hasn't enough durability &7"
+  NotEnoughDurability: "{prefix} &cYour debug stick hasn't enough durability &7"
 
-  # When the block that the player wants to edit is in the blacklist
-  # PH:
+  # When the block that the player wants to edit is in the blacklist.
+  # This message is not necessary.
+  # PH :
   # {property} : the property that the player wants to edit
   # {block} : the block (material) that the player wants to edit
   BlackListed: "{prefix} &cThis block cannot be edited !"
+
+  # When a player wants to change a type of property (rotation, reversed, special or creative)
+  # of a block but the block doesn't have the type of property
+  # These messages aren't necessaries
+  # PH :
+  # {block} : the block that the player wants to modify
+  NoPropertyType:
+    Rotation:
+    Reverse:
+    Special:
+    Creative:
+
+  # When the player change the property of the block
+  # This message isn't necessary
+  # PH :
+  # {block} : The block that the player has edited
+  # {property} : the property that the payer has edited
+  # {value} : the new value of the property
+  Success:
+  SuccessHotbar: "{prefix} &aPropriété &e{property_name} &achangée en &e{value}"
+
+  # When the debug stick of the player breaks
+  # This message doesn't replace the "Success" message !
+  # This message isn't necessary
+  # PH :
+  # {block} : the block that the player has edited to break the debug stick
+  # {property} : the property that the player has edited to break the debug stick
+  # {value} : the new value of the property
+  Break: "{prefix} &aYou're debug stick has broke !"
+
+  # If you've enabled the option to warn the player when his debug stick
+  # will break
+  # This message isn't necessary (even you've enabled the option)
+  # PH :
+  # {block} : The block that the player has edited
+  # {property} : the property that the payer has edited
+  # {value} : the new value of the property
+  # {durability} : the remaining durability before the debug stick breaks
+  WarnBreakMessage: "{prefix} &aYou're debug will break soon ! &7(&e{durability} left&7)"
+
+Command:
+  PDS:
+    # When the player doesn't have the permission to use the command
+    # This message isn't necessary
+    # PH :
+    # {perm} : the permission
+    NoPerm: "{prefix} &cYou don't have permission to use this command !"
+
+    # When the command sender give no argument to the command
+    # This message is necessary !
+    # PH : /
+    NotEnoughArg: "{prefix} &cPlease, give more argument !"
+
+    Arg:
+      Give:
+        # When the player wants to perform the command "/pds give" but
+        # he doesn't have the perm
+        # This message is not necessary
+        # PH :
+        # {perm} : the permission
+        NoPerm: "{prefix} &cYou don't have the permission to use this argument !"
+
+        # When the command sender not give the player
+        # This message is necessary !
+        # PH : /
+        NoPlayer: "{prefix} &cPlease, give more argument !"
+
+        # When the player given in the command doesn't exist or isn't
+        # connected
+        # This message is necessary !
+        # PH :
+        # {player} : the player that doesn't exist
+        UnknownPlayer: "{prefix} &cThe player &4{player} &cdoesn't exist or isn't connected !"
+
+        # When the command sender doesn't give the item to give
+        # This message is necessary !
+        # PH :
+        # {player} : the player that should receive the item
+        WhatToGive: "{prefix} &cPlease, give the item to give !"
+
+        # When the item given in parameter isn't basic, infinity or inspector
+        # This message is necessary !
+        # PH :
+        # {player} : the player that should receive the item
+        # {item} : the item that doesn't exist
+        UnknownItem: "{prefix} &cWrong item ! The item &4{item} &cisn't basic, infinity or inspector !"
+
+        # When the item is the basic debug stick, but no durability is given
+        # This message is necessary !
+        # PH :
+        # {player} : the player that should receive the basic debug stick
+        NoDurability: "{prefix} &cPlease precise the durability of the debug stick !"
+
+        # When the arg is basic but the durability isn't valid (not a number or below or equal to 0)
+        # This message is necessary !
+        # PH :
+        # {player} : the player that should receive the item
+        # {durability} : the durability that's invalid
+        InvalidDurability: "{prefix} &cInvalid durability !"
+
+        # When the command sender has given an item to the player
+        # This message is necessary !
+        # PH :
+        # {player} : the player that has received the item
+        # {item} : the item given
+        Success: "{prefix} &aYou've given &2{item} &ato &2{player} &a!"
+
+      ReloadConfig:
+        # When the player doesn't have the permission to reload the config
+        # This message isn't necessary
+        # PH :
+        # {perm} : the missing permission
+        NoPerm: "{prefix} &cYou don't have the permission to use this command !"
+
+        # When the config has been reloaded
+        # This message is necessary !
+        # PH : /
+        Success: "{prefix} &aThe config has been reloaded !"
+
+    # When the argument isn't a command
+    # This message isn't necessary
+    # PH :
+    # {arg} : the wrong argument
+    NoCommandFound: "{prefix} &cCommand not found !"

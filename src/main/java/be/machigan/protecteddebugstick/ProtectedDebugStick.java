@@ -3,10 +3,13 @@ package be.machigan.protecteddebugstick;
 import be.machigan.protecteddebugstick.command.CommandPDS;
 import be.machigan.protecteddebugstick.command.TabPDS;
 import be.machigan.protecteddebugstick.def.RecipeHandler;
-import be.machigan.protecteddebugstick.event.*;
+import be.machigan.protecteddebugstick.event.OnClickInspector;
+import be.machigan.protecteddebugstick.event.OnUse;
 import be.machigan.protecteddebugstick.utils.Tools;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public class ProtectedDebugStick extends JavaPlugin {
     private static ProtectedDebugStick instance;
@@ -31,7 +34,9 @@ public class ProtectedDebugStick extends JavaPlugin {
             prefix = Tools.replaceColor(ProtectedDebugStick.PREFIX);
         }
 
-        ProtectedDebugStick.getInstance().saveResource("messages.yml", false);
+        File file = new File(ProtectedDebugStick.getInstance().getDataFolder() + "/messages.yml");
+        if (!file.exists())
+            ProtectedDebugStick.getInstance().saveResource("messages.yml", false);
 
         RecipeHandler.register();
         Tools.log("Enabled");

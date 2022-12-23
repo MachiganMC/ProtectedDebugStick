@@ -1,7 +1,9 @@
 package be.machigan.protecteddebugstick.utils;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
+import be.machigan.protecteddebugstick.property.Property;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -10,6 +12,7 @@ import net.md_5.bungee.api.chat.hover.content.Content;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -18,108 +21,172 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 
 public class Message {
-    final public static File FILE = new File(ProtectedDebugStick.getInstance().getDataFolder(), "/messages.yml");
-    private static YamlConfiguration configMessages = YamlConfiguration.loadConfiguration(FILE);
+    private static YamlConfiguration messagesFile;
     private String path;
-    private TextComponent content;
+
+    /**
+     * Represents the content of the message, the text that the player will see.
+     * If this attribute is {@code null}, it's because the message isn't necessary and so
+     * the message hasn't been configured.
+     */
+    @Nullable private String content;
     @Nullable private String hoverContent;
-    private ClickEvent clickEvent;
     private BaseComponent[] finalContent;
-    private Content finalHoverContent;
+    @Nullable private String runCommand;
+    @Nullable private String suggestedCommand;
+    @Nullable private String hotbarContent;
+    @Nullable private BaseComponent[] finalHotbarContent;
+    boolean necessary = true;
 
     private Message() {}
 
 
-    public static Message getMessage(String path, Player player) {
-        configMessages = YamlConfiguration.loadConfiguration(new File(ProtectedDebugStick.getInstance().getDataFolder(), "/messages.yml"));
+    public static Message getMessage(String path, Player player, boolean necessary) {
+        messagesFile = YamlConfiguration.loadConfiguration(new File(ProtectedDebugStick.getInstance().getDataFolder(), "/messages.yml"));
         Message message = new Message();
         message.path = path;
-        message = message.hover(player);
+        message.additionalContent(player);
+        message.necessary = necessary;
+
         try {
-            String s = configMessages.getString(path);
-            s = PlaceholderAPI.setPlaceholders(player, s);
-            message.content = new TextComponent(s.replace("{prefix}", ProtectedDebugStick.prefix));
+            message.content = messagesFile.getString(path);
+            message.content = PlaceholderAPI.setPlaceholders(player, message.content);
+            message.content = message.content.replace("{prefix}", ProtectedDebugStick.prefix);
         } catch (NullPointerException e) {
-            ProtectedDebugStick.getInstance().getLogger().warning("The message from \"" + path + "\" doesn't exist.");
-            message.content = new TextComponent(Tools.replaceColor("&3[&6&lProtected&e-DS&3] &cMessage &4&o" + path + " &cnot found"));
+            if (message.necessary) {
+                ProtectedDebugStick.getInstance().getLogger().warning("The message from \"" + path + "\" doesn't exist.");
+                message.content = Tools.replaceColor("&3[&6&lProtected&e-DS&3] &cMessage &4&o" + path + " &cnot found");
+            }
         }
         return message;
     }
 
-    public static Message getMessage(String path, OfflinePlayer player) {
-        configMessages = YamlConfiguration.loadConfiguration(new File(ProtectedDebugStick.getInstance().getDataFolder(), "/messages.yml"));
-        Message message = new Message();
-        message.path = path;
-        message = message.hover(player);
-        try {
-            String s = configMessages.getString(path);
-            s = PlaceholderAPI.setPlaceholders(player, s);
-            message.content = new TextComponent(s.replace("{prefix}", ProtectedDebugStick.prefix));
-        } catch (NullPointerException e) {
-            ProtectedDebugStick.getInstance().getLogger().warning("The message from \"" + path + "\" doesn't exist.");
-            message.content = new TextComponent(Tools.replaceColor("&3[&6&lProtected&e-DS&3] &cMessage &4&o" + path + " &cnot found"));
-        }
-        return message;
+    public static Message getMessage(String path, boolean necessary) {
+        return getMessage(path, null, necessary);
     }
 
     public static Message getMessage(String path) {
-        return getMessage(path, null);
+        return getMessage(path, null, true);
     }
 
-    private Message hover(Player player) {
+    private void additionalContent(Player player) {
         try {
-            this.hoverContent = configMessages.getString(this.path + "Hover")
+            this.hoverContent = messagesFile.getString(this.path + "Hover")
                     .replace("{prefix}", ProtectedDebugStick.prefix);
             this.hoverContent = PlaceholderAPI.setPlaceholders(player, this.hoverContent);
         } catch (NullPointerException ignored) {}
-        return this;
+
+        try {
+            this.runCommand = messagesFile.getString(this.path + "Run");
+            this.runCommand = PlaceholderAPI.setPlaceholders(player, this.runCommand);
+        } catch (NullPointerException ignored) {}
+
+        try {
+            this.suggestedCommand = messagesFile.getString(this.path + "Suggest");
+            this.suggestedCommand = PlaceholderAPI.setPlaceholders(player, this.suggestedCommand);
+        } catch (NullPointerException ignored) {}
+
+        try {
+            this.hotbarContent = messagesFile.getString(this.path + "Hotbar")
+                    .replace("{prefix}", ProtectedDebugStick.prefix);
+            this.hotbarContent = PlaceholderAPI.setPlaceholders(player, this.hotbarContent);
+        } catch (NullPointerException ignored) {}
     }
 
-    private Message hover(OfflinePlayer player) {
+    private void additionalContent(OfflinePlayer player) {
         try {
-            this.hoverContent = configMessages.getString(this.path + "Hover")
+            this.hoverContent = messagesFile.getString(this.path + "Hover")
                     .replace("{prefix}", ProtectedDebugStick.prefix);
             this.hoverContent = PlaceholderAPI.setPlaceholders(player, this.hoverContent);
         } catch (NullPointerException ignored) {}
-        return this;
+
+        try {
+            this.runCommand = messagesFile.getString(this.path + "Run");
+            this.runCommand = PlaceholderAPI.setPlaceholders(player, this.runCommand);
+        } catch (NullPointerException ignored) {}
+
+        try {
+            this.suggestedCommand = messagesFile.getString(this.path + "Suggest");
+            this.suggestedCommand = PlaceholderAPI.setPlaceholders(player, this.suggestedCommand);
+        } catch (NullPointerException ignored) {}
+
+        try {
+            this.hotbarContent = messagesFile.getString(this.path + "Hotbar")
+                    .replace("{prefix}", ProtectedDebugStick.prefix);
+            this.hotbarContent = PlaceholderAPI.setPlaceholders(player, this.hotbarContent);
+        } catch (NullPointerException ignored) {}
     }
+
 
     public Message replace(String from, String to) {
-        this.content = new TextComponent(this.content.getText().replace(from, to));
-        if (this.hoverContent != null) {
-            this.hoverContent = this.hoverContent.replace(from, to);
-        }
-        return this;
-    }
+        if (this.hotbarContent != null)
+            this.hotbarContent = this.hotbarContent.replace(from, to);
 
-    public Message click(String text, ClickEvent.Action action) {
-        this.clickEvent = new ClickEvent(action, text);
-        return this;
-    }
+        if (this.content == null)
+            return this;
 
-    private void color() {
-        this.finalContent = Tools.replaceColor(this.content);
+        this.content = this.content.replace(from, to);
+
         if (this.hoverContent != null)
-            this.finalHoverContent = new Text(Tools.replaceColor(new TextComponent(this.hoverContent)));
+            this.hoverContent = this.hoverContent.replace(from, to);
+
+        return this;
+    }
+
+    public Message replace(Block block) {
+        return this.replace("{block_material}", block.getType().name())
+                .replace("{block_loc_x}", Integer.toString(block.getLocation().getBlockX()))
+                .replace("{block_loc_y}", Integer.toString(block.getLocation().getBlockY()))
+                .replace("{block_loc_z}", Integer.toString(block.getLocation().getBlockZ()))
+                .replace("{block_loc_world}", block.getLocation().getWorld().getName());
+    }
+
+    public Message replace(Property property) {
+        return this.replace("{property_name}", property.name())
+                .replace("{property_durability}", Integer.toString(property.getDurability()))
+                .replace("{property_perm}", property.getPermission());
+    }
+
+    private void complete() {
+        if (this.hotbarContent != null)
+            this.finalHotbarContent = Tools.replaceColor(new TextComponent(this.hotbarContent));
+
+        if (this.content == null)
+            return;
+
+        this.finalContent = Tools.replaceColor(new TextComponent(this.content));
+
+        if (this.hoverContent != null) {
+            Content finalHoverContent = new Text(Tools.replaceColor(new TextComponent(this.hoverContent)));
+            for (BaseComponent b : this.finalContent)
+                b.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, finalHoverContent));
+        }
+
+        if (this.runCommand != null)
+            for (BaseComponent bc : this.finalContent)
+                bc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, this.runCommand));
+
+
+        if (this.suggestedCommand != null) {
+            for (BaseComponent bc : this.finalContent)
+                bc.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, this.suggestedCommand));
+        }
     }
 
     public void send(Player player) {
-        this.color();
-        if (this.hoverContent != null) {
-            for (BaseComponent b : this.finalContent) {
+        this.complete();
 
-                b.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, this.finalHoverContent));
-            }
-        }
-        if (this.clickEvent != null) {
-            for (BaseComponent b : this.finalContent) {
-                b.setClickEvent(this.clickEvent);
-            }
-        }
-        player.spigot().sendMessage(this.finalContent);
+        if (this.finalHotbarContent != null)
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, this.finalHotbarContent);
+
+        if (this.content != null)
+            player.spigot().sendMessage(this.finalContent);
     }
 
     public void send(CommandSender sender) {
+        if (this.content == null)
+            return;
+
         if (sender instanceof Player) {
             this.send((Player) sender);
             return;
@@ -128,21 +195,16 @@ public class Message {
     }
 
     public void broadcast() {
-        this.color();
-        if (this.hoverContent != null) {
-            for (BaseComponent b : this.finalContent) {
-                b.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, this.finalHoverContent));
-            }
-        }
-        if (this.clickEvent != null) {
-            for (BaseComponent b : this.finalContent) {
-                b.setClickEvent(this.clickEvent);
-            }
-        }
+        if (this.content == null)
+            return;
+
+        this.complete();
+
         Bukkit.getServer().spigot().broadcast(this.finalContent);
     }
 
     public void console() {
-        Bukkit.getConsoleSender().sendMessage(Tools.replaceColor(this.content.getText()));
+        if (this.content != null)
+            Bukkit.getConsoleSender().sendMessage(Tools.replaceColor(this.content));
     }
 }

@@ -1,8 +1,7 @@
 package be.machigan.protecteddebugstick.event;
 
-import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
-import be.machigan.protecteddebugstick.utils.Tools;
+import be.machigan.protecteddebugstick.utils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -41,8 +40,9 @@ public class OnUse implements Listener {
                 EquipmentSlot.HAND);
         Bukkit.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) {
-            e.getPlayer().sendMessage(Tools.configColor("messages.noPlayerClaim").replace("{prefix}", ProtectedDebugStick.prefix)
-                    .replace("{player}", e.getPlayer().getName()));
+            Message.getMessage("OnUse.PluginPrevent", e.getPlayer(), false)
+                    .replace(e.getClickedBlock())
+                    .send(e.getPlayer());
             return;
         }
 
@@ -60,7 +60,7 @@ public class OnUse implements Listener {
                 ClickCreative.onClick(e);
                 return;
             }
-            ClickReversed.onClick(e);
+            ClickReverse.onClick(e);
         }
     }
 }

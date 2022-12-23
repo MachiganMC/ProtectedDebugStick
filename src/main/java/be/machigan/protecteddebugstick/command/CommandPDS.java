@@ -4,6 +4,7 @@ import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.def.RecipeHandler;
+import be.machigan.protecteddebugstick.utils.Message;
 import be.machigan.protecteddebugstick.utils.Tools;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -18,47 +19,53 @@ public class CommandPDS implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
 
         if (!commandSender.hasPermission("pds.command.use")) {
-            commandSender.sendMessage(Tools.configColor("messages.noPerm.noPermCommand").replace("{prefix}", ProtectedDebugStick.prefix)
-                    .replace("{player}", commandSender.getName()).replace("perm}", "pds.command.use"));
+            Player player = (Player) commandSender;
+            Message.getMessage("Command.PDS.NoPerm", (Player) commandSender, false)
+                    .replace("{perm}", "pds.command.use")
+                    .send(player);
             return true;
         }
         if (strings.length == 0) {
-            commandSender.sendMessage(Tools.configColor("messages.command.notEnoughArg").replace("{prefix}", ProtectedDebugStick.prefix)
-                    .replace("{player}", commandSender.getName()));
+            Message.getMessage("Command.PDS.NotEnoughArg", true)
+                    .send(commandSender);
             return true;
         }
 
         if (strings[0].equalsIgnoreCase("give")) {
             if (!commandSender.hasPermission("pds.command.give")) {
-                commandSender.sendMessage(Tools.configColor("messages.noPerm.noPermArgGive").replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{player}", commandSender.getName()).replace("{perm}", "pds.command.give"));
+                Player player = (Player) commandSender;
+                Message.getMessage("Command.PDS.Arg.Give.NoPerm", player, false)
+                        .replace("{perm}", "pds.command.give")
+                        .send(player);
                 return true;
             }
 
             if (strings.length < 2) {
-                commandSender.sendMessage(Tools.configColor("messages.command.arg.give.notEnoughArg").replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{player}", commandSender.getName()));
+                Message.getMessage("Command.PDS.Arg.Give.NoPlayer")
+                        .send(commandSender);
                 return true;
             }
 
             Player player = Bukkit.getPlayer(strings[1]);
             if (player == null) {
-                commandSender.sendMessage(Tools.configColor("messages.command.arg.give.playerNotFound").replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{player}", commandSender.getName()).replace("{arg}", strings[1]));
+                Message.getMessage("Command.PDS.Arg.Give.UnknownPlayer")
+                        .replace("{player}", strings[1])
+                        .send(commandSender);
                 return true;
             }
             if (strings.length < 3) {
-                commandSender.sendMessage(Tools.configColor("messages.command.arg.give.whatToGive").replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{player}", commandSender.getName()).replace("{arg}", player.getName()));
+                Message.getMessage("Command.PDS.Arg.Give.WhatToGive")
+                        .replace("{player}", player.getName())
+                        .send(commandSender);
                 return true;
             }
 
             switch (strings[2].toLowerCase()) {
                 case "basic":
                     if (strings.length < 4) {
-                        commandSender.sendMessage(Tools.configColor("messages.command.arg.give.whatDurability")
-                                .replace("{prefix}", ProtectedDebugStick.prefix).replace("{player}", commandSender.getName())
-                                .replace("{arg}", player.getName()).replace("{item}", "basic debug-stick"));
+                        Message.getMessage("Command.PDS.Arg.Give.NoDurability")
+                                .replace("{player}", player.getName())
+                                .send(commandSender);
                         return true;
                     }
                     try {
@@ -69,10 +76,10 @@ public class CommandPDS implements CommandExecutor {
                         player.getInventory().addItem(DebugStick.getDebugStick(durability));
                         break;
                     } catch (NumberFormatException ignored) {
-                        commandSender.sendMessage(Tools.configColor("messages.command.arg.give.badDurability")
-                                .replace("{prefix}", ProtectedDebugStick.prefix).replace("{player}", commandSender.getName())
-                                .replace("{arg}", player.getName()).replace("{item}", "basic debug-stick")
-                                .replace("{durability}", strings[3]));
+                        Message.getMessage("Command.PDS.Arg.Give.InvalidDurability")
+                                .replace("{player}", player.getName())
+                                .replace("{durability}", strings[3])
+                                .send(commandSender);
                         return true;
                     }
 
@@ -85,21 +92,26 @@ public class CommandPDS implements CommandExecutor {
                     break;
 
                 default:
-                    commandSender.sendMessage(Tools.configColor("messages.command.arg.give.badItem").replace("{prefix}", ProtectedDebugStick.prefix)
-                            .replace("{player}", commandSender.getName()).replace("{arg}", player.getName()).replace("{item}", strings[2]));
+                    Message.getMessage("Command.PDS.Arg.Give.UnknownItem")
+                            .replace("{player}", player.getName())
+                            .replace("{item}", strings[2])
+                            .send(commandSender);
                     return true;
             }
-            commandSender.sendMessage(Tools.configColor("messages.command.arg.give.success").replace("{prefix}", ProtectedDebugStick.prefix)
-                    .replace("{player}", commandSender.getName()).replace("{arg}", player.getName())
-                    .replace("{item}", strings[2].toLowerCase()));
+            Message.getMessage("Command.PDS.Arg.Give.Success")
+                    .replace("{player}", player.getName())
+                    .replace("{item}", strings[2])
+                    .send(commandSender);
             return true;
 
         }
 
-        if (strings[0].equalsIgnoreCase("reloadconfig")) {
+        if (strings[0].equalsIgnoreCase("reload-config")) {
             if (!commandSender.hasPermission("pds.command.reloadConfig")) {
-                commandSender.sendMessage(Tools.configColor("messages.noPerm.noPermReloadConfig").replace("{prefix}", ProtectedDebugStick.prefix)
-                        .replace("{player}", commandSender.getName()).replace("{perm}", "pds.command.reloadConfig"));
+                Player player = (Player) commandSender;
+                Message.getMessage("Command.PDS.Arg.ReloadConfig.NoPerm", player, false)
+                        .replace("{perm}", "pds.command.reloadConfig")
+                        .send(player);
                 return true;
             }
             ProtectedDebugStick.getInstance().reloadConfig();
@@ -112,14 +124,15 @@ public class CommandPDS implements CommandExecutor {
             } catch (NullPointerException ignored) {
                 ProtectedDebugStick.prefix = Tools.replaceColor(ProtectedDebugStick.PREFIX);
             }
-            commandSender.sendMessage(Tools.configColor("messages.command.arg.reloadConfig.success").replace("{prefix}", ProtectedDebugStick.prefix)
-                    .replace("{player}", commandSender.getName()));
+
+            Message.getMessage("Command.PDS.Arg.ReloadConfig.Success")
+                    .send(commandSender);
             return true;
         }
 
-
-        commandSender.sendMessage(Tools.configColor("messages.command.noCommandFound").replace("{prefix}", ProtectedDebugStick.prefix)
-                .replace("{player}", commandSender.getName()));
+        Message.getMessage("Command.PDS.NoCommandFound", false)
+                .replace("{arg}", strings[0])
+                .send(commandSender);
         return true;
     }
 }
