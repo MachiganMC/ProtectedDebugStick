@@ -1,5 +1,112 @@
+#                             #                                                                         #
+#                             #                                                                         #
+#                             #                                                                         #
+#                             ###########################################################################
+#                             #                                                                         #
+#                             #   ███╗░░░███╗███████╗░██████╗░██████╗░█████╗░░██████╗░███████╗░██████╗  #
+#                             #   ████╗░████║██╔════╝██╔════╝██╔════╝██╔══██╗██╔════╝░██╔════╝██╔════╝  #
+#                             #   ██╔████╔██║█████╗░░╚█████╗░╚█████╗░███████║██║░░██╗░█████╗░░╚█████╗░  #
+#                             #   ██║╚██╔╝██║██╔══╝░░░╚═══██╗░╚═══██╗██╔══██║██║░░╚██╗██╔══╝░░░╚═══██╗  #
+#                             #   ██║░╚═╝░██║███████╗██████╔╝██████╔╝██║░░██║╚██████╔╝███████╗██████╔╝  #
+#                             #   ╚═╝░░░░░╚═╝╚══════╝╚═════╝░╚═════╝░╚═╝░░╚═╝░╚═════╝░╚══════╝╚═════╝░  #
+#                             #                                                                         #
+#                             ###########################################################################
+#
+#
+# Welcome to the messages file, here you'll be able to display your custom messages for the plugin.
+# When you make a change in this file, you don't have to execute a command. Just save the file and the
+# plugin will register your change.
+#
+#
+#
+# First, the plugin allow you to use the Minecraft color code. For example, if you want to put the message
+# in red, you have to use "&4" before the text (all allowed color code are here : https://minecraft.tools/fr/color-code.php)
+# But you can alose generate a gradient (=variation of one color A to another color B) in a chars string
+# by using the code : "<s:[code RGB of the first color]>[your chars string]<e:[code RGB of the second color]>"
+# Example :
+# I want  a gradient from light blue (code : 80FFFF) to pink (code : FF99FF) for the following sentence : "demonstration of a gradient"
+# I'll have the following code :
+#    <s:80FFFF>demonstration of a gradient<e:FF99FF>
+# Note that you can use format code in you sentence (like italic or bold) to add before your sentence to color,
+# so for our example before, if I want to have my gradient in bold, I'll have :
+#    <s:80FFFF>&ldemonstration of a gradient<e:FF99FF>
+#
+#
+#
+# A message isn't just a text in the tchat ! You can do more.
+# For each message, you can add :
+# - a hover message : when the player puts his mouse cursor on the message in the tchat
+# - a run command : when the player clicks on the message
+# - a suggest command : when the player clicks on the message
+# - an actionbar message : to display the message above his hotbar
+#
+# To configure them, it's very easy. You've to add a field with the same name as the message but with a word after :
+# - Hover : for hover message
+# - Run : to add a run command
+# - Suggest : to add a suggest command
+# - Hotbar : to add a message above the hotbar
+# Exemple :
+#   HelloMessage: "Hello player !"
+#   HelloMessageHover: "Ho you put your mouse on me !"
+#   HelloMessageRun: "/hello"
+#   HelloHotbar: "Hello from the hotbar !"
+#
+# In our example, the message will send a message in the tchat to the player. When the player put his mouse cursor
+# on the message, he will see "Ho you put your mouse on me !". When he will click on it, he will execute the command
+# "/hello". And he will also see above his hotbar the message "Hello from the hotbar"
+#
+# You have to know that (if the message isn't necessary), you don't have to configure the original message to
+# configure a Hotbar message. You'll see that I have configured some message like that.
+#
+#
+#
+# Some messages aren't necessaries. It's always wrote when you can skip the configuration of a message or not
+#
+#
+#
+# In the text who list the PlaceHolders usable, you'll sometimes see {block} or {property}. It's mean you can
+# write more information in the message :
+# {block_material} : write this to have the material of the block
+# {block_loc_x} : write this to have to X pos of the block
+# {block_loc_y} : write this to have to Y pos of the block
+# {block_loc_z} : write this to have to Z pos of the block
+# {block_loc_world} : write this to have the world name of the block pos
+#
+# {property_name} : write this to have the property name
+# {property_durability} : write this to have the cost in durability of the property
+# {property_perm} : wire this to have the required perm to modify the property
+#
+#
+#
+# The plugin can use PlaceHolderAPI (or PAPI). You can, in each type of message put a placeholder from PAPI (don't
+# forget to install the placeholders via "/papi ecloud download <placeholders>").
+# In PlaceHolderAPI you can use three type of placeholders :
+# - those who concern no player : usable everywhere in the plugin
+# - those who concern an online player : your will be notified when you can use them
+# - those who concern an offline player : for the moment, nowhere in the plugin
+#
+#
+#
+# To finish, you have to know that you can create your own variable in the field named "PersonalVariable".
+# Her you'll be able to add your own variable with its value. And to use it in a message you have to put
+# "{name_of_the_variable}". You can create as much as you want !
+# Exemple :
+# PersonalVariable:
+#  prefix: "&3[&6&lProtected&e-DS&3]&r"
+# To use the prefix variable, I have to put "{prefix}" in my message. And the plugin will replace "{prefix}" with
+# "&3[&6&lProtected&e-DS&3]&r" (colored, of course).
+#
+#
+#
+# Good luck for the configuration of the message !
 
 
+PersonalVariable:
+  prefix: "&3[&6&lProtected&e-DS&3]&r"
+
+
+# In the children fields of "OnUse", you can use all PlaceHolders from PAPI that concern a player.
+# Here the Placeholders will concern the player who uses the debug stick.
 OnUse:
   # When the player wants to edit a block but a plugin doesn't allow the
   # player to build in this area
@@ -53,7 +160,7 @@ OnUse:
   # {property} : the property that the payer has edited
   # {value} : the new value of the property
   Success:
-  SuccessHotbar: "{prefix} &aPropriété &e{property_name} &achangée en &e{value}"
+  SuccessHotbar: "{prefix} &aProperty &e{property_name} &achanged to &e{value}"
 
   # When the debug stick of the player breaks
   # This message doesn't replace the "Success" message !

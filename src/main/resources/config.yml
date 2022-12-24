@@ -19,28 +19,6 @@
 # "config_fr.yml" dans le dossier ressources.
 #
 #
-# First, the plugin allow you to use the Minecraft color code. For example, if you want to put the test
-# in red, you have to use "&4" before the text (all allowed color code are here : https://minecraft.tools/fr/color-code.php)
-# But you can alose generate a gradient (=variation of one color A to another color B) in a chars string
-# by using the code : "<s:[code RGB of the first color]>[your chars string]<e:[code RGB of the second color]>"
-# Example :
-# I want  a gradient from light blue (code : 80FFFF) to pink (code : FF99FF) for the following sentence : "demonstration of a gradient"
-# I'll have the following code :
-#    <s:80FFFF>demonstration of a gradient<e:FF99FF>
-# Note that you can use format code in you sentence (like italic or bold) to add before your sentence to color,
-# so for our example before, if I want to have my gradient in bold, I'll have :
-#    <s:80FFFF>&ldemonstration of a gradient<e:FF99FF>
-#
-#
-#The plugin use "intern variable" allowing you to personnalise your messages. Each variable name is between "{" and "}"
-#(e.g.: "{player}"). Values depending on the situation and all can't be used everywhere, but here is the mainly used :
-#  {prefix} : return the prefix of the plugin (configured by you)
-#  {player} : return the sender name of the command
-#  {perm} : return the name of the permission that the player doesn't have to use a command
-#
-# You have to know that the inter variables {player} and {prefix} can be used everywhere in the "messages" field. And that
-# {perm} can be used everywhere in the "noPerm" field.
-# An intern variable is written above the field name when she can be used in this field.
 
 
 # Prefix of the plugin, defines the value of {prefix}
