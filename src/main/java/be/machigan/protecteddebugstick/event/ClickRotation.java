@@ -1,8 +1,7 @@
 package be.machigan.protecteddebugstick.event;
 
-import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.property.Property;
-import be.machigan.protecteddebugstick.utils.Tools;
+import be.machigan.protecteddebugstick.utils.Message;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
@@ -18,21 +17,22 @@ public class ClickRotation {
         Block block = e.getClickedBlock();
 
         if (data instanceof Orientable) {
-            Property.CORRESPONDANCE.get(Orientable.class).run(player, block);
+            Property.CORRESPONDANCE.get(Orientable.class).edit(player, block);
             return;
         }
 
         if (data instanceof Directional) {
-            Property.CORRESPONDANCE.get(Directional.class).run(player, block);
+            Property.CORRESPONDANCE.get(Directional.class).edit(player, block);
             return;
         }
 
         if (data instanceof Rotatable) {
-            Property.CORRESPONDANCE.get(Rotatable.class).run(player, block);
+            Property.CORRESPONDANCE.get(Rotatable.class).edit(player, block);
             return;
         }
 
-        e.getPlayer().sendMessage(Tools.configColor("messages.noTurnable").replace("{prefix}", ProtectedDebugStick.prefix)
-                .replace("{player}", e.getPlayer().getName()));
+        Message.getMessage("OnUse.NoPropertyType.Rotation", player, false)
+                .replace(block)
+                .send(player);
     }
 }

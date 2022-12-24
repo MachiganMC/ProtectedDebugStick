@@ -3,12 +3,9 @@ package be.machigan.protecteddebugstick.def;
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.utils.Tools;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -16,13 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -382,119 +372,5 @@ public class DebugStick implements Cloneable {
         }
         int current = itemMeta.getPersistentDataContainer().get(DURABILITY_KEY, PersistentDataType.INTEGER);
         return current == 0;
-    }
-
-
-    /**
-     * Use this method after that the player uses the debug stick (after the applying of the data)
-     * @param player The player who has use the debug stick
-     * @param block The block who has been modified
-     * @param property The property who has been changed
-     * @param value The new value of the property
-     */
-    public static void afterUse(Player player, Block block, String value, Property property) {
-        DebugStick.removeDurability(player, property.getDurability());
-        try {
-            player.sendMessage(Tools.replaceColor(ProtectedDebugStick.config.getString("messages.successChat")
-                    .replace("{prefix}", ProtectedDebugStick.prefix)
-                    .replace("{block}", block.getBlockData().getMaterial().toString())
-                    .replace("{property}", property.name()).replace("{value}", value)
-                    .replace("{durability}", Integer.toString(property.getDurability()))));
-        } catch (NullPointerException ignored) {}
-        try {
-
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
-                    Tools.replaceColor(ProtectedDebugStick.config.getString("messages.successHotbar"))
-                            .replace("{prefix}", ProtectedDebugStick.prefix)
-                            .replace("{block}", block.getBlockData().getMaterial().toString())
-                            .replace("{property}", property.name()).replace("{value}", value)
-                            .replace("{durability}", Integer.toString(property.getDurability()))));
-        } catch (NullPointerException ignored) {}
-
-        if (DebugStick.willBreak(player.getInventory().getItemInMainHand())) {
-            player.getInventory().setItemInMainHand(null);
-            player.sendMessage(Tools.configColor("messages.onBreak").replace("{prefix}", ProtectedDebugStick.prefix)
-                    .replace("{player}", player.getName()));
-
-        } else if (ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.enable")) {
-            int dsDurability = DebugStick.getDurability(player.getInventory().getItemInMainHand());
-            String messageChat = null;
-            TextComponent messageHotbar = null;
-            try {
-                messageChat = Tools.replaceColor(ProtectedDebugStick.config.getString("settings.preventPlayerWhenBreaking.messageChat")
-                                .replace("{prefix}", ProtectedDebugStick.prefix)
-                                .replace("{player}", player.getName())
-                                .replace("{durability}", Integer.toString(dsDurability)))
-                        .replace("{property}", property.name())
-                        .replace("{value}", value).replace("{block}", block.getBlockData().getMaterial().toString());
-            } catch (NullPointerException ignored){}
-            try {
-                messageHotbar =  new TextComponent(Tools.replaceColor(ProtectedDebugStick.config.getString(
-                                "settings.preventPlayerWhenBreaking.messageHotbar"
-                        )).replace("{player}", player.getName()).replace("{durability}", Integer.toString(dsDurability))
-                        .replace("{property}", property.name()).replace("{value}", value)
-                        .replace("{block}", block.getBlockData().getMaterial().toString()));
-            } catch (NullPointerException ignored) {}
-
-
-            if (dsDurability != -1) {
-                if (!(ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.sendOneTime")) &&
-                        dsDurability <= ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability")) {
-                    if (messageChat != null) {
-                        player.sendMessage(messageChat);
-                    }
-                    if (messageHotbar != null) {
-                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, messageHotbar);
-                    }
-                } else if ((ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.sendOneTime")) &&
-                        (dsDurability + property.getDurability() > ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability")) &&
-                        (dsDurability <= ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability"))) {
-                    if (messageChat != null) {
-                        player.sendMessage(messageChat);
-                    }
-                    if (messageHotbar != null) {
-                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, messageHotbar);
-                    }
-                }
-
-            }
-
-        }
-
-        if (ProtectedDebugStick.config.getBoolean("settings.logConsole")) {
-            Tools.log("[LOG] " + player.getName() + " -> {" + property + "} = \"" + value + "\" at '" + block.getLocation().getBlockX() + " " +
-                    block.getLocation().getBlockY() + " " + block.getLocation().getBlockZ() + "' [" + block.getBlockData().getMaterial() + "] in the world \"" +
-                    block.getLocation().getWorld().getUID() + "\" [" + block.getLocation().getWorld().getName() + "]");
-        }
-
-        if (ProtectedDebugStick.config.getBoolean("settings.logFile")) {
-            if (Files.notExists(Paths.get(ProtectedDebugStick.getInstance().getDataFolder() + "/logs"))) {
-                if (!new File(ProtectedDebugStick.getInstance().getDataFolder(), "/logs").mkdir()) {
-                    Tools.log("Error during the creation of the folder of the logs. Disabling the log file features", Tools.LOG_SEVERE);
-                    ProtectedDebugStick.config.set("settings.logFile", false);
-                    ProtectedDebugStick.getInstance().saveConfig();
-                    return;
-                }
-            }
-
-            File logFile = new File(ProtectedDebugStick.getInstance().getDataFolder(), "/logs/" + LocalDate.now() + ".txt");
-            try {
-                if (logFile.createNewFile()) {
-                    Tools.log("Creating a new log file for today");
-                }
-                LocalDateTime now = LocalDateTime.now();
-                FileWriter log = new FileWriter(logFile, true);
-                log.write("[" + now.getHour() + ":" + now.getMinute() + ":" + now.getSecond() + "] " +
-                        player.getName() + " -> {" + property + "} = \"" + value + "\" at '" + block.getLocation().getBlockX() + " " +
-                        block.getLocation().getBlockY() + " " + block.getLocation().getBlockZ() + "' [" + block.getBlockData().getMaterial() + "] in the world \"" +
-                        block.getLocation().getWorld().getUID() + "\" [" + block.getLocation().getWorld().getName() + "]\n");
-                log.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Tools.log("Unable to write in the log file. Disabling the log file feature", Tools.LOG_SEVERE);
-                ProtectedDebugStick.config.set("settings.logFile", false);
-                ProtectedDebugStick.getInstance().saveConfig();
-            }
-        }
     }
 }

@@ -241,7 +241,7 @@ public class Tools {
             return replaceColor(ProtectedDebugStick.getInstance().getConfig().getString(path));
         } catch (NullPointerException ignored) {
             log("Warning, the field \"" + path + "\" is empty in the configuration file", Tools.LOG_SEVERE);
-            return Tools.replaceColor(ProtectedDebugStick.PREFIX + "&4Missing section &c&o" + path + " &4in the configuration file");
+            return "";
         }
     }
 

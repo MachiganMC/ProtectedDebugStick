@@ -4,8 +4,7 @@ version: 1.1.0
 main: be.machigan.protecteddebugstick.ProtectedDebugStick
 database: false
 
-depend:
-  - PlaceHolderAPI
+depend: [PlaceholderAPI]
 
 api-version: 1.18
 
@@ -40,7 +39,7 @@ permissions:
     default: false
     children:
       pds.properties.roation: true
-      pds.properties.reversed: true
+      pds.properties.reverse: true
       pds.properties.special: true
       pds.properties.creative: true
 
@@ -51,8 +50,8 @@ permissions:
       pds.properties.orientable: true
       pds.properties.directional: true
       pds.properties.rotatable: true
-  pds.properties.reversed:
-    description: Allows player to modify all the properties of the reversed properties (left click)
+  pds.properties.reverse:
+    description: Allows player to modify all the properties of the reverse properties (left click)
     default: true
     children:
       pds.properties.slab: true

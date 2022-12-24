@@ -59,33 +59,67 @@ public enum Property {
     }
 
 
-    public void run(@NotNull Player player, @NotNull Block block) {
+    public void edit(@NotNull Player player, @NotNull Block block) {
         if (!player.hasPermission(this.permission)) {
-            Message.getMessage("OnUse.NoPerm.Property", player)
-                    .replace("{property}", this.name())
+            Message.getMessage("OnUse.NoPerm.Property", player, false)
+                    .replace(this)
                     .replace("{perm}", this.permission)
                     .send(player);
             return;
         }
 
         if (DebugStick.hasNotEnoughDurability(player.getInventory().getItemInMainHand(), this)) {
-            Message.getMessage("OnUse.NotEnoughDurability", player)
-                    .replace("{property}", this.name())
+            Message.getMessage("OnUse.NotEnoughDurability", player, false)
+                    .replace(this)
                     .replace("{need}", Integer.toString(this.durability))
                     .send(player);
             return;
         }
 
         if (DebugStick.blacklist.contains(block.getBlockData().getMaterial())) {
-            Message.getMessage("OnUse.BlackListed", player)
-                    .replace("{property}", this.name())
+            Message.getMessage("OnUse.BlackListed", player, false)
+                    .replace(this)
                     .replace("{block}", block.getBlockData().getMaterial().toString())
                     .send(player);
             return;
         }
 
         String value = this.action.modify(block.getBlockData(), block);
-        DebugStick.afterUse(player, block, value, this);
+        DebugStick.removeDurability(player, this.durability);
+
+        Message.getMessage("OnUse.Success", player, false)
+                .replace(block)
+                .replace(this)
+                .replace("{value}", value)
+                .send(player);
+
+        if (DebugStick.willBreak(player.getInventory().getItemInMainHand())) {
+            player.getInventory().setItemInMainHand(null);
+            Message.getMessage("OnUse.Break", player, false)
+                    .replace(block)
+                    .replace(this)
+                    .replace("{value}", value)
+                    .send(player);
+
+        } else if (ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.enable")) {
+            int dsDurability = DebugStick.getDurability(player.getInventory().getItemInMainHand());
+            if (dsDurability != -1) {
+                Message message = Message.getMessage("OnUse.WarnBreakMessage", player, false)
+                        .replace(block)
+                        .replace(this)
+                        .replace("{value}", value)
+                        .replace("{durability}", Integer.toString(dsDurability));
+
+                if (!(ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.sendOneTime")) &&
+                        dsDurability <= ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability")) {
+                    message.send(player);
+                } else if ((ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.sendOneTime")) &&
+                        (dsDurability + this.durability > ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability")) &&
+                        (dsDurability <= ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability"))) {
+                    message.send(player);
+                }
+            }
+        }
     }
 
 

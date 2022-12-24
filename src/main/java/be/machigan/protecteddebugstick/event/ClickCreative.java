@@ -1,9 +1,8 @@
 package be.machigan.protecteddebugstick.event;
 
-import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.property.Persistent;
 import be.machigan.protecteddebugstick.property.Property;
-import be.machigan.protecteddebugstick.utils.Tools;
+import be.machigan.protecteddebugstick.utils.Message;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
@@ -23,37 +22,38 @@ public class ClickCreative {
         Block block = e.getClickedBlock();
 
         if (data instanceof Waterlogged) {
-            Property.CORRESPONDANCE.get(Waterlogged.class).run(player, block);
+            Property.CORRESPONDANCE.get(Waterlogged.class).edit(player, block);
             return;
         }
 
         if (data instanceof Powerable) {
-            Property.CORRESPONDANCE.get(Powerable.class).run(player, block);
+            Property.CORRESPONDANCE.get(Powerable.class).edit(player, block);
             return;
         }
 
         if (data instanceof Ageable) {
-            Property.CORRESPONDANCE.get(Ageable.class).run(player, block);
+            Property.CORRESPONDANCE.get(Ageable.class).edit(player, block);
             return;
         }
 
         if (data instanceof Sapling) {
-            Property.CORRESPONDANCE.get(Sapling.class).run(player, block);
+            Property.CORRESPONDANCE.get(Sapling.class).edit(player, block);
             return;
         }
 
         if (data instanceof Beehive) {
-            Property.CORRESPONDANCE.get(Beehive.class).run(player, block);
+            Property.CORRESPONDANCE.get(Beehive.class).edit(player, block);
             return;
         }
 
         if (data instanceof Leaves) {
-            Property.CORRESPONDANCE.get(Persistent.class).run(player, block);
+            Property.CORRESPONDANCE.get(Persistent.class).edit(player, block);
             return;
         }
 
 
-        e.getPlayer().sendMessage(Tools.configColor("messages.noCreative").replace("{prefix}", ProtectedDebugStick.prefix)
-                .replace("{player}", e.getPlayer().getName()));
+        Message.getMessage("OnUse.NoPropertyType.Creative", player, false)
+                .replace(block)
+                .send(player);
     }
 }
