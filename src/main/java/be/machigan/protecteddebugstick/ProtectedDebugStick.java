@@ -2,11 +2,11 @@ package be.machigan.protecteddebugstick;
 
 import be.machigan.protecteddebugstick.command.CommandPDS;
 import be.machigan.protecteddebugstick.command.TabPDS;
-import be.machigan.protecteddebugstick.def.RecipeHandler;
 import be.machigan.protecteddebugstick.event.OnClickInspector;
 import be.machigan.protecteddebugstick.event.OnUse;
+import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Tools;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -14,13 +14,25 @@ import java.io.File;
 public class ProtectedDebugStick extends JavaPlugin {
     private static ProtectedDebugStick instance;
     final public static String NAME = "[Protected-DS]";
-    public static FileConfiguration config;
 
     @Override
     public void onEnable() {
+
         instance = this;
-        this.saveDefaultConfig();
-        config = this.getConfig();
+        try {
+            Config.reload();
+        } catch (InvalidConfigurationException e) {
+            if (Config.Item.BASIC.getConfigSection() == null)
+                Tools.log("The configuration of BasicDebugStick cannot be found. Disabling the plugin", Tools.LOG_SEVERE);
+            if (Config.Item.INFINITY.getConfigSection() == null)
+                Tools.log("The configuration of InfinityDebugStick cannot be found. Disabling the plugin", Tools.LOG_SEVERE);
+            if (Config.Item.INSPECTOR.getConfigSection() == null)
+                Tools.log("The configuration of Inspector cannot be found. Disabling the plugin", Tools.LOG_SEVERE);
+
+            ProtectedDebugStick.getInstance().getPluginLoader().disablePlugin(ProtectedDebugStick.getInstance());
+            return;
+        }
+
         getServer().getPluginManager().registerEvents(new OnUse(), this);
         getServer().getPluginManager().registerEvents(new OnClickInspector(), this);
         getCommand("pds").setExecutor(new CommandPDS());
@@ -30,7 +42,6 @@ public class ProtectedDebugStick extends JavaPlugin {
         if (!file.exists())
             ProtectedDebugStick.getInstance().saveResource("messages.yml", false);
 
-        RecipeHandler.register();
         Tools.log("Enabled");
     }
 

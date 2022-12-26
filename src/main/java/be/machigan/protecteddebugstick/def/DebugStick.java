@@ -2,375 +2,164 @@ package be.machigan.protecteddebugstick.def;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.property.Property;
+import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Tools;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DebugStick implements Cloneable {
-    public static ItemStack debugStick;
-    public static ItemStack infinityDebugStick;
-    public static ItemStack inspector;
-    public static List<Material> blacklist = new ArrayList<>();
+public class DebugStick {
+    final public static NamespacedKey IS_DEBUG_STICK = new NamespacedKey(ProtectedDebugStick.getInstance(), "is-debug-stick");
     final public static NamespacedKey DURABILITY_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-durability");
+    final public static NamespacedKey INFINITY_DEBUG_STICK = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-infinity");
     final public static NamespacedKey INSPECTOR_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "inspector");
     final public static List<String> ITEMS = new ArrayList<>(Arrays.asList("basic", "infinity", "inspector"));
 
-    static {
-        init();
-        Property.init();
+
+    @NotNull
+    public static ItemStack getDebugStick(int durability) throws IllegalArgumentException {
+        if (durability <= 0)
+            throw new IllegalArgumentException("Durability can be equal or below to 0");
+
+        ItemStack debugStickClone = Config.Item.BASIC.get().clone();
+        ItemMeta debugStickCloneMeta = debugStickClone.getItemMeta();
+        debugStickCloneMeta.getPersistentDataContainer().set(DURABILITY_KEY, PersistentDataType.INTEGER, durability);
+        debugStickCloneMeta.getPersistentDataContainer().set(IS_DEBUG_STICK, PersistentDataType.INTEGER, 1);
+
+        List<String> lore = ProtectedDebugStick.getInstance().getConfig().getStringList("Items.BasicDebugStick.Lore");
+        lore.replaceAll(line -> line = Tools.replaceColor(line).replace("{durability}", Integer.toString(durability)));
+        debugStickCloneMeta.setLore(lore);
+
+        debugStickClone.setItemMeta(debugStickCloneMeta);
+        return debugStickClone;
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-    public static void init() {
-        String path = "items.basicDebugStick.";
-        Material m;
-        List<String> blacklistStr = ProtectedDebugStick.config.getStringList("settings.blacklist");
-        blacklistStr.forEach((String s) -> {
-            Material material = Material.matchMaterial(s);
-            if (material == null) {
-                Tools.log("The material \"" + s + "\" of the blacklist isn't a valid material.", Tools.LOG_WARNING);
-            } else {
-                blacklist.add(material);
-            }
-        });
-        try {
-            m = Material.matchMaterial(ProtectedDebugStick.config.getString(path + "material"));
-
-            if (m == null) {
-                Tools.log("Material for basic debug stick is incorrect. Setting to scute.", Tools.LOG_WARNING);
-                m = Material.SCUTE;
-            }
-        } catch (IllegalArgumentException ignored) {
-            Tools.log("Path of material for basic debug stick : \"" + path + "material\" hasn't been found. Setting to scute", Tools.LOG_WARNING);
-            m = Material.SCUTE;
-        }
-
-        debugStick = new ItemStack(m);
-        ItemMeta dbMeta = debugStick.getItemMeta();
-        if (dbMeta != null) {
-            dbMeta.setDisplayName(Tools.configColor(path + "name"));
-            List<String> lore;
-            try {
-                lore = ProtectedDebugStick.config.getStringList(path + "lore");
-            } catch (NullPointerException ignored) {
-                Tools.log("Path of lore of basic debug stick : \"" + path + "lore\" hasn't been found. Setting lore as empty", Tools.LOG_WARNING);
-                lore = new ArrayList<>();
-            }
-            lore.replaceAll(s -> s = Tools.replaceColor(s));
-            dbMeta.setLore(lore);
-
-            try {
-                for (String enchant : ProtectedDebugStick.config.getStringList(path + "enchants")) {
-                    Enchantment e = Enchantment.getByKey(NamespacedKey.fromString("minecraft:" + enchant.toLowerCase()));
-                    if (e == null) {
-                        Tools.log("The enchant \"" + enchant + "\" from \"" + path + "enchants\" doesn't exist");
-                        continue;
-                    }
-                    dbMeta.addEnchant(e, 1, true);
-                }
-            } catch (NullPointerException ignored) {
-                Tools.log("Path to enchants list of basic debug stick : \"" + path + "enchants\" hasn't been found. Setting with no enchant.", Tools.LOG_WARNING);
-            }
-
-            if (ProtectedDebugStick.config.getBoolean(path + "hideEnchants")) {
-                dbMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hideAttributes")) {
-                dbMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hidePotionEffets")) {
-                dbMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hideDye")) {
-                dbMeta.addItemFlags(ItemFlag.HIDE_DYE);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hideUnbreakable")) {
-                dbMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hidePlacedOn")) {
-                dbMeta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
-            }
-            dbMeta.setUnbreakable(ProtectedDebugStick.config.getBoolean(path + "isUnBreakable"));
-
-            debugStick.setItemMeta(dbMeta);
-        } else {
-            for (int i = 0; i < 3; i++) {
-                Tools.log("Item meta of basic debug stick hasn't been found. Disabling the plugin. THIS IS NOT NORMAL ! " +
-                        "Look at the material, if the material is AIR, a item meta can't be found", Tools.LOG_SEVERE);
-            }
-            Bukkit.getServer().getPluginManager().disablePlugin(ProtectedDebugStick.getInstance());
-        }
-
-        path = "items.infinityDebugStick.";
-
-        try {
-            m = Material.matchMaterial(ProtectedDebugStick.config.getString(path + "material"));
-            if (m == null) {
-                m = Material.SCUTE;
-                Tools.log("Material for infinity debug stick is invalid. Setting to scute.", Tools.LOG_WARNING);
-            }
-        } catch (IllegalArgumentException ignored) {
-            m = Material.SCUTE;
-            Tools.log("Path of material of infinity debug stick : \"" + path + "material\" hasn't been found. Setting to scute.", Tools.LOG_WARNING);
-        }
-        infinityDebugStick = new ItemStack(m);
-
-        ItemMeta ibMeta = infinityDebugStick.getItemMeta();
-        if (ibMeta != null) {
-            ibMeta.setDisplayName(Tools.configColor(path + "name"));
-
-            List<String> lore;
-            try {
-                lore = ProtectedDebugStick.config.getStringList(path + "lore");
-                lore.replaceAll(s -> s = Tools.replaceColor(s));
-                ibMeta.setLore(lore);
-            } catch (NullPointerException ignored) {
-                Tools.log("The lore of infinity debug stick : \"" + path + "lore\" hasn't been found. Setting to empty.", Tools.LOG_WARNING);
-                lore = new ArrayList<>();
-            }
-            ibMeta.setLore(lore);
-
-            try {
-                for (String enchant : ProtectedDebugStick.config.getStringList(path + "enchants")) {
-                    Enchantment e = Enchantment.getByKey(NamespacedKey.fromString("minecraft:" + enchant));
-                    if (e == null) {
-                        Tools.log("The enchant " + enchant + " doesn't exist.");
-                        continue;
-                    }
-                    ibMeta.addEnchant(e, 1, true);
-                }
-            } catch (NullPointerException ignored) {
-                Tools.log("Path of enchant list of infinity debug stick : \"" + path  + "enchants \" hasn't been found. Setting with no enchants", Tools.LOG_WARNING);
-            }
-
-            if (ProtectedDebugStick.config.getBoolean(path + "hideEnchants")) {
-                ibMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hideAttributes")) {
-                ibMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hidePotionEffets")) {
-                ibMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hideDye")) {
-                ibMeta.addItemFlags(ItemFlag.HIDE_DYE);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hideUnbreakable")) {
-                ibMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hidePlacedOn")) {
-                ibMeta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
-            }
-            ibMeta.setUnbreakable(ProtectedDebugStick.config.getBoolean(path + "isUnbreakable"));
-
-            infinityDebugStick.setItemMeta(ibMeta);
-        } else {
-            for (int i = 0; i < 3; i++) {
-                Tools.log("Item meta of infinty debug stick hasn't been found. Disabling the plugin. THIS IS NOT NORMAL ! " +
-                        "Look at the material, if the material is AIR, a item meta can't be found", Tools.LOG_SEVERE);
-            }
-            Bukkit.getServer().getPluginManager().disablePlugin(ProtectedDebugStick.getInstance());
-        }
-
-
-        path = "items.inspector.";
-        try {
-            m = Material.matchMaterial(ProtectedDebugStick.config.getString(path + "material"));
-            if (m == null) {
-                m = Material.GOLD_INGOT;
-                Tools.log("The material of the inspector is invalid. Setting to gold ingot.", Tools.LOG_WARNING);
-            }
-        } catch (IllegalArgumentException ignored) {
-            m = Material.GOLD_INGOT;
-            Tools.log("The material of the inspector : \"" + path + "material\" hasn't been found. Setting to gold ingot.", Tools.LOG_WARNING);
-        }
-        inspector = new ItemStack(m);
-
-        ItemMeta itemMeta = inspector.getItemMeta();
-        if (itemMeta != null) {
-            itemMeta.setDisplayName(Tools.configColor(path + "name"));
-
-            List<String> lore;
-            try {
-                lore = ProtectedDebugStick.config.getStringList(path + "lore");
-                lore.replaceAll(s -> s = Tools.replaceColor(s));
-            } catch (NullPointerException ignored) {
-                lore = new ArrayList<>();
-                Tools.log("The lore of the inspector : \"" + path + "name\" hasn't been found. Setting with no lore.", Tools.LOG_WARNING);
-            }
-            itemMeta.setLore(lore);
-
-            try {
-                for (String enchant : ProtectedDebugStick.config.getStringList(path + "enchants")) {
-                    Enchantment e = Enchantment.getByKey(NamespacedKey.fromString(enchant));
-                    if (e == null) {
-                        Tools.log("The enchant \"" + enchant + "\" doesn't exist.", Tools.LOG_WARNING);
-                        continue;
-                    }
-                    itemMeta.addEnchant(e, 1, true);
-                }
-            } catch (NullPointerException ignored) {
-                Tools.log("The enchant list of the inspector : \"" + path + "enchants\" hasn't been found. Setting with no enchant.", Tools.LOG_WARNING);
-            }
-
-            if (ProtectedDebugStick.config.getBoolean(path + "hideEnchants")) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hideAttributes")) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hidePotionEffets")) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hideDye")) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_DYE);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hideUnbreakable")) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-            }
-            if (ProtectedDebugStick.config.getBoolean(path + "hidePlacedOn")) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
-            }
-            itemMeta.setUnbreakable(ProtectedDebugStick.config.getBoolean(path + "isUnbreakable"));
-            itemMeta.getPersistentDataContainer().set(INSPECTOR_KEY, PersistentDataType.STRING, "inspector");
-
-            inspector.setItemMeta(itemMeta);
-
-        }
-    }
-
-    public static ItemStack getDebugStick(int durability) {
-        ItemMeta itemMeta = debugStick.getItemMeta();
-        itemMeta.getPersistentDataContainer().set(DURABILITY_KEY, PersistentDataType.INTEGER, durability);
-
-        List<String> lore = ProtectedDebugStick.config.getStringList("items.basicDebugStick.lore");
-        lore.replaceAll(s -> s = Tools.replaceColor(s).replace("{durability}", Integer.toString(durability)));
-        itemMeta.setLore(lore);
-
-        ItemStack i = debugStick.clone();
-        i.setItemMeta(itemMeta);
-        return i;
-    }
-
+    @NotNull
     public static ItemStack getInfinityDebugStick() {
-        ItemMeta itemMeta = infinityDebugStick.getItemMeta();
-        itemMeta.getPersistentDataContainer().set(DURABILITY_KEY, PersistentDataType.INTEGER, -1);
-
-        ItemStack i = infinityDebugStick.clone();
-        i.setItemMeta(itemMeta);
-        return i;
+        ItemStack infinityDebugStick = Config.Item.INFINITY.get();
+        ItemMeta infinityDebugStickMeta = infinityDebugStick.getItemMeta();
+        infinityDebugStickMeta.getPersistentDataContainer().set(IS_DEBUG_STICK, PersistentDataType.INTEGER, 1);
+        infinityDebugStickMeta.getPersistentDataContainer().set(INFINITY_DEBUG_STICK, PersistentDataType.INTEGER, 1);
+        infinityDebugStick.setItemMeta(infinityDebugStickMeta);
+        return infinityDebugStick;
     }
 
-    public static void removeDurability(Player player, int durability) {
-        ItemStack item = player.getInventory().getItemInMainHand();
+    @NotNull
+    public static ItemStack getInspector() {
+        ItemStack inspector = Config.Item.INSPECTOR.get();
+        ItemMeta inspectorMeta = inspector.getItemMeta();
+        inspectorMeta.getPersistentDataContainer().set(INSPECTOR_KEY, PersistentDataType.INTEGER, 1);
+        inspector.setItemMeta(inspectorMeta);
+        return inspector;
+    }
+
+    public static boolean isDebugStick(@NotNull ItemStack item) {
         ItemMeta itemMeta = item.getItemMeta();
-        if (itemMeta == null) {
+        if (itemMeta == null)
+            return false;
+
+        return itemMeta.getPersistentDataContainer().has(IS_DEBUG_STICK, PersistentDataType.INTEGER);
+    }
+
+    public static boolean isBasicDebugStick(@NotNull ItemStack item) {
+        if (!isDebugStick(item))
+            return false;
+
+        return item.getItemMeta().getPersistentDataContainer().has(DURABILITY_KEY, PersistentDataType.INTEGER);
+    }
+
+    public static boolean isInfinityDebugStick(@NotNull ItemStack item) {
+        if (!isDebugStick(item))
+            return false;
+
+        ItemMeta meta = item.getItemMeta();
+        return meta.getPersistentDataContainer().has(INFINITY_DEBUG_STICK, PersistentDataType.INTEGER);
+    }
+
+    public static boolean isInspector(@NotNull ItemStack item) {
+        ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta == null)
+            return false;
+
+        return item.getItemMeta().getPersistentDataContainer().has(INSPECTOR_KEY, PersistentDataType.INTEGER);
+    }
+
+    public static void removeDurability(@NotNull Player player, int durability) {
+        if (durability <= 0)
+            throw new IllegalArgumentException("Cannot remove durability below or equal to 0");
+
+        ItemStack item = player.getInventory().getItemInMainHand();
+
+        if (!isBasicDebugStick(item))
             return;
-        }
-        if (!itemMeta.getPersistentDataContainer().has(DURABILITY_KEY, PersistentDataType.INTEGER)) {
-            return;
-        }
-        int current = itemMeta.getPersistentDataContainer().get(DURABILITY_KEY, PersistentDataType.INTEGER);
-        if (current == -1) {
-            return;
-        }
+
+        int current = getDurability(item);
         current -= durability;
         if (current < 0) {
             current = 0;
         }
+
+        ItemStack clone = new ItemStack(Material.AIR);
         if (item.getAmount() > 1) {
-            ItemStack itemStack = item.clone();
-            item.setAmount(item.getAmount() -1);
-            itemStack.setAmount(1);
-            itemMeta.getPersistentDataContainer().set(DURABILITY_KEY, PersistentDataType.INTEGER, current);
-            List<String> lore = ProtectedDebugStick.config.getStringList("items.basicDebugStick.lore");
-            int finalCurrent = current;
-            lore.replaceAll(s -> Tools.replaceColor(s).replace("{durability}", Integer.toString(finalCurrent)));
-            itemMeta.setLore(lore);
-            itemStack.setItemMeta(itemMeta);
-            player.getInventory().addItem(itemStack);
-            return;
+            clone = getDebugStick(getDurability(item));
+            int amount = item.getAmount();
+            clone.setAmount(amount - 1);
+            item.setAmount(1);
         }
-        itemMeta.getPersistentDataContainer().set(DURABILITY_KEY, PersistentDataType.INTEGER, current);
-        List<String> lore = ProtectedDebugStick.config.getStringList("items.basicDebugStick.lore");
+
+        ItemMeta meta = item.getItemMeta();
+        meta.getPersistentDataContainer().set(DURABILITY_KEY, PersistentDataType.INTEGER, current);
+        List<String> lore = ProtectedDebugStick.getInstance().getConfig().getStringList("Items.BasicDebugStick.Lore");
         int finalCurrent = current;
         lore.replaceAll(s -> Tools.replaceColor(s).replace("{durability}", Integer.toString(finalCurrent)));
-        itemMeta.setLore(lore);
-        item.setItemMeta(itemMeta);
-
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        player.getInventory().addItem(clone);
+        player.getInventory().setItemInMainHand(item);
     }
 
-    public static boolean playerHasNotDS(Player player) {
-        if (player.getInventory().getItemInMainHand() == null) {
-            return true;
-        }
-        ItemMeta itemMeta = player.getInventory().getItemInMainHand().getItemMeta();
-        if (itemMeta == null) {
-            return true;
-        }
+    public static boolean hasNotEnoughDurability(@NotNull ItemStack item, @NotNull Property property) throws IllegalArgumentException {
+        if (!isDebugStick(item))
+            throw new IllegalArgumentException("Not a debug stick");
 
-        return !itemMeta.getPersistentDataContainer().has(DURABILITY_KEY, PersistentDataType.INTEGER);
-    }
+        ItemMeta meta = item.getItemMeta();
 
-    public static boolean hasNotEnoughDurability(ItemStack item, Property durability) {
-        if (item == null) {
-            return true;
-        }
-        ItemMeta itemMeta = item.getItemMeta();
-        if (itemMeta == null) {
-            return true;
-        }
-        if (!itemMeta.getPersistentDataContainer().has(DURABILITY_KEY, PersistentDataType.INTEGER)) {
-            return true;
-        }
-        int current = itemMeta.getPersistentDataContainer().get(DURABILITY_KEY, PersistentDataType.INTEGER);
-        if (current == -1) {
+        if (isInfinityDebugStick(item))
             return false;
-        }
-        return (current < durability.getDurability());
+
+        int current = meta.getPersistentDataContainer().get(DURABILITY_KEY, PersistentDataType.INTEGER);
+        return (current < property.getDurability());
     }
 
-    public static int getDurability(ItemStack item) {
-        if (item == null) {
-            return 0;
-        }
+    public static int getDurability(@NotNull ItemStack item) throws IllegalArgumentException {
         ItemMeta itemMeta = item.getItemMeta();
-        if (itemMeta == null) {
-            return 0;
-        }
-        if (!itemMeta.getPersistentDataContainer().has(DURABILITY_KEY, PersistentDataType.INTEGER)) {
-            return 0;
-        }
+        if (itemMeta == null)
+            throw new IllegalArgumentException("Not a debug stick");
+
+        if (!itemMeta.getPersistentDataContainer().has(DURABILITY_KEY, PersistentDataType.INTEGER))
+            throw new IllegalArgumentException("Not a debug stick");
+
         return itemMeta.getPersistentDataContainer().get(DURABILITY_KEY, PersistentDataType.INTEGER);
     }
 
-    public static boolean willBreak(ItemStack item) {
-        if (item == null) {
+    public static boolean willBreak(@NotNull ItemStack item) throws IllegalArgumentException {
+        if (!isDebugStick(item))
+            throw new IllegalArgumentException("Not a debug stick");
+
+        if (isInfinityDebugStick(item))
             return false;
-        }
-        ItemMeta itemMeta = item.getItemMeta();
-        if (itemMeta == null) {
-            return false;
-        }
-        if (!itemMeta.getPersistentDataContainer().has(DURABILITY_KEY, PersistentDataType.INTEGER)) {
-            return false;
-        }
-        int current = itemMeta.getPersistentDataContainer().get(DURABILITY_KEY, PersistentDataType.INTEGER);
+
+
+        int current = item.getItemMeta().getPersistentDataContainer().get(DURABILITY_KEY, PersistentDataType.INTEGER);
         return current == 0;
     }
+
 }

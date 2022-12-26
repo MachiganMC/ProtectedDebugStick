@@ -3,6 +3,7 @@ package be.machigan.protecteddebugstick.property;
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.property.action.*;
+import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Message;
 import be.machigan.protecteddebugstick.utils.Tools;
 import org.bukkit.block.Block;
@@ -10,6 +11,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.*;
 import org.bukkit.block.data.type.*;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -52,7 +54,7 @@ public enum Property {
     }
 
     Property(int durability, String permission, @NotNull Class<? extends BlockData> dataClass, @NotNull PropertyAction action) {
-        this.durability = durability;
+        this.durability = Math.max(durability, 0);
         this.permission = "pds.properties." + permission;
         this.dataClass = dataClass;
         this.action = action;
@@ -60,6 +62,7 @@ public enum Property {
 
 
     public void edit(@NotNull Player player, @NotNull Block block) {
+        ItemStack item = player.getInventory().getItemInMainHand();
         if (!player.hasPermission(this.permission)) {
             Message.getMessage("OnUse.NoPerm.Property", player, false)
                     .replace(this)
@@ -68,7 +71,7 @@ public enum Property {
             return;
         }
 
-        if (DebugStick.hasNotEnoughDurability(player.getInventory().getItemInMainHand(), this)) {
+        if (DebugStick.isDebugStick(item) && DebugStick.hasNotEnoughDurability(item, this)) {
             Message.getMessage("OnUse.NotEnoughDurability", player, false)
                     .replace(this)
                     .replace("{need}", Integer.toString(this.durability))
@@ -76,46 +79,41 @@ public enum Property {
             return;
         }
 
-        if (DebugStick.blacklist.contains(block.getBlockData().getMaterial())) {
-            Message.getMessage("OnUse.BlackListed", player, false)
-                    .replace(this)
-                    .replace("{block}", block.getBlockData().getMaterial().toString())
-                    .send(player);
-            return;
-        }
-
         String value = this.action.modify(block.getBlockData(), block);
-        DebugStick.removeDurability(player, this.durability);
-
         Message.getMessage("OnUse.Success", player, false)
                 .replace(block)
                 .replace(this)
                 .replace("{value}", value)
                 .send(player);
 
-        if (DebugStick.willBreak(player.getInventory().getItemInMainHand())) {
+        if (DebugStick.isInfinityDebugStick(item))
+            return;
+
+        DebugStick.removeDurability(player, this.durability);
+        if (DebugStick.willBreak(item)) {
             player.getInventory().setItemInMainHand(null);
             Message.getMessage("OnUse.Break", player, false)
                     .replace(block)
                     .replace(this)
                     .replace("{value}", value)
                     .send(player);
+            return;
+        }
 
-        } else if (ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.enable")) {
-            int dsDurability = DebugStick.getDurability(player.getInventory().getItemInMainHand());
-            if (dsDurability != -1) {
+        if (Config.PreventPlayerWhenBreaking.isEnable()) {
+            int durability = DebugStick.getDurability(item);
+            if (DebugStick.isInfinityDebugStick(item)) {
                 Message message = Message.getMessage("OnUse.WarnBreakMessage", player, false)
                         .replace(block)
                         .replace(this)
                         .replace("{value}", value)
-                        .replace("{durability}", Integer.toString(dsDurability));
+                        .replace("{durability}", Integer.toString(durability));
 
-                if (!(ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.sendOneTime")) &&
-                        dsDurability <= ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability")) {
+                if ((!Config.PreventPlayerWhenBreaking.mustSendOnce()) && durability <= Config.PreventPlayerWhenBreaking.getDurability()) {
                     message.send(player);
-                } else if ((ProtectedDebugStick.config.getBoolean("settings.preventPlayerWhenBreaking.sendOneTime")) &&
-                        (dsDurability + this.durability > ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability")) &&
-                        (dsDurability <= ProtectedDebugStick.config.getInt("settings.preventPlayerWhenBreaking.durability"))) {
+                } else if (Config.PreventPlayerWhenBreaking.mustSendOnce() &&
+                        (durability + this.durability > Config.PreventPlayerWhenBreaking.getDurability()) &&
+                        durability <= Config.PreventPlayerWhenBreaking.getDurability()) {
                     message.send(player);
                 }
             }
@@ -124,7 +122,8 @@ public enum Property {
 
 
     public int getDurability() {
-        return this.durability;
+        int durabilityConfig = Config.getConfig().getInt("Settings.Durability." + this.name());
+        return durabilityConfig < 0 ? this.durability : durabilityConfig;
     }
 
     @NotNull
@@ -142,15 +141,9 @@ public enum Property {
         return action;
     }
 
-    public static void init() {
-        for (Property property : Property.values()) {
-            settingFromConfig(property);
-        }
-    }
-
     private static void settingFromConfig(Property property) {
         String path = "Settings.Durability.";
-        int durability = ProtectedDebugStick.config.getInt(path + property.name());
+        int durability = ProtectedDebugStick.getInstance().getConfig().getInt(path + property.name());
         if (durability < 0) {
             Tools.log("Cannot set the durability of " + property.name() + " below 0. Setting by default.", Tools.LOG_WARNING);
             return;

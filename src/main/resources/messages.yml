@@ -135,12 +135,17 @@ OnUse:
   #
   NotEnoughDurability: "{prefix} &cYour debug stick hasn't enough durability &7"
 
-  # When the block that the player wants to edit is in the blacklist.
-  # This message is not necessary.
-  # PH :
-  # {property} : the property that the player wants to edit
-  # {block} : the block (material) that the player wants to edit
-  BlackListed: "{prefix} &cThis block cannot be edited !"
+  BlackList:
+    # When the world where the player wants to edit is in the blacklist
+    # This message is not necessary.
+    # PH :
+    # {block} : the block that the player wants to edit
+    World: "{prefix} &cYou can't use the debug stick in this world !"
+    # When the block that the player wants to edit is in the blacklist.
+    # This message is not necessary.
+    # PH :
+    # {block} : the block that the player wants to edit
+    Material: "{prefix} &cThis block cannot be edited !"
 
   # When a player wants to change a type of property (rotation, reversed, special or creative)
   # of a block but the block doesn't have the type of property
@@ -259,6 +264,15 @@ Command:
         # This message is necessary !
         # PH : /
         Success: "{prefix} &aThe config has been reloaded !"
+
+        # When the plugin cannot work properly because of big error in the config
+        # In this case, in addition of this message, the plugin will log where is the
+        # problem
+        # This message is necessary !
+        # PH : /
+        Error: "{prefix} &cSomething goes &4wrong &cin the configuration !
+        \n&4&lDisabling the plugin
+        \n&c&oSee the logs for more informations"
 
     # When the argument isn't a command
     # This message isn't necessary

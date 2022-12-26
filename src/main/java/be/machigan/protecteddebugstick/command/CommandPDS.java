@@ -2,13 +2,14 @@ package be.machigan.protecteddebugstick.command;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
-import be.machigan.protecteddebugstick.def.RecipeHandler;
-import be.machigan.protecteddebugstick.property.Property;
+import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Message;
+import be.machigan.protecteddebugstick.utils.Tools;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 
 
@@ -87,7 +88,7 @@ public class CommandPDS implements CommandExecutor {
                     break;
 
                 case "inspector":
-                    player.getInventory().addItem(DebugStick.inspector);
+                    player.getInventory().addItem(DebugStick.getInspector());
                     break;
 
                 default:
@@ -113,11 +114,21 @@ public class CommandPDS implements CommandExecutor {
                         .send(player);
                 return true;
             }
-            ProtectedDebugStick.getInstance().reloadConfig();
-            ProtectedDebugStick.config = ProtectedDebugStick.getInstance().getConfig();
-            DebugStick.init();
-            Property.init();
-            RecipeHandler.register();
+
+            try {
+                Config.reload();
+            } catch (InvalidConfigurationException e) {
+                Message.getMessage("Command.PDS.Arg.ReloadConfig.Error").send(commandSender);
+                if (Config.Item.BASIC.getConfigSection() == null)
+                    Tools.log("The configuration of BasicDebugStick cannot be found. Disabling the plugin", Tools.LOG_SEVERE);
+                if (Config.Item.INFINITY.getConfigSection() == null)
+                    Tools.log("The configuration of InfinityDebugStick cannot be found. Disabling the plugin", Tools.LOG_SEVERE);
+                if (Config.Item.INSPECTOR.getConfigSection() == null)
+                    Tools.log("The configuration of Inspector cannot be found. Disabling the plugin", Tools.LOG_SEVERE);
+
+                ProtectedDebugStick.getInstance().getPluginLoader().disablePlugin(ProtectedDebugStick.getInstance());
+                return true;
+            }
 
 
             Message.getMessage("Command.PDS.Arg.ReloadConfig.Success")

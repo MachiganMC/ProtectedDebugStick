@@ -1,6 +1,7 @@
 package be.machigan.protecteddebugstick.event;
 
 import be.machigan.protecteddebugstick.def.DebugStick;
+import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,18 +18,39 @@ public class OnUse implements Listener {
     public static void onUse(PlayerInteractEvent e) {
         if (e.getHand() == null)
             return;
+
         if (!e.getHand().equals(EquipmentSlot.HAND))
            return;
-        if (DebugStick.playerHasNotDS(e.getPlayer()))
+
+        ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
+        if (item == null)
             return;
+        if (!DebugStick.isDebugStick(item))
+            return;
+
         e.setCancelled(true);
         if (!e.getPlayer().hasPermission("pds.debugstick.use"))
             return;
-        if (e.getClickedBlock() == null) {
+
+        if (e.getClickedBlock() == null)
             return;
-        }
+
         if (e.getClickedBlock().getBlockData() == null)
             return;
+
+        if (Config.BlackList.getWorlds().contains(e.getClickedBlock().getLocation().getWorld())) {
+            Message.getMessage("OnUse.BlackList.World", e.getPlayer(), false)
+                    .replace(e.getClickedBlock())
+                    .send(e.getPlayer());
+            return;
+        }
+
+        if (Config.BlackList.getMaterials().contains(e.getClickedBlock().getType())) {
+            Message.getMessage("OnUse.BlackList.Material", e.getPlayer(), false)
+                    .replace(e.getClickedBlock())
+                    .send(e.getPlayer());
+            return;
+        }
 
         BlockPlaceEvent event = new BlockPlaceEvent(
                 e.getClickedBlock(),
