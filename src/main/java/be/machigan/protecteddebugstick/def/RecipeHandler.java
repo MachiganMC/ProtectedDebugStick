@@ -26,19 +26,19 @@ public class RecipeHandler {
 
     private static void searchRecipes() {
         try {
-            recipesName = ProtectedDebugStick.config.getConfigurationSection("recipes").getKeys(false);
+            recipesName = ProtectedDebugStick.getInstance().getConfig().getConfigurationSection("recipes").getKeys(false);
         } catch (NullPointerException ignored) {
             recipesName = new HashSet<>();
         }
         Set<String> removed = new HashSet<>();
         for (String key : recipesName) {
-            int durability = ProtectedDebugStick.config.getInt("recipes." + key + ".durability");
+            int durability = ProtectedDebugStick.getInstance().getConfig().getInt("recipes." + key + ".durability");
             if (durability <= 0 && durability != -1) {
                 removed.add(key);
             }
             Set<String> fields;
             try {
-                fields = ProtectedDebugStick.config.getConfigurationSection("recipes." + key + ".craft").getKeys(false);
+                fields = ProtectedDebugStick.getInstance().getConfig().getConfigurationSection("recipes." + key + ".craft").getKeys(false);
             } catch (NullPointerException ignored) {
                 Tools.log("Recipes \"" + key + "\" has no slot. Ignoring the recipe", Tools.LOG_WARNING);
                 removed.add(key);
@@ -58,15 +58,15 @@ public class RecipeHandler {
         for (String key : recipesName) {
             NamespacedKey namespacedKey = new NamespacedKey(ProtectedDebugStick.getInstance(), key);
             ItemStack ds;
-            if (ProtectedDebugStick.config.getInt("recipes." + key + ".durability") == -1) {
+            if (ProtectedDebugStick.getInstance().getConfig().getInt("recipes." + key + ".durability") == -1) {
                 ds = DebugStick.getInfinityDebugStick();
             } else {
-                ds = DebugStick.getDebugStick(ProtectedDebugStick.config.getInt("recipes." + key + ".durability"));
+                ds = DebugStick.getDebugStick(ProtectedDebugStick.getInstance().getConfig().getInt("recipes." + key + ".durability"));
             }
 
             Set<String> shapeSet;
             try {
-                shapeSet = ProtectedDebugStick.config.getConfigurationSection("recipes." + key + ".craft").getKeys(false);
+                shapeSet = ProtectedDebugStick.getInstance().getConfig().getConfigurationSection("recipes." + key + ".craft").getKeys(false);
             } catch (NullPointerException ignored) {
                 Tools.log("Recipes \"" + key + "\" has no slot. Ignoring the recipe", Tools.LOG_WARNING);
                 continue;
@@ -82,13 +82,14 @@ public class RecipeHandler {
 
             for (int i = 1; i <= 9; i++) {
                 try {
-                    Material m = Material.matchMaterial(ProtectedDebugStick.config.getString("recipes." + key + ".craft." + i));
+                    Material m = Material.matchMaterial(ProtectedDebugStick.getInstance().getConfig().getString("recipes." + key + ".craft." + i));
                     if (m != null) {
                         recipe.setIngredient(Integer.toString(i).toCharArray()[0], m);
                     } else {
                         recipe.setIngredient(Integer.toString(i).toCharArray()[0], Material.BARRIER);
-                        Tools.log("The material \"" + ProtectedDebugStick.config.getString("recipes." + key + ".craft." + i) + "\" doesn't" +
-                                " exist from the recipe \"" + key + "\" (slot N°" + i + ") ! This slot has been replaces by a barrier block", Tools.LOG_WARNING);
+                        Tools.log("The material \"" + ProtectedDebugStick.getInstance().getConfig().getString(
+                                "recipes." + key + ".craft." + i) + "\" doesn't" + " exist from the recipe \"" +
+                                key + "\" (slot N°" + i + ") ! This slot has been replaces by a barrier block", Tools.LOG_WARNING);
                     }
                 } catch (IllegalArgumentException ignored) {
                 }

@@ -8,7 +8,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.persistence.PersistentDataType;
 
 public class OnClickInspector implements Listener {
 
@@ -32,9 +31,9 @@ public class OnClickInspector implements Listener {
         if (e.getPlayer().getInventory().getItemInMainHand().getItemMeta() == null) {
             return;
         }
-        if (!e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(DebugStick.INSPECTOR_KEY, PersistentDataType.STRING)) {
+        if (!DebugStick.isInspector(e.getPlayer().getInventory().getItemInMainHand()))
             return;
-        }
+
         e.setCancelled(true);
         String start = "<s:FF0000>&m-------------------<e:FFFF19><s:FF8C19>&lINSPECTOR<e:FF8C19><s:FFFF19>&m------------------------<e:FF0000>&r\n\n";
         String end = "<s:FF0000>&m------------------------<e:FFFF19><s:FFFF19>&m-----------------------------<e:FF0000>";
