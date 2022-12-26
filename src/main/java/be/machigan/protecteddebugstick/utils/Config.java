@@ -220,6 +220,7 @@ public final class Config {
                     }
                 } catch (NullPointerException e) {
                     removed.add(key);
+                    Tools.log("Item type for " + key + " not found or invalid", Tools.LOG_WARNING);
                     continue;
                 }
 

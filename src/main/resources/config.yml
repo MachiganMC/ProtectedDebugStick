@@ -17,8 +17,6 @@
 # Welcome to the configuration EN of the plugin ! You'll find here a guide to configure the plugin !
 # Si vous êtes un francophone, une aide de configuration en français est disponible dans le fichier
 # "config_fr.yml" dans le dossier ressources.
-#
-#
 
 
 # Defines the 3 items of the plugin, the settings are the sames for the three items
@@ -121,6 +119,7 @@ Items:
 Settings:
   # The damage that the durability will take when the debug stick modify this property.
   # (see in the file "properties_en.yml" in the folder ressources, the definition of each property)
+  # A durability of a property can be 0 but not a negative number.
   Durability:
     ORIENTABLE: 1
     DIRECTIONAL: 1
@@ -153,12 +152,6 @@ Settings:
       - "world_the_end"
 
 
-  # Write in the console when a player changes a property
-  logConsole: false
-
-  # Write in apart file when a player changes a property
-  logFile: false
-
   # Warn the player when his debug stick will break
   # The configuration of the message is in the "messages.yml" file at "OnUse" -> "WarnBreakMessage"
   WarnPlayerWhenBreaking:
@@ -167,14 +160,17 @@ Settings:
     # Send the message one time (true) or each time the player will use the debug stick and his durability
     # is below or equal to the durability settled (false)
     SendOnce: false
+
+    # The durability of the debug stick from which the plugin will warn the player
     Durability: 5
 
 
 # Here you can create recipes for the debug stick of the plugin
 # To create a recipe, you have to create a new field in the recipes section and name
 # it like you want (different name per recipe).
-# In this new field,  you have to have 2 children fields : 'durability' -> the durability of the debug stick (use -1 for
-# the infinity debug stick) and the 'craft' field composed of number representing the slot in a crafting table like this :
+# In this new field,  you have to have 2 children fields :
+# 'Durability' -> the durability of the debug stick, this field isn't necessary if the field "Item" isn"t "BASIC"
+# 'Craft' -> Represent the slot in the craft table with the material to put in
 #
 #   / / / / / / /
 #   / 1 / 2 / 3 /    / / / / / / / / /
