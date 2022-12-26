@@ -17,19 +17,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DebugStick {
-//    private static ItemStack debugStick;
-//    private static ItemStack infinityDebugStick;
-//    private static ItemStack inspector;
-
     final public static NamespacedKey IS_DEBUG_STICK = new NamespacedKey(ProtectedDebugStick.getInstance(), "is-debug-stick");
     final public static NamespacedKey DURABILITY_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-durability");
     final public static NamespacedKey INFINITY_DEBUG_STICK = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-infinity");
     final public static NamespacedKey INSPECTOR_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "inspector");
     final public static List<String> ITEMS = new ArrayList<>(Arrays.asList("basic", "infinity", "inspector"));
-
-    static {
-        Property.init();
-    }
 
 
     @NotNull

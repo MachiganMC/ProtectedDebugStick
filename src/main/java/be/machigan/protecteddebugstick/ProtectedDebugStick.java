@@ -2,7 +2,6 @@ package be.machigan.protecteddebugstick;
 
 import be.machigan.protecteddebugstick.command.CommandPDS;
 import be.machigan.protecteddebugstick.command.TabPDS;
-import be.machigan.protecteddebugstick.def.RecipeHandler;
 import be.machigan.protecteddebugstick.event.OnClickInspector;
 import be.machigan.protecteddebugstick.event.OnUse;
 import be.machigan.protecteddebugstick.utils.Config;
@@ -43,7 +42,6 @@ public class ProtectedDebugStick extends JavaPlugin {
         if (!file.exists())
             ProtectedDebugStick.getInstance().saveResource("messages.yml", false);
 
-        RecipeHandler.register();
         Tools.log("Enabled");
     }
 

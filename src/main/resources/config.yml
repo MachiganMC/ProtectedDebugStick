@@ -184,15 +184,19 @@ Settings:
 #
 # You must not use all slot but each slot that you want to use, represent a material
 # here is for you 2 examples of recipes :
-recipes:
-#  first:
-#    durability: 10
-#    craft:
-#      2: "BAMBOO"
-#      5: "BAMBOO"
-#      8: "BAMBOO"
-#  infinity:
-#    durability: -1
-#    craft:
-#      1: "DIAMOND"
-#      3: "EMERALD"
+Recipes:
+  basic:
+    Item: "BASIC"
+    Durability: 1000
+    Craft:
+      2: "DIAMOND"
+      5: "BLAZE_ROD"
+      8: "BLAZE_ROD"
+  infinity:
+    Item: "INFINITY"
+    Craft:
+      1: "BEACON"
+      2: "NETHERITE_BLOCK"
+      3: "BEACON"
+      5: "BLAZE_ROD"
+      8: "BLAZE_ROD"

@@ -141,12 +141,6 @@ public enum Property {
         return action;
     }
 
-    public static void init() {
-        for (Property property : Property.values()) {
-            settingFromConfig(property);
-        }
-    }
-
     private static void settingFromConfig(Property property) {
         String path = "Settings.Durability.";
         int durability = ProtectedDebugStick.getInstance().getConfig().getInt(path + property.name());

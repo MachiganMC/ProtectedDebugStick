@@ -1,6 +1,7 @@
 package be.machigan.protecteddebugstick.utils;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
+import be.machigan.protecteddebugstick.def.DebugStick;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,13 +13,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public final class Config {
@@ -38,7 +40,6 @@ public final class Config {
      */
     public static void reload() throws InvalidConfigurationException {
         config = YamlConfiguration.loadConfiguration(new File(ProtectedDebugStick.getInstance().getDataFolder(), "/config.yml"));
-
         try {
             Item.BASIC.get();
             Item.INFINITY.get();
@@ -46,6 +47,8 @@ public final class Config {
         } catch (NullPointerException e) {
             throw new InvalidConfigurationException("Configuration of items not found");
         }
+
+        Recipe.reload();
     }
 
     @NotNull
@@ -188,6 +191,129 @@ public final class Config {
             }
 
             return worlds;
+        }
+    }
+
+
+    public static class Recipe {
+        final private static String PATH = "Recipes";
+        final private static List<String> POSSIBLE_FIELDS = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+
+
+        public static void reload() {
+            Set<String> recipesName;
+            ConfigurationSection configurationSection;
+            try {
+                configurationSection = Config.getConfig().getConfigurationSection(PATH);
+                recipesName = configurationSection.getKeys(false);
+            } catch (NullPointerException e) {
+                return;
+            }
+
+            Set<String> removed = new HashSet<>();
+            for (String key : recipesName) {
+
+                try {
+                    Item itemType = Item.valueOf(configurationSection.getString(key + ".Item").toUpperCase());
+                    if (itemType == null) {
+                        throw new NullPointerException();
+                    }
+                } catch (NullPointerException e) {
+                    removed.add(key);
+                    continue;
+                }
+
+
+                Set<String> fields;
+                try {
+                    fields = configurationSection.getConfigurationSection(key + ".Craft").getKeys(false);
+                } catch (NullPointerException ignored) {
+                    Tools.log("Recipes \"" + key + "\" has no slot. Ignoring the recipe", Tools.LOG_WARNING);
+                    removed.add(key);
+                    continue;
+                }
+                fields = fields.stream().filter(POSSIBLE_FIELDS::contains).collect(Collectors.toSet());
+                if (fields.size() == 0) {
+                    removed.add(key);
+                }
+            }
+            recipesName.removeAll(removed);
+
+
+            List<ShapedRecipe> recipes = new ArrayList<>();
+            for (String key : recipesName) {
+                NamespacedKey namespacedKey = new NamespacedKey(ProtectedDebugStick.getInstance(), key);
+
+                Item itemType = Item.valueOf(configurationSection.getString(key + ".Item").toUpperCase());
+                if (itemType == null)
+                    continue;
+
+                ItemStack ds;
+                switch (itemType) {
+                    case BASIC:
+                        int durability = configurationSection.getInt(key + ".Durability");
+                        if (durability <= 0) {
+                            Tools.log("The craft " + key + " for a basic debug stick has a invalid durability (" + durability + ")");
+                            continue;
+                        }
+                        ds = DebugStick.getDebugStick(durability);
+                        break;
+                    case INFINITY:
+                        ds = DebugStick.getInfinityDebugStick();
+                        break;
+                    case INSPECTOR:
+                        ds = DebugStick.getInspector();
+                        break;
+                    default:
+                        continue;
+                }
+
+                Set<String> shapeSet;
+                try {
+                    shapeSet = configurationSection.getConfigurationSection(key + ".Craft").getKeys(false);
+                } catch (NullPointerException e) {
+                    Tools.log("Recipes \"" + key + "\" has no slot. Ignoring the recipe", Tools.LOG_WARNING);
+                    continue;
+                }
+
+                ShapedRecipe recipe = new ShapedRecipe(namespacedKey, ds);
+
+                recipe.shape(
+                        (shapeSet.contains("1") ? "1" : " ") + (shapeSet.contains("2") ? "2" : " ") + (shapeSet.contains("3") ? "3" : " "),
+                        (shapeSet.contains("4") ? "4" : " ") + (shapeSet.contains("5") ? "5" : " ") + (shapeSet.contains("6") ? "6" : " "),
+                        (shapeSet.contains("7") ? "7" : " ") + (shapeSet.contains("8") ? "8" : " ") + (shapeSet.contains("9") ? "9" : " ")
+                );
+
+                for (int i = 1; i <= 9; i++) {
+                    try {
+                        Material m = Material.matchMaterial(configurationSection.getString(key + ".Craft." + i));
+                        if (m != null) {
+                            recipe.setIngredient(Integer.toString(i).toCharArray()[0], m);
+                        } else {
+                            recipe.setIngredient(Integer.toString(i).toCharArray()[0], Material.BARRIER);
+                            Tools.log("The material \"" + configurationSection.getString(
+                                    key + ".Craft." + i) + "\" doesn't" + " exist from the recipe \"" +
+                                    key + "\" (slot N°" + i + ") ! This slot has been replaces by a barrier block", Tools.LOG_WARNING);
+                        }
+                    } catch (IllegalArgumentException ignored) {}
+                }
+
+                recipes.add(recipe);
+            }
+
+            Iterator<org.bukkit.inventory.Recipe> iterator = Bukkit.recipeIterator();
+            while (iterator.hasNext()) {
+                try {
+                    org.bukkit.inventory.ShapedRecipe recipe = (ShapedRecipe) iterator.next();
+                    if (recipe.getKey().getNamespace().equalsIgnoreCase(ProtectedDebugStick.getInstance().getName()))
+                        Bukkit.removeRecipe(recipe.getKey());
+                } catch (ClassCastException ignored) {}
+            }
+
+            for (ShapedRecipe recipe : recipes) {
+                Bukkit.addRecipe(recipe);
+            }
+            Tools.log(recipes.size() + " recipes has been registered");
         }
     }
 }

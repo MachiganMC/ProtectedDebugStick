@@ -2,8 +2,6 @@ package be.machigan.protecteddebugstick.command;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
-import be.machigan.protecteddebugstick.def.RecipeHandler;
-import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Message;
 import be.machigan.protecteddebugstick.utils.Tools;
@@ -131,8 +129,6 @@ public class CommandPDS implements CommandExecutor {
                 ProtectedDebugStick.getInstance().getPluginLoader().disablePlugin(ProtectedDebugStick.getInstance());
                 return true;
             }
-            Property.init();
-            RecipeHandler.register();
 
 
             Message.getMessage("Command.PDS.Arg.ReloadConfig.Success")
