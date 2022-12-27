@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class RotatableAction implements PropertyAction{
     @Override
-    public @NotNull String modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
+    public @NotNull void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         Rotatable rotatableData = (Rotatable) data;
 
         switch (rotatableData.getRotation()) {
@@ -64,6 +64,10 @@ public class RotatableAction implements PropertyAction{
         }
 
         block.setBlockData(rotatableData);
-        return rotatableData.getRotation().name();
+    }
+
+    @Override
+    public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
+        return ((Rotatable) data).getRotation().name().toLowerCase();
     }
 }

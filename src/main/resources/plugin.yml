@@ -38,7 +38,7 @@ permissions:
     description: Allows player to modify all the properties of a bloc
     default: false
     children:
-      pds.properties.roation: true
+      pds.properties.rotation: true
       pds.properties.reverse: true
       pds.properties.special: true
       pds.properties.creative: true

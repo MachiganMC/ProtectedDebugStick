@@ -212,7 +212,7 @@ public class Message {
      * @see #replace(Property)
      */
     public Message replace(Block block) {
-        return this.replace("{block_material}", block.getType().name())
+        return this.replace("{block_material}", block.getType().name().toLowerCase())
                 .replace("{block_loc_x}", Integer.toString(block.getLocation().getBlockX()))
                 .replace("{block_loc_y}", Integer.toString(block.getLocation().getBlockY()))
                 .replace("{block_loc_z}", Integer.toString(block.getLocation().getBlockZ()))
@@ -233,7 +233,7 @@ public class Message {
      * @see #replace(Block)
      */
     public Message replace(Property property) {
-        return this.replace("{property_name}", property.name())
+        return this.replace("{property_name}", property.name().toLowerCase())
                 .replace("{property_durability}", Integer.toString(property.getDurability()))
                 .replace("{property_perm}", property.getPermission());
     }

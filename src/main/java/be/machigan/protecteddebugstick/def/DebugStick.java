@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DebugStick {
-    final public static NamespacedKey IS_DEBUG_STICK = new NamespacedKey(ProtectedDebugStick.getInstance(), "is-debug-stick");
+    final public static NamespacedKey CURRENT_PROPERTY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-current-property");
     final public static NamespacedKey DURABILITY_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-durability");
     final public static NamespacedKey INFINITY_DEBUG_STICK = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-infinity");
     final public static NamespacedKey INSPECTOR_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "inspector");
@@ -32,7 +32,7 @@ public class DebugStick {
         ItemStack debugStickClone = Config.Item.BASIC.get().clone();
         ItemMeta debugStickCloneMeta = debugStickClone.getItemMeta();
         debugStickCloneMeta.getPersistentDataContainer().set(DURABILITY_KEY, PersistentDataType.INTEGER, durability);
-        debugStickCloneMeta.getPersistentDataContainer().set(IS_DEBUG_STICK, PersistentDataType.INTEGER, 1);
+        debugStickCloneMeta.getPersistentDataContainer().set(CURRENT_PROPERTY, PersistentDataType.STRING, "");
 
         List<String> lore = ProtectedDebugStick.getInstance().getConfig().getStringList("Items.BasicDebugStick.Lore");
         lore.replaceAll(line -> line = Tools.replaceColor(line).replace("{durability}", Integer.toString(durability)));
@@ -46,7 +46,7 @@ public class DebugStick {
     public static ItemStack getInfinityDebugStick() {
         ItemStack infinityDebugStick = Config.Item.INFINITY.get();
         ItemMeta infinityDebugStickMeta = infinityDebugStick.getItemMeta();
-        infinityDebugStickMeta.getPersistentDataContainer().set(IS_DEBUG_STICK, PersistentDataType.INTEGER, 1);
+        infinityDebugStickMeta.getPersistentDataContainer().set(CURRENT_PROPERTY, PersistentDataType.STRING, "");
         infinityDebugStickMeta.getPersistentDataContainer().set(INFINITY_DEBUG_STICK, PersistentDataType.INTEGER, 1);
         infinityDebugStick.setItemMeta(infinityDebugStickMeta);
         return infinityDebugStick;
@@ -66,7 +66,7 @@ public class DebugStick {
         if (itemMeta == null)
             return false;
 
-        return itemMeta.getPersistentDataContainer().has(IS_DEBUG_STICK, PersistentDataType.INTEGER);
+        return itemMeta.getPersistentDataContainer().has(CURRENT_PROPERTY, PersistentDataType.STRING);
     }
 
     public static boolean isBasicDebugStick(@NotNull ItemStack item) {
@@ -161,5 +161,4 @@ public class DebugStick {
         int current = item.getItemMeta().getPersistentDataContainer().get(DURABILITY_KEY, PersistentDataType.INTEGER);
         return current == 0;
     }
-
 }

@@ -10,9 +10,8 @@ import java.util.Random;
 
 public class RedstoneWireAction implements PropertyAction {
     @Override
-    public @NotNull String modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
+    public @NotNull void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         RedstoneWire redstoneWireData = (RedstoneWire) data;
-        BlockFace blockFace = block.getFace(block);
 
         try {
             redstoneWireData.getFace(blockFace);
@@ -35,6 +34,18 @@ public class RedstoneWireAction implements PropertyAction {
         }
 
         block.setBlockData(redstoneWireData);
-        return blockFace + " facing " + redstoneWireData.getFace(blockFace).name();
+    }
+
+    @Override
+    public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
+        RedstoneWire redstoneWireData = (RedstoneWire) data;
+
+        try {
+            redstoneWireData.getFace(blockFace);
+        } catch (IllegalArgumentException ignored) {
+            blockFace = (BlockFace) redstoneWireData.getAllowedFaces().toArray()[new Random().nextInt(redstoneWireData.getAllowedFaces().size())];
+        }
+
+        return blockFace.name().toLowerCase() + " facing " + ((RedstoneWire) data).getFace(blockFace).name().toLowerCase();
     }
 }

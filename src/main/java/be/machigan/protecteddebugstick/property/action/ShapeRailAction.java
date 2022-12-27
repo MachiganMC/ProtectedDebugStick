@@ -1,13 +1,14 @@
 package be.machigan.protecteddebugstick.property.action;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Rail;
 import org.jetbrains.annotations.NotNull;
 
 public class ShapeRailAction implements PropertyAction{
     @Override
-    public @NotNull String modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
+    public @NotNull void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         Rail railData = (Rail) data;
 
         if (railData.getShapes().size() == 10) {
@@ -68,6 +69,10 @@ public class ShapeRailAction implements PropertyAction{
         }
 
         block.setBlockData(railData);
-        return railData.getShape().name();
+    }
+
+    @Override
+    public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
+        return ((Rail) data).getShape().name().toLowerCase();
     }
 }
