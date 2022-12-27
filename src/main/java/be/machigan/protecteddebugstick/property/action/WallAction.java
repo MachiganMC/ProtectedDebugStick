@@ -10,39 +10,42 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class WallAction implements PropertyAction {
-    @NotNull private BlockFace clickedBlockFace;
-
-    public WallAction(BlockFace clickedBlockFace) {
-        this.clickedBlockFace = clickedBlockFace;
-    }
 
     @Override
-    public @NotNull String modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
+    public @NotNull void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         Wall wallData = (Wall) data;
 
         try {
-            ((Wall) data).getHeight(clickedBlockFace);
+            wallData.getHeight(blockFace);
         } catch (ArrayIndexOutOfBoundsException ignored){
-            clickedBlockFace = Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST)
+            blockFace = Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST)
                     .get(new Random().nextInt(4));
         }
 
-        switch (wallData.getHeight(clickedBlockFace)) {
+        switch (wallData.getHeight(blockFace)) {
             case NONE:
-                wallData.setHeight(clickedBlockFace, Wall.Height.LOW);
+                wallData.setHeight(blockFace, Wall.Height.LOW);
                 break;
             case LOW:
-                wallData.setHeight(clickedBlockFace, Wall.Height.TALL);
+                wallData.setHeight(blockFace, Wall.Height.TALL);
                 break;
             case TALL:
-                wallData.setHeight(clickedBlockFace, Wall.Height.NONE);
+                wallData.setHeight(blockFace, Wall.Height.NONE);
                 break;
         }
+
         block.setBlockData(wallData);
-        return wallData.getHeight(clickedBlockFace).name();
     }
 
-    public void setClickedBlockFace(@NotNull BlockFace clickedBlockFace) {
-        this.clickedBlockFace = clickedBlockFace;
+    @Override
+    public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
+        try {
+            ((Wall) data).getHeight(blockFace);
+        } catch (ArrayIndexOutOfBoundsException ignored){
+            blockFace = Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST)
+                    .get(new Random().nextInt(4));
+        }
+
+        return ((Wall) data).getHeight(blockFace).name().toLowerCase();
     }
 }
