@@ -4,6 +4,7 @@ import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.property.action.*;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Message;
+import be.machigan.protecteddebugstick.utils.Permission;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.*;
@@ -12,48 +13,39 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public enum Property {
 
-    ORIENTABLE(1, "orientable", Orientable.class, new OrientableAction()),
-    DIRECTIONAL(1, "directional", Directional.class, new DirectionalAction()),
-    ROTATABLE(1, "rotatable", Rotatable.class, new RotatableAction()),
-    SLAB(1, "type", Slab.class, new SlabAction()),
-    BISECTED(1, "bisected", Bisected.class, new BisectedAction()),
-    SHAPE_STAIRS(1, "shape.stairs", Stairs.class, new ShapeStairsAction()),
-    SHAPE_RAIL(1, "shape.rails", Rail.class, new ShapeRailAction()),
-    PERSISTENT(3, "persistent", Leaves.class, new PersistentAction()),
-    MULTIPLEFACING(1, "multiplefacing", MultipleFacing.class, new MultiplefacingAction()),
-    LIGHTABLE(5, "lightable", Lightable.class, new LightableAction()),
-    REDSTONEWIRE(2, "redstonewire", RedstoneWire.class, new RedstoneWireAction()),
-    WATERLOGGED(3, "waterlogged", Waterlogged.class, new WaterLoggedAction()),
-    POWERABLE(10, "powerable", AnaloguePowerable.class, new PowerableAction()),
-    AGEABLE(20, "ageable", Ageable.class, new AgeableAction()),
-    SAPLING(10, "sapling", Sapling.class, new SaplingAction()),
-    BEEHIVE(5, "beehive", Beehive.class, new BeehiveAction()),
-    WALL(1, "wall", Wall.class, new WallAction()),
-    SNOWABLE(3, "snowable", Snowable.class, new SnowableAction()),
-    DISTANCE(1, "distance", Leaves.class, new DistanceAction()),
-    LAYERS(1, "layers", Snow.class, new LayersAction());
+    ORIENTABLE(1, Permission.Property.ORIENTABLE, Orientable.class, new OrientableAction()),
+    DIRECTIONAL(1, Permission.Property.DIRECTIONAL, Directional.class, new DirectionalAction()),
+    ROTATABLE(1, Permission.Property.ROTATABLE, Rotatable.class, new RotatableAction()),
+    SLAB(1, Permission.Property.SLAB, Slab.class, new SlabAction()),
+    BISECTED(1, Permission.Property.BISECTED, Bisected.class, new BisectedAction()),
+    SHAPE_STAIRS(1, Permission.Property.SHAPE_STAIRS, Stairs.class, new ShapeStairsAction()),
+    SHAPE_RAIL(1, Permission.Property.SHAPE_RAIL, Rail.class, new ShapeRailAction()),
+    PERSISTENT(3, Permission.Property.PERSISTENT, Leaves.class, new PersistentAction()),
+    MULTIPLE_FACING(1, Permission.Property.MULTIPLE_FACING, MultipleFacing.class, new MultiplefacingAction()),
+    LIGHTABLE(5, Permission.Property.LIGHTABLE, Lightable.class, new LightableAction()),
+    REDSTONEWIRE(2, Permission.Property.REDSTONE_WIRE, RedstoneWire.class, new RedstoneWireAction()),
+    WATER_LOGGED(3, Permission.Property.WATER_LOGGED, Waterlogged.class, new WaterLoggedAction()),
+    POWERABLE(10, Permission.Property.POWERABLE, AnaloguePowerable.class, new PowerableAction()),
+    AGEABLE(20, Permission.Property.AGEABLE, Ageable.class, new AgeableAction()),
+    SAPLING(10, Permission.Property.SAPLING, Sapling.class, new SaplingAction()),
+    BEEHIVE(5, Permission.Property.BEEHIVE, Beehive.class, new BeehiveAction()),
+    WALL(1, Permission.Property.WALL, Wall.class, new WallAction()),
+    SNOWABLE(3, Permission.Property.SNOWABLE, Snowable.class, new SnowableAction()),
+    DISTANCE(1, Permission.Property.DISTANCE, Leaves.class, new DistanceAction()),
+    LAYERS(1, Permission.Property.LAYERS, Snow.class, new LayersAction());
 
 
     private final int durability;
-    @NotNull private final String permission;
+    @NotNull private final Permission.Property permission;
     @NotNull private final Class<? extends BlockData> dataClass;
     @NotNull private final PropertyAction action;
-    @NotNull final public static Map<Class<? extends BlockData>, Property> CORRESPONDANCE;
 
-    static {
-        CORRESPONDANCE = new HashMap<>();
-        for (Property property : Property.values())
-            CORRESPONDANCE.put(property.dataClass, property);
-    }
 
-    Property(int durability, String permission, @NotNull Class<? extends BlockData> dataClass, @NotNull PropertyAction action) {
+    Property(int durability, Permission.Property permission, @NotNull Class<? extends BlockData> dataClass, @NotNull PropertyAction action) {
         this.durability = Math.max(durability, 0);
-        this.permission = "pds.properties." + permission;
+        this.permission = permission;
         this.dataClass = dataClass;
         this.action = action;
     }
@@ -61,10 +53,10 @@ public enum Property {
 
     public void edit(@NotNull Player player, @NotNull Block block, @NotNull BlockFace blockFace) {
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (!player.hasPermission(this.permission)) {
+        if (!this.permission.has(player)) {
             Message.getMessage("OnUse.NoPerm.Property", player, false)
                     .replace(this)
-                    .replace("{perm}", this.permission)
+                    .replace("{perm}", this.permission.toString())
                     .send(player);
             return;
         }
@@ -126,7 +118,7 @@ public enum Property {
     }
 
     @NotNull
-    public String getPermission() {
+    public Permission.Property getPermission() {
         return this.permission;
     }
 

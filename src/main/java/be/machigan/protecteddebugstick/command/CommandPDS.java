@@ -4,6 +4,7 @@ import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Message;
+import be.machigan.protecteddebugstick.utils.Permission;
 import be.machigan.protecteddebugstick.utils.Tools;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -18,10 +19,10 @@ public class CommandPDS implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
 
-        if (!commandSender.hasPermission("pds.command.use")) {
+        if (!Permission.Command.USE.has(commandSender)) {
             Player player = (Player) commandSender;
             Message.getMessage("Command.PDS.NoPerm", (Player) commandSender, false)
-                    .replace("{perm}", "pds.command.use")
+                    .replace(Permission.Command.USE)
                     .send(player);
             return true;
         }
@@ -32,10 +33,10 @@ public class CommandPDS implements CommandExecutor {
         }
 
         if (strings[0].equalsIgnoreCase("give")) {
-            if (!commandSender.hasPermission("pds.command.give")) {
+            if (!Permission.Command.GIVE.has(commandSender)) {
                 Player player = (Player) commandSender;
                 Message.getMessage("Command.PDS.Arg.Give.NoPerm", player, false)
-                        .replace("{perm}", "pds.command.give")
+                        .replace(Permission.Command.GIVE)
                         .send(player);
                 return true;
             }
@@ -107,10 +108,10 @@ public class CommandPDS implements CommandExecutor {
         }
 
         if (strings[0].equalsIgnoreCase("reload-config")) {
-            if (!commandSender.hasPermission("pds.command.reloadConfig")) {
+            if (!Permission.Command.RELOAD_CONFIG.has(commandSender)) {
                 Player player = (Player) commandSender;
                 Message.getMessage("Command.PDS.Arg.ReloadConfig.NoPerm", player, false)
-                        .replace("{perm}", "pds.command.reloadConfig")
+                        .replace(Permission.Command.RELOAD_CONFIG)
                         .send(player);
                 return true;
             }
