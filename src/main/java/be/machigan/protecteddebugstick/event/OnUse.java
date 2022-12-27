@@ -4,6 +4,7 @@ import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Message;
+import be.machigan.protecteddebugstick.utils.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,6 +26,10 @@ import java.util.List;
 public class OnUse implements Listener {
     @EventHandler
     public static void onUse(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        Block block = e.getClickedBlock();
+        BlockData data = e.getClickedBlock().getBlockData();
+
         if (e.getHand() == null)
             return;
 
@@ -38,8 +43,6 @@ public class OnUse implements Listener {
             return;
 
         e.setCancelled(true);
-        if (!e.getPlayer().hasPermission("pds.debugstick.use"))
-            return;
 
         if (e.getClickedBlock() == null)
             return;
@@ -61,29 +64,12 @@ public class OnUse implements Listener {
             return;
         }
 
-        BlockPlaceEvent event = new BlockPlaceEvent(
-                e.getClickedBlock(),
-                e.getClickedBlock().getState(),
-                e.getClickedBlock(),
-                new ItemStack(Material.AIR),
-                e.getPlayer(),
-                true,
-                EquipmentSlot.HAND);
-        Bukkit.getServer().getPluginManager().callEvent(event);
-        if (event.isCancelled()) {
-            Message.getMessage("OnUse.PluginPrevent", e.getPlayer(), false)
-                    .replace(e.getClickedBlock())
-                    .send(e.getPlayer());
-            return;
-        }
-
-        Player player = e.getPlayer();
-        Block block = e.getClickedBlock();
-        BlockData data = e.getClickedBlock().getBlockData();
         List<Property> properties = new ArrayList<>();
         for (Property property : Property.values()) {
             try {
                 property.getDataClass().cast(data);
+                if (Config.Settings.hideNoPermProperty() && !property.getPermission().has(player))
+                    continue;
             } catch (ClassCastException exception) {
                 continue;
             }
@@ -113,14 +99,63 @@ public class OnUse implements Listener {
             current = properties.get(0);
         }
 
+        Message messageBasicEdit = Message.getMessage("OnUse.NoPerm.Basic.Edit", player, false)
+                .replace(block)
+                .replace(Permission.Item.BASIC_EDIT);
+        Message messageInfiniteEdit = Message.getMessage("OnUse.NoPerm.Infinite.Edit", player, false)
+                .replace(block)
+                .replace(Permission.Item.INFINITE_EDIT);
 
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            if (DebugStick.isBasicDebugStick(item) && !Permission.Item.BASIC_EDIT.has(player)) {
+                messageBasicEdit.send(player);
+                return;
+            }
+            if (DebugStick.isInfinityDebugStick(item) && !Permission.Item.INFINITE_EDIT.has(player)) {
+                messageInfiniteEdit.send(player);
+                return;
+            }
+
+            if (!Permission.Bypass.PLUGIN_BLOCK.has(e.getPlayer())) {
+                BlockPlaceEvent event = new BlockPlaceEvent(
+                        e.getClickedBlock(),
+                        e.getClickedBlock().getState(),
+                        e.getClickedBlock(),
+                        new ItemStack(Material.AIR),
+                        e.getPlayer(),
+                        true,
+                        EquipmentSlot.HAND);
+                Bukkit.getServer().getPluginManager().callEvent(event);
+                if (event.isCancelled()) {
+                    Message.getMessage("OnUse.PluginPrevent", e.getPlayer(), false)
+                            .replace(e.getClickedBlock())
+                            .send(e.getPlayer());
+                    return;
+                }
+            }
+
             current.edit(player, block, e.getBlockFace());
             return;
         }
 
+
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             if (player.isSneaking()) {
+                if (DebugStick.isBasicDebugStick(item) && !Permission.Item.BASIC_SEE.has(player)) {
+                    Message.getMessage("OnUse.NoPerm.Basic.See", player, false)
+                            .replace(block)
+                            .replace(Permission.Item.BASIC_SEE)
+                            .send(player);
+                    return;
+                }
+                if (DebugStick.isInfinityDebugStick(item) && !Permission.Item.INFINITE_SEE.has(player)) {
+                    Message.getMessage("OnUse.NoPerm.Infinite.See", player, false)
+                            .replace(block)
+                            .replace(Permission.Item.INFINITE_SEE)
+                            .send(player);
+                    return;
+                }
+
                 Message.getMessage("OnUse.ListProperties.Before", player, false)
                         .replace(block)
                         .send(player);
@@ -142,6 +177,15 @@ public class OnUse implements Listener {
                 Message.getMessage("OnUse.ListProperties.After", player, false)
                         .replace(block)
                         .send(player);
+                return;
+            }
+
+            if (DebugStick.isBasicDebugStick(item) && !Permission.Item.BASIC_EDIT.has(player)) {
+                messageBasicEdit.send(player);
+                return;
+            }
+            if (DebugStick.isInfinityDebugStick(item) && !Permission.Item.INFINITE_EDIT.has(player)) {
+                messageInfiniteEdit.send(player);
                 return;
             }
 

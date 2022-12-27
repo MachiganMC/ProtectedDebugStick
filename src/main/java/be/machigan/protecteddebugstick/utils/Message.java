@@ -235,7 +235,23 @@ public class Message {
     public Message replace(Property property) {
         return this.replace("{property_name}", property.name().toLowerCase())
                 .replace("{property_durability}", Integer.toString(property.getDurability()))
-                .replace("{property_perm}", property.getPermission());
+                .replace("{property_perm}", property.getPermission().toString());
+    }
+
+    public Message replace(@NotNull Permission.Bypass permission) {
+        return this.replace("{perm}", permission.toString());
+    }
+
+    public Message replace(@NotNull Permission.Property permission) {
+        return this.replace("{perm}", permission.toString());
+    }
+
+    public Message replace(@NotNull Permission.Item permission) {
+        return this.replace("{perm}", permission.toString());
+    }
+
+    public Message replace(@NotNull Permission.Command permission) {
+        return this.replace("{perm}", permission.toString());
     }
 
 

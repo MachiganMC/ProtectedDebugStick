@@ -1,29 +1,35 @@
 package be.machigan.protecteddebugstick.command;
 
 import be.machigan.protecteddebugstick.def.DebugStick;
+import be.machigan.protecteddebugstick.utils.Permission;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TabPDS implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (!(commandSender instanceof Player))
+            return Collections.emptyList();
+
         List<String> arg = new ArrayList<>();
         List<String> tab = new ArrayList<>();
-        if (!commandSender.hasPermission("pds.command.use")) {
-            return tab;
+        if (!Permission.Command.USE.has(commandSender)) {
+            return Collections.emptyList();
         }
 
         if (strings.length == 1) {
-            if (commandSender.hasPermission("pds.command.give")) {
+            if (Permission.Command.GIVE.has(commandSender)) {
                 arg.add("give");
             }
-            if (commandSender.hasPermission("pds.command.reloadConfig")) {
+            if (Permission.Command.RELOAD_CONFIG.has(commandSender)) {
                 arg.add("reload-config");
             }
             StringUtil.copyPartialMatches(strings[0], arg, tab);
@@ -37,7 +43,7 @@ public class TabPDS implements TabCompleter {
         }
 
         if (strings.length == 3) {
-            if (strings[0].equalsIgnoreCase("give") && commandSender.hasPermission("pds.command.give")) {
+            if (strings[0].equalsIgnoreCase("give") && Permission.Command.GIVE.has(commandSender)) {
                 StringUtil.copyPartialMatches(strings[2], DebugStick.ITEMS, tab);
                 return tab;
             }
@@ -45,7 +51,7 @@ public class TabPDS implements TabCompleter {
 
         if (strings.length == 4) {
             if (strings[0].equalsIgnoreCase("give") && strings[2].equalsIgnoreCase("basic")
-                    && commandSender.hasPermission("pds.command.give")) {
+                    && Permission.Command.GIVE.has(commandSender)) {
                 arg.add("5");
                 arg.add("20");
                 arg.add("50");
@@ -57,8 +63,6 @@ public class TabPDS implements TabCompleter {
             }
         }
 
-
-
-        return tab;
+        return Collections.emptyList();
     }
 }

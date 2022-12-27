@@ -195,6 +195,15 @@ public final class Config {
     }
 
 
+    public static class Settings {
+        final public static String PATH = "Settings.";
+
+        public static boolean hideNoPermProperty() {
+            return config.getBoolean(PATH + "HideNoPermProperty");
+        }
+    }
+
+
     public static class Recipe {
         final private static String PATH = "Recipes";
         final private static List<String> POSSIBLE_FIELDS = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");

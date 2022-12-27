@@ -142,6 +142,10 @@ Settings:
     DISTANCE: 1
     LAYERS: 1
 
+  # The properties that the player doesn't have the permissions to edit will be hide
+  # It's like, for the player, the properties never existed
+  HideNoPermProperty: true
+
   BlackList:
     # List of materials that can't be modified
     Material:
