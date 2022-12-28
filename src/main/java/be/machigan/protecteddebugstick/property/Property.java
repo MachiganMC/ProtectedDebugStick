@@ -1,5 +1,6 @@
 package be.machigan.protecteddebugstick.property;
 
+import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.property.action.*;
 import be.machigan.protecteddebugstick.utils.Config;
@@ -11,6 +12,7 @@ import org.bukkit.block.data.*;
 import org.bukkit.block.data.type.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.NotNull;
 
 public enum Property {
@@ -71,6 +73,9 @@ public enum Property {
 
         this.action.modify(block.getBlockData(), block, blockFace);
         String value =  this.action.getValue(block.getBlockData(), blockFace);
+        if (block.getMetadata(DebugStick.METADATA_NAME_FORCE_VALUE).isEmpty())
+            block.setMetadata(DebugStick.METADATA_NAME_FORCE_VALUE, new FixedMetadataValue(ProtectedDebugStick.getInstance(), true));
+
         Message.getMessage("OnUse.Success", player, false)
                 .replace(block)
                 .replace(this)

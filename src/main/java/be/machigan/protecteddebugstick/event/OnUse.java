@@ -1,5 +1,6 @@
 package be.machigan.protecteddebugstick.event;
 
+import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.utils.Config;
@@ -26,10 +27,6 @@ import java.util.List;
 public class OnUse implements Listener {
     @EventHandler
     public static void onUse(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
-        Block block = e.getClickedBlock();
-        BlockData data = e.getClickedBlock().getBlockData();
-
         if (e.getHand() == null)
             return;
 
@@ -43,13 +40,15 @@ public class OnUse implements Listener {
             return;
 
         e.setCancelled(true);
-
         if (e.getClickedBlock() == null)
             return;
 
         if (e.getClickedBlock().getBlockData() == null)
             return;
 
+        Player player = e.getPlayer();
+        Block block = e.getClickedBlock();
+        BlockData data = e.getClickedBlock().getBlockData();
         if (Config.BlackList.getWorlds().contains(e.getClickedBlock().getLocation().getWorld())) {
             Message.getMessage("OnUse.BlackList.World", e.getPlayer(), false)
                     .replace(e.getClickedBlock())
@@ -113,6 +112,16 @@ public class OnUse implements Listener {
             }
             if (DebugStick.isInfinityDebugStick(item) && !Permission.Item.INFINITE_EDIT.has(player)) {
                 messageInfiniteEdit.send(player);
+                return;
+            }
+
+            if (player.isSneaking()) {
+                if (!block.getMetadata(DebugStick.METADATA_NAME_FORCE_VALUE).isEmpty()) {
+                    block.removeMetadata(DebugStick.METADATA_NAME_FORCE_VALUE, ProtectedDebugStick.getInstance());
+                    Message.getMessage("OnUse.RemovePermanentValue", player, false)
+                            .replace(block)
+                            .send(player);
+                }
                 return;
             }
 

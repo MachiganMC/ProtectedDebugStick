@@ -20,7 +20,8 @@ public class DebugStick {
     final public static NamespacedKey CURRENT_PROPERTY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-current-property");
     final public static NamespacedKey DURABILITY_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-durability");
     final public static NamespacedKey INFINITY_DEBUG_STICK = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-infinity");
-    final public static NamespacedKey INSPECTOR_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "inspector");
+    final public static NamespacedKey INSPECTOR_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-inspector");
+    final public static String METADATA_NAME_FORCE_VALUE = "debug-stick-force-value";
     final public static List<String> ITEMS = new ArrayList<>(Arrays.asList("basic", "infinity", "inspector"));
 
 
