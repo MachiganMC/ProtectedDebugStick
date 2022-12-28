@@ -3,6 +3,7 @@ package be.machigan.protecteddebugstick;
 import be.machigan.protecteddebugstick.command.CommandPDS;
 import be.machigan.protecteddebugstick.command.TabPDS;
 import be.machigan.protecteddebugstick.event.OnClickInspector;
+import be.machigan.protecteddebugstick.event.OnUpdate;
 import be.machigan.protecteddebugstick.event.OnUse;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Tools;
@@ -35,6 +36,7 @@ public class ProtectedDebugStick extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new OnUse(), this);
         getServer().getPluginManager().registerEvents(new OnClickInspector(), this);
+        getServer().getPluginManager().registerEvents(new OnUpdate(), this);
         getCommand("pds").setExecutor(new CommandPDS());
         getCommand("pds").setTabCompleter(new TabPDS());
 

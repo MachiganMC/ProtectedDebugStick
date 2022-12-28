@@ -222,6 +222,11 @@ OnUse:
     Property: "   &8» &9{property_name} &7= &e{value} &8&o(&e&o{property_durability}&8&o)"
     Current: "   &8» &9{property_name} &7= &e{value} &8&o(&e&o{property_durability}&8&o) &e«"
 
+  # When a player remove the permanent values of properties on a block
+  # This message isn't necessary
+  # PH :
+  # {block} : the block that the player removes the values
+  RemovePermanentValue: "{prefix} &aAll permanents values have been removed"
 
   # When the player change the property of the block
   # This message isn't necessary
