@@ -169,6 +169,12 @@ Settings:
     Durability: 5
 
 
+Log:
+  # Enable CoreProtect ?
+  # https://www.spigotmc.org/resources/coreprotect.8631/
+  CoreProtect: true
+
+
 # Here you can create recipes for the debug stick of the plugin
 # To create a recipe, you have to create a new field in the recipes section and name
 # it like you want (different name per recipe).

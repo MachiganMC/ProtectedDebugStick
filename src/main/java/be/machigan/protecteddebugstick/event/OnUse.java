@@ -2,6 +2,7 @@ package be.machigan.protecteddebugstick.event;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
+import be.machigan.protecteddebugstick.def.DebugStickDataType;
 import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Message;
@@ -19,7 +20,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,12 +82,9 @@ public class OnUse implements Listener {
             return;
         }
 
-
-        String propertyStr = item.getItemMeta().getPersistentDataContainer().get(DebugStick.CURRENT_PROPERTY, PersistentDataType.STRING);
-        Property current;
+        Property current = item.getItemMeta().getPersistentDataContainer().get(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE).getDebugStick().getCurrentProperty();
         int index;
         try {
-            current = Property.valueOf(propertyStr);
             if (current == null)
                 throw new NullPointerException();
             index = properties.indexOf(current);
@@ -204,7 +201,8 @@ public class OnUse implements Listener {
                 current = properties.get(index + 1);
             }
             ItemMeta meta = item.getItemMeta();
-            meta.getPersistentDataContainer().set(DebugStick.CURRENT_PROPERTY, PersistentDataType.STRING, current.name());
+            DebugStick debugStick = meta.getPersistentDataContainer().get(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE).getDebugStick();
+            debugStick.setCurrentProperty(current);
             item.setItemMeta(meta);
             Message.getMessage("OnUse.ChangeProperty", player, false)
                     .replace(block)

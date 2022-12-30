@@ -2,16 +2,16 @@ package be.machigan.protecteddebugstick.command;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
-import be.machigan.protecteddebugstick.utils.Config;
-import be.machigan.protecteddebugstick.utils.Message;
-import be.machigan.protecteddebugstick.utils.Permission;
-import be.machigan.protecteddebugstick.utils.Tools;
+import be.machigan.protecteddebugstick.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class CommandPDS implements CommandExecutor {
@@ -74,7 +74,7 @@ public class CommandPDS implements CommandExecutor {
                         if (durability <= 0) {
                             throw new NumberFormatException("Durability below or equal to 0");
                         }
-                        player.getInventory().addItem(DebugStick.getDebugStick(durability));
+                        player.getInventory().addItem(DebugStick.getBasicDebugStick(durability));
                         break;
                     } catch (NumberFormatException ignored) {
                         Message.getMessage("Command.PDS.Arg.Give.InvalidDurability")
@@ -85,7 +85,7 @@ public class CommandPDS implements CommandExecutor {
                     }
 
                 case "infinity":
-                    player.getInventory().addItem(DebugStick.getInfinityDebugStick());
+                    player.getInventory().addItem(DebugStick.getInfiniteDebugStick());
                     break;
 
                 case "inspector":
@@ -135,6 +135,55 @@ public class CommandPDS implements CommandExecutor {
             Message.getMessage("Command.PDS.Arg.ReloadConfig.Success")
                     .send(commandSender);
             return true;
+        }
+
+        if (strings[0].equalsIgnoreCase("core-protect")) {
+            List<String> restrict = null;
+            int time = 0;
+            for (String arg : strings) {
+                if (arg.equals(strings[0]))
+                    continue;
+
+                if (arg.startsWith("time:")) {
+                    String substring = arg.substring("time:".length());
+                    String lastChar = substring.substring(substring.length() - 1).toLowerCase();
+                    int multiplicator = 1;
+                    if (Arrays.asList("d", "h", "m", "s", "w").contains(lastChar)) {
+                        switch (lastChar) {
+                            case "w":
+                                multiplicator *= 7;
+                            case "d":
+                                multiplicator *= 24;
+                            case "h":
+                                multiplicator *= 60;
+                            case "m":
+                                multiplicator *= 60;
+                        }
+                    }
+                    substring = new StringBuffer(substring).deleteCharAt(substring.length() - 1).toString();
+                    try {
+                        time = Integer.parseInt(substring) * multiplicator;
+                        continue;
+                    } catch (NumberFormatException e) {
+                        commandSender.sendMessage("Mauvais time");
+                        return true;
+                    }
+                }
+                if (arg.startsWith("restrict:")) {
+                    String substring = arg.substring("restrict:".length());
+                    restrict = Arrays.asList(substring.split(","));
+                    continue;
+                }
+            }
+            if (time == 0) {
+                commandSender.sendMessage("Mauvais time");
+                return true;
+            }
+            if (restrict == null) {
+                commandSender.sendMessage("Restrict manquant ou mauvais");
+                return true;
+            }
+            Log.request(time, restrict);
         }
 
         Message.getMessage("Command.PDS.NoCommandFound", false)

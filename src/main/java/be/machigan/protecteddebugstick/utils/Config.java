@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,6 +50,10 @@ public final class Config {
         }
 
         Recipe.reload();
+
+        if (Log.coreProtectEnable()) {
+            be.machigan.protecteddebugstick.utils.Log.getCoreProtect();
+        }
     }
 
     @NotNull
@@ -204,6 +209,22 @@ public final class Config {
     }
 
 
+    public static class Log {
+        final private static String PATH = "Log.";
+
+        public static boolean coreProtectEnable() {
+            return config.getBoolean(PATH + "CoreProtect");
+        }
+
+        public static void disableCoreProtect() {
+            config.set(PATH + "CoreProtect", false);
+            try {
+                config.save(new File(ProtectedDebugStick.getInstance().getDataFolder(), "/config.yml"));
+            } catch (IOException ignored) {}
+        }
+    }
+
+
     public static class Recipe {
         final private static String PATH = "Recipes";
         final private static List<String> POSSIBLE_FIELDS = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
@@ -266,10 +287,10 @@ public final class Config {
                             Tools.log("The craft " + key + " for a basic debug stick has a invalid durability (" + durability + ")");
                             continue;
                         }
-                        ds = DebugStick.getDebugStick(durability);
+                        ds = DebugStick.getBasicDebugStick(durability);
                         break;
                     case INFINITY:
-                        ds = DebugStick.getInfinityDebugStick();
+                        ds = DebugStick.getInfiniteDebugStick();
                         break;
                     case INSPECTOR:
                         ds = DebugStick.getInspector();

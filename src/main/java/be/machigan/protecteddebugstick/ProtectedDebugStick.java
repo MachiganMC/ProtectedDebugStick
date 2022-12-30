@@ -18,7 +18,6 @@ public class ProtectedDebugStick extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
         instance = this;
         try {
             Config.reload();

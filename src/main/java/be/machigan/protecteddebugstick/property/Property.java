@@ -4,6 +4,7 @@ import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.property.action.*;
 import be.machigan.protecteddebugstick.utils.Config;
+import be.machigan.protecteddebugstick.utils.Log;
 import be.machigan.protecteddebugstick.utils.Message;
 import be.machigan.protecteddebugstick.utils.Permission;
 import org.bukkit.block.Block;
@@ -15,8 +16,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.NotNull;
 
-public enum Property {
+import java.io.Serializable;
 
+public enum Property implements Serializable {
     ORIENTABLE(1, Permission.Property.ORIENTABLE, Orientable.class, new OrientableAction()),
     DIRECTIONAL(1, Permission.Property.DIRECTIONAL, Directional.class, new DirectionalAction()),
     ROTATABLE(1, Permission.Property.ROTATABLE, Rotatable.class, new RotatableAction()),
@@ -37,6 +39,7 @@ public enum Property {
     SNOWABLE(3, Permission.Property.SNOWABLE, Snowable.class, new SnowableAction()),
     DISTANCE(1, Permission.Property.DISTANCE, Leaves.class, new DistanceAction()),
     LAYERS(1, Permission.Property.LAYERS, Snow.class, new LayersAction());
+    final private static long serialVersionUID = 3L;
 
 
     private final int durability;
@@ -73,6 +76,7 @@ public enum Property {
 
         this.action.modify(block.getBlockData(), block, blockFace);
         String value =  this.action.getValue(block.getBlockData(), blockFace);
+        Log.logCoreProtect(player, block);
         if (block.getMetadata(DebugStick.METADATA_NAME_FORCE_VALUE).isEmpty())
             block.setMetadata(DebugStick.METADATA_NAME_FORCE_VALUE, new FixedMetadataValue(ProtectedDebugStick.getInstance(), true));
 
