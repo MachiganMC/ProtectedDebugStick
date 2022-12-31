@@ -8,7 +8,8 @@ public class Permission {
     public enum Command {
         USE("pds.command.use"),
         GIVE("pds.command.give"),
-        RELOAD_CONFIG("pds.command.reload-config");
+        RELOAD_CONFIG("pds.command.reload-config"),
+        LOAD("pds.command.load");
 
         @NotNull final private String perm;
         Command(@NotNull String perm) {

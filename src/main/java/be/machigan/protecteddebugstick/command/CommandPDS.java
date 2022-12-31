@@ -13,6 +13,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+
 
 public class CommandPDS implements CommandExecutor {
 
@@ -134,6 +136,44 @@ public class CommandPDS implements CommandExecutor {
 
             Message.getMessage("Command.PDS.Arg.ReloadConfig.Success")
                     .send(commandSender);
+            return true;
+        }
+
+        if (strings[0].equalsIgnoreCase("load")) {
+            if (!Permission.Command.LOAD.has(commandSender)) {
+                Message.getMessage("Command.PDS.Arg.Load.NoPerm", false)
+                        .replace(Permission.Command.LOAD)
+                        .send(commandSender);
+                return true;
+            }
+
+            if (strings.length < 2) {
+                Message.getMessage("Command.PDS.Arg.Load.NotEnoughArg").send(commandSender);
+                return true;
+            }
+
+            boolean overWrite = strings.length > 2 && strings[2].equalsIgnoreCase("over-write");
+
+            String file = strings[1];
+            if (!file.endsWith(".yml"))
+                file += ".yml";
+
+            if (!overWrite && new File(ProtectedDebugStick.getInstance().getDataFolder(), "/" + file).exists()) {
+                Message.getMessage("Command.PDS.Arg.Load.FileAlreadyExists")
+                        .replace("{file}", file)
+                        .send(commandSender);
+                return true;
+            }
+            try {
+                ProtectedDebugStick.getInstance().saveResource(file, overWrite);
+                Message.getMessage("Command.PDS.Arg.Load.Success")
+                        .replace("{file}", file)
+                        .send(commandSender);
+            } catch (IllegalArgumentException e) {
+                Message.getMessage("Command.PDS.Arg.Load.FileNotExists")
+                        .replace("{file}", strings[1])
+                        .send(commandSender);
+            }
             return true;
         }
 

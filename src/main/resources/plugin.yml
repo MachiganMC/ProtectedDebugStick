@@ -35,6 +35,7 @@ permissions:
       pds.command.use: true
       pds.command.give: true
       pds.command.reload-config: true
+      pds.command.load: true
   # Children permissions of command :
   pds.command.use:
     description: Allows player to use the command /PDS
@@ -44,6 +45,9 @@ permissions:
     default: op
   pds.command.reload-config:
     description: Allows player to use the command /PDS reload-config
+    default: op
+  pds.command.load:
+    description: Allows player to load a file from resources folder
     default: op
 
 
