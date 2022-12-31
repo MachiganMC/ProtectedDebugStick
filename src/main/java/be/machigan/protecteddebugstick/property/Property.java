@@ -4,7 +4,7 @@ import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.property.action.*;
 import be.machigan.protecteddebugstick.utils.Config;
-import be.machigan.protecteddebugstick.utils.Log;
+import be.machigan.protecteddebugstick.utils.LogUtil;
 import be.machigan.protecteddebugstick.utils.Message;
 import be.machigan.protecteddebugstick.utils.Permission;
 import org.bukkit.block.Block;
@@ -74,9 +74,12 @@ public enum Property implements Serializable {
             return;
         }
 
+        String oldValue = this.action.getValue(block.getBlockData(), blockFace);
         this.action.modify(block.getBlockData(), block, blockFace);
         String value =  this.action.getValue(block.getBlockData(), blockFace);
-        Log.logCoreProtect(player, block);
+
+        LogUtil.logEdit(player, this, value, block, oldValue);
+
         if (block.getMetadata(DebugStick.METADATA_NAME_FORCE_VALUE).isEmpty())
             block.setMetadata(DebugStick.METADATA_NAME_FORCE_VALUE, new FixedMetadataValue(ProtectedDebugStick.getInstance(), true));
 

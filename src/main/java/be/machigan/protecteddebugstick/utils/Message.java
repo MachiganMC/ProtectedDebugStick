@@ -113,7 +113,7 @@ public class Message {
             message.content = PlaceholderAPI.setPlaceholders(player, message.content);
         } catch (NullPointerException e) {
             if (message.isNecessary) {
-                ProtectedDebugStick.getInstance().getLogger().warning("The message from \"" + path + "\" doesn't exist.");
+                LogUtil.getLogger().warning("The message from \"" + path + "\" doesn't exist.");
                 message.content = Tools.replaceColor("&3[&6&lProtected&e-DS&3] &cMessage &4&o" + path + " &cnot found");
             }
         }

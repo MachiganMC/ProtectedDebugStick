@@ -170,9 +170,30 @@ Settings:
 
 
 Log:
-  # Enable CoreProtect ?
-  # https://www.spigotmc.org/resources/coreprotect.8631/
-  CoreProtect: true
+  # The display of the log
+  # If no value is provided and the log is active, the plugin will display this message by default :
+  # "{player} edited the property {property_name} from {old_value} to {value} of the block at {block_loc_x} {block_loc_y} {block_loc_z}"
+  # For example, it wil display this kind of log :
+  # [01:04:27 INFO]: [DebugStick] Machigan edited the property bisected from bottom to top of the block at 39 -60 3 in world
+  #
+  # PH : (same way than in messages.yml)
+  # all PlaceHolders linked to an online player
+  # {property} : the property that the player edited
+  # {value} : the value of the property
+  # {old_value} : the old value of the property
+  # {block} : the block that the player edited
+  # {year} : the year when the player edited the block
+  # {month} : the month (number) when the player edited the block
+  # {day} : the day of the month (number) when the player edited the block
+  # {hour} : the hour when the player edited the block
+  # {minute} : the minute when the player edited the block
+  # {second} : the second when the player edited the block
+  # {player} : the player name of the player (if you've use PlaceHoldersAPI, this PH isn't useful)
+  Format: "{player} edited the property {property_name} from {old_value} to {value} of the block at {block_loc_x} {block_loc_y} {block_loc_z} in {block_loc_world}"
+
+  # Enable the log in the console ?
+  Console: true
+
 
 
 # Here you can create recipes for the debug stick of the plugin

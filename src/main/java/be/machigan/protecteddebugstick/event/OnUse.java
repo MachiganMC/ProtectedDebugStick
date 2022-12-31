@@ -2,6 +2,7 @@ package be.machigan.protecteddebugstick.event;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
+import be.machigan.protecteddebugstick.def.DebugStickData;
 import be.machigan.protecteddebugstick.def.DebugStickDataType;
 import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.utils.Config;
@@ -82,7 +83,8 @@ public class OnUse implements Listener {
             return;
         }
 
-        Property current = item.getItemMeta().getPersistentDataContainer().get(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE).getDebugStick().getCurrentProperty();
+        Property current = item.getItemMeta().getPersistentDataContainer().get(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE)
+                .getDebugStick().getCurrentProperty();
         int index;
         try {
             if (current == null)
@@ -203,6 +205,7 @@ public class OnUse implements Listener {
             ItemMeta meta = item.getItemMeta();
             DebugStick debugStick = meta.getPersistentDataContainer().get(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE).getDebugStick();
             debugStick.setCurrentProperty(current);
+            meta.getPersistentDataContainer().set(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE, new DebugStickData(debugStick));
             item.setItemMeta(meta);
             Message.getMessage("OnUse.ChangeProperty", player, false)
                     .replace(block)

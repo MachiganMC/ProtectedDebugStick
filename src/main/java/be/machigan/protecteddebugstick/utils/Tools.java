@@ -20,20 +20,16 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Tools {
-    final public static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     final public static String LOG_INFO = "info";
     final public static String LOG_WARNING = "warning";
     final public static String LOG_SEVERE = "severe";
@@ -94,6 +90,7 @@ public class Tools {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
 
+
     public static BaseComponent[] replaceColor(TextComponent text) {
         List<TextComponent> bc = new ArrayList<>();
         String s = Tools.replaceColor(text.getText());
@@ -117,6 +114,7 @@ public class Tools {
         }
         return bc.toArray(new BaseComponent[0]);
     }
+
 
     public static String gradient(String message, String from, String to, String subS) {
         if (message == null) {
@@ -162,8 +160,6 @@ public class Tools {
             return message;
         }
     }
-
-
 
 
     /**
@@ -232,21 +228,6 @@ public class Tools {
 
 
     /**
-     * Search in the config file a string to color
-     * @param path The path in the config to search
-     * @return The string you want in the config
-     */
-    public static String configColor(String path) {
-        try {
-            return replaceColor(ProtectedDebugStick.getInstance().getConfig().getString(path));
-        } catch (NullPointerException ignored) {
-            log("Warning, the field \"" + path + "\" is empty in the configuration file", Tools.LOG_SEVERE);
-            return "";
-        }
-    }
-
-
-    /**
      * Make console execute a command
      * @param command The command you to execute
      */
@@ -256,33 +237,33 @@ public class Tools {
     }
 
 
-    /**
-     * Log into the console a message
-     * @param message The message you want to log
-     * @param logType The type of log
-     */
-    public static void log(String message, String logType) {
-        Logger log = Logger.getLogger("Minecraft");
-        switch (logType) {
-            case Tools.LOG_INFO:
-                log.info(ProtectedDebugStick.NAME + " " + message);
-                return;
-            case Tools.LOG_WARNING:
-                log.warning(ProtectedDebugStick.NAME + " " + message);
-                return;
-            case Tools.LOG_SEVERE:
-                log.severe(ProtectedDebugStick.NAME + " " + message);
-
-        }
-    }
-
-
-    /**
-     * The type of the log will always be "info"
-     * @param message message you want to log
-     */
-    public static void log(String message) {
-        log(message, Tools.LOG_INFO);
-    }
+//    /**
+//     * Log into the console a message
+//     * @param message The message you want to log
+//     * @param logType The type of log
+//     */
+//    public static void log(String message, String logType) {
+//        Logger log = Logger.getLogger("Minecraft");
+//        switch (logType) {
+//            case Tools.LOG_INFO:
+//                log.info(ProtectedDebugStick.NAME + " " + message);
+//                return;
+//            case Tools.LOG_WARNING:
+//                log.warning(ProtectedDebugStick.NAME + " " + message);
+//                return;
+//            case Tools.LOG_SEVERE:
+//                log.severe(ProtectedDebugStick.NAME + " " + message);
+//
+//        }
+//    }
+//
+//
+//    /**
+//     * The type of the log will always be "info"
+//     * @param message message you want to log
+//     */
+//    public static void log(String message) {
+//        log(message, Tools.LOG_INFO);
+//    }
 
 }

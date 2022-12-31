@@ -6,7 +6,6 @@ import be.machigan.protecteddebugstick.event.OnClickInspector;
 import be.machigan.protecteddebugstick.event.OnUpdate;
 import be.machigan.protecteddebugstick.event.OnUse;
 import be.machigan.protecteddebugstick.utils.Config;
-import be.machigan.protecteddebugstick.utils.Tools;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,20 +13,20 @@ import java.io.File;
 
 public class ProtectedDebugStick extends JavaPlugin {
     private static ProtectedDebugStick instance;
-    final public static String NAME = "[Protected-DS]";
 
     @Override
     public void onEnable() {
         instance = this;
+
         try {
             Config.reload();
         } catch (InvalidConfigurationException e) {
             if (Config.Item.BASIC.getConfigSection() == null)
-                Tools.log("The configuration of BasicDebugStick cannot be found. Disabling the plugin", Tools.LOG_SEVERE);
+                this.getLogger().severe("The configuration of BasicDebugStick cannot be found. Disabling the plugin");
             if (Config.Item.INFINITY.getConfigSection() == null)
-                Tools.log("The configuration of InfinityDebugStick cannot be found. Disabling the plugin", Tools.LOG_SEVERE);
+                this.getLogger().severe("The configuration of InfinityDebugStick cannot be found. Disabling the plugin");
             if (Config.Item.INSPECTOR.getConfigSection() == null)
-                Tools.log("The configuration of Inspector cannot be found. Disabling the plugin", Tools.LOG_SEVERE);
+                this.getLogger().severe("The configuration of Inspector cannot be found. Disabling the plugin");
 
             ProtectedDebugStick.getInstance().getPluginLoader().disablePlugin(ProtectedDebugStick.getInstance());
             return;
@@ -40,19 +39,15 @@ public class ProtectedDebugStick extends JavaPlugin {
         getCommand("pds").setTabCompleter(new TabPDS());
 
         File file = new File(ProtectedDebugStick.getInstance().getDataFolder() + "/messages.yml");
-        if (!file.exists())
+        if (!file.exists()) {
+            this.getLogger().info("Generating \"messages.yml\" ...");
             ProtectedDebugStick.getInstance().saveResource("messages.yml", false);
+        }
 
-        Tools.log("Enabled");
+
     }
 
     public static ProtectedDebugStick getInstance() {
         return instance;
-    }
-
-
-    @Override
-    public void onDisable() {
-        Tools.log("Disable");
     }
 }

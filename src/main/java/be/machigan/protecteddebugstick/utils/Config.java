@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,10 +49,6 @@ public final class Config {
         }
 
         Recipe.reload();
-
-        if (Log.coreProtectEnable()) {
-            be.machigan.protecteddebugstick.utils.Log.getCoreProtect();
-        }
     }
 
     @NotNull
@@ -212,15 +207,13 @@ public final class Config {
     public static class Log {
         final private static String PATH = "Log.";
 
-        public static boolean coreProtectEnable() {
-            return config.getBoolean(PATH + "CoreProtect");
+        public static boolean consoleEnable() {
+            return config.getBoolean(PATH + "Console");
         }
 
-        public static void disableCoreProtect() {
-            config.set(PATH + "CoreProtect", false);
-            try {
-                config.save(new File(ProtectedDebugStick.getInstance().getDataFolder(), "/config.yml"));
-            } catch (IOException ignored) {}
+        @Nullable
+        public static String getFormat() {
+            return config.getString(PATH + "Format");
         }
     }
 
@@ -250,7 +243,7 @@ public final class Config {
                     }
                 } catch (NullPointerException e) {
                     removed.add(key);
-                    Tools.log("Item type for " + key + " not found or invalid", Tools.LOG_WARNING);
+                    LogUtil.getLogger().warning("Item type for " + key + " not found or invalid");
                     continue;
                 }
 
@@ -259,7 +252,7 @@ public final class Config {
                 try {
                     fields = configurationSection.getConfigurationSection(key + ".Craft").getKeys(false);
                 } catch (NullPointerException ignored) {
-                    Tools.log("Recipes \"" + key + "\" has no slot. Ignoring the recipe", Tools.LOG_WARNING);
+                    LogUtil.getLogger().warning("Recipes \"" + key + "\" has no slot. Ignoring the recipe");
                     removed.add(key);
                     continue;
                 }
@@ -284,7 +277,7 @@ public final class Config {
                     case BASIC:
                         int durability = configurationSection.getInt(key + ".Durability");
                         if (durability <= 0) {
-                            Tools.log("The craft " + key + " for a basic debug stick has a invalid durability (" + durability + ")");
+                            LogUtil.getLogger().info("The craft \" + key + \" for a basic debug stick has a invalid durability (\" + durability + \")");
                             continue;
                         }
                         ds = DebugStick.getBasicDebugStick(durability);
@@ -303,7 +296,7 @@ public final class Config {
                 try {
                     shapeSet = configurationSection.getConfigurationSection(key + ".Craft").getKeys(false);
                 } catch (NullPointerException e) {
-                    Tools.log("Recipes \"" + key + "\" has no slot. Ignoring the recipe", Tools.LOG_WARNING);
+                    LogUtil.getLogger().warning("Recipes \"" + key + "\" has no slot. Ignoring the recipe");
                     continue;
                 }
 
@@ -322,9 +315,10 @@ public final class Config {
                             recipe.setIngredient(Integer.toString(i).toCharArray()[0], m);
                         } else {
                             recipe.setIngredient(Integer.toString(i).toCharArray()[0], Material.BARRIER);
-                            Tools.log("The material \"" + configurationSection.getString(
-                                    key + ".Craft." + i) + "\" doesn't" + " exist from the recipe \"" +
-                                    key + "\" (slot N°" + i + ") ! This slot has been replaces by a barrier block", Tools.LOG_WARNING);
+                            LogUtil.getLogger().warning("The material \"" +
+                                    configurationSection.getString(key + ".Craft." + i) +
+                                    "\" doesn't" + " exist from the recipe \"" +
+                                    key + "\" (slot N°" + i + ") ! This slot has been replaces by a barrier block");
                         }
                     } catch (IllegalArgumentException ignored) {}
                 }
@@ -341,10 +335,10 @@ public final class Config {
                 } catch (ClassCastException ignored) {}
             }
 
-            for (ShapedRecipe recipe : recipes) {
+            for (ShapedRecipe recipe : recipes)
                 Bukkit.addRecipe(recipe);
-            }
-            Tools.log(recipes.size() + " recipes has been registered");
+
+            LogUtil.getLogger().info(recipes.size() + " recipes has been registered");
         }
     }
 }
