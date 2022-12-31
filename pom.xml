@@ -20,10 +20,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <excludes>
-                    <exclude>properties_fr.yml</exclude>
-                    <exclude>properties_en.yml</exclude>
                     <exclude>icon.png</exclude>
-                    <exclude>config_fr.yml</exclude>
                 </excludes>
             </resource>
         </resources>

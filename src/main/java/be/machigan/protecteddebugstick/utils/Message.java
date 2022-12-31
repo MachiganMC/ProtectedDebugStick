@@ -194,6 +194,12 @@ public class Message {
         if (this.hoverContent != null)
             this.hoverContent = this.hoverContent.replace(from, to);
 
+        if (this.suggestedCommand != null)
+            this.suggestedCommand = this.suggestedCommand.replace(from, to);
+
+        if (this.runCommand != null)
+            this.runCommand = this.runCommand.replace(from, to);
+
         return this;
     }
 
@@ -289,8 +295,10 @@ public class Message {
 
         if (this.hoverContent != null) {
             Content finalHoverContent = new Text(Tools.replaceColor(new TextComponent(this.hoverContent)));
-            for (BaseComponent b : this.finalContent)
+            for (BaseComponent b : this.finalContent) {
+                System.out.println("1) " + b.toLegacyText());
                 b.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, finalHoverContent));
+            }
         }
 
         if (this.runCommand != null)

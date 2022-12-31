@@ -344,6 +344,39 @@ Command:
         \n&4&lDisabling the plugin
         \n&c&oSee the logs for more informations"
 
+      Load:
+        # When the player doesn't the perm to use the command
+        # This message isn't necessary
+        # PH :
+        # {perm} : the perm missing
+        NoPerm: "{prefix} &cYou doesn't have the perm to do that !"
+
+        # When the player doesn't provide not enough arg
+        # This message is necessary !
+        # PH : /
+        NotEnoughArg: "{prefix} &cPlease precise the file to load !"
+
+        # When the file doesn't exist
+        # This message is necessary !
+        # PH :
+        # {file} : the file that doesn't exist
+        FileNotExists: "{prefix} &cThe file &4{file} &cdoesn't exist !"
+
+        # When the file already exists and the command sender doesn't want to overwrite it
+        # This message is necessary !
+        # PH :
+        # {file} : the file that already exist
+        FileAlreadyExists: "{prefix} &cThe file &4{file} &calready exist !
+        \n&aUse &2&o/pds load {file} over-write &ato overwrite it"
+        FileAlreadyExistsHover: "Click to have the command"
+        FileAlreadyExistsSuggest: "/pds load {file} over-write"
+
+        # When the file has been loaded
+        # This message is necessary !
+        # PH :
+        # {file} : the file that has been loaded
+        Success: "{prefix} &aThe file &2{file} &ahas been loaded !"
+
     # When the argument isn't a command
     # This message isn't necessary
     # PH :
