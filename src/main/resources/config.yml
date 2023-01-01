@@ -133,6 +133,7 @@ Settings:
     LIGHTABLE: 5
     REDSTONEWIRE: 2
     WATERLOGGED: 3
+    ANALOGUE_POWERABLE: 10
     POWERABLE: 10
     AGEABLE: 20
     SAPLING: 10
@@ -141,6 +142,35 @@ Settings:
     SNOWABLE: 3
     DISTANCE: 1
     LAYERS: 1
+    BAMBOO_LEAVES: 2
+    TILT: 5
+    EGGS: 50
+    HATCH: 20
+    SIGNAL_FIRE: 5
+    ATTACHABLE: 5
+    EXTENDABLE: 10
+    HANGALBLE: 5
+    CAKE: 5
+    BERRY: 10
+    CONDITIONAL: 10
+    OPENABLE: 1
+    END_PORTAL_FRAME: 5
+    FACE_ATTACHABLE: 3
+    FARMLAND: 3
+    GATE: 3
+    LEVELLED: 10
+    THICKNESS: 5
+    VERTICAL_DIRECTION: 1
+    DELAY: 1
+    LOCKED: 2
+    CHARGES: 5
+    BLOOM: 10
+    PHASE: 3
+    SUMMON: 10
+    SHRIEKING: 1
+    PICKLES: 10
+    DISARMED: 3
+
 
   # The properties that the player doesn't have the permissions to edit will be hide
   # It's like, for the player, the properties never existed
@@ -192,7 +222,7 @@ Log:
   Format: "{player} edited the property {property_name} from {old_value} to {value} of the block at {block_loc_x} {block_loc_y} {block_loc_z} in {block_loc_world}"
 
   # Enable the log in the console ?
-  Console: true
+  Console: false
 
 
 

@@ -159,6 +159,34 @@ permissions:
       pds.property.snowable: true
       pds.property.distance: true
       pds.property.layers: true
+      pds.property.bamboo-leaves: true
+      pds.property.tilt: true
+      pds.property.eggs: true
+      pds.property.hatch: true
+      pds.property.signal-fire: true
+      pds.property.attachable: true
+      pds.property.extendable: true
+      pds.property.hangable: true
+      pds.property.cake: true
+      pds.property.berry: true
+      pds.property.conditional: true
+      pds.property.openable: true
+      pds.property.end-portal-frame: true
+      pds.property.face-attachable: true
+      pds.property.farmland: true
+      pds.property.gate: true
+      pds.property.levelled: true
+      pds.property.thickness: true
+      pds.property.vertical-direction: true
+      pds.property.delay: true
+      pds.property.locked: true
+      pds.property.charges: true
+      pds.property.bloom: true
+      pds.property.phase: true
+      pds.property.summon: true
+      pds.property.shrieking: true
+      pds.propery.pickles: true
+      pds.property.disarmed: true
   # Children permissions of property :
   pds.property.orientable:
     description: Allows player to edit the property orientable
@@ -196,9 +224,12 @@ permissions:
   pds.property.water-logged:
     description: Allows player to edit the property water logged
     default: false
+  pds.property.analogue-powerable:
+    description: Allows player to edit the analogue powerable property
+    default: true
   pds.property.powerable:
     description: Allows player to edit the property powerable
-    default: false
+    default: true
   pds.property.ageable:
     description: Allows player to edit the property ageable
     default: false
@@ -220,3 +251,87 @@ permissions:
   pds.property.layers:
     description: Allows player to edit the property layers
     default: false
+  pds.property.bamboo-leaves:
+    description: Allows player to edit the property leaves of a bamboo
+    default: true
+  pds.property.tilt:
+    description: Allows player to edit the property tilt
+    default: true
+  pds.property.eggs:
+    description: Allows player to edit the number of eggs on a turtle egg
+    default: false
+  pds.property.hatch:
+    description: Allows player to edit the hatch property of a turtle egg
+    default: true
+  pds.property.signal-fire:
+    description: Allows player to edit the signal fire property
+    default: true
+  pds.property.attachable:
+    description: Allows player to edit the attachable property
+    default: false
+  pds.property.extendable:
+    description: Allows player to edit the extendable property
+    default: false
+  pds.property.hangable:
+    description: Allows player to edit the hangable property
+    default: false
+  pds.property.cake:
+    description: Allows player to edit the cake property
+    default: true
+  pds.property.berry:
+    description: Allows player to edit the berry property
+    default: true
+  pds.property.conditional:
+    description: Allows player to edit the conditional property
+    default: false
+  pds.property.openable:
+    description: Allows player to edit openable property
+    default: true
+  pds.property.end-portal-frame:
+    description: Allows player to the eye of an end portal frame
+    default: true
+  pds.property.face-attachable:
+    description: Allows player to edit the face attachable property
+    default: true
+  pds.property.farmland:
+    description: Allows player to edit the farmland property
+    default: true
+  pds.property.gate:
+    description: Allows player to edit the gate property
+    default: true
+  pds.property.levelled:
+    description: Allows player to edit the levelled property
+    default: true
+  pds.property.thickness:
+    description: Allows player to edit the thickness property
+    default: true
+  pds.property.vertical-direction:
+    description: Allows player to edit the vertical direction property
+    default: true
+  pds.property.delay:
+    description: Allows player to edit the delay property
+    default: true
+  pds.property.locked:
+    description: Allows player to edit the locked property
+    default: true
+  pds.property.charges:
+    description: Allows player to edit the charges property
+    default: true
+  pds.property.bloom:
+    description: Allows player to edit the bloom property
+    default: true
+  pds.property.phase:
+    description: Allows player to edit the phase property
+    default: true
+  pds.property.summon:
+    description: Allows player to edit the summon property
+    default: true
+  pds.property.shrieking:
+    description: Allows player to edit the shrieking property
+    default: true
+  pds.property.pickles:
+    description: Allows player to edit the number of pickles of a pickle
+    default: false
+  pds.property.disarmed:
+    description: Allows player to edit the disarmed property
+    default: true

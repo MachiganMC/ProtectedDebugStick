@@ -11,7 +11,7 @@ import java.util.Random;
 public class MultiplefacingAction implements PropertyAction {
 
     @Override
-    public @NotNull void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         MultipleFacing multipleFacingData = (MultipleFacing) data;
 
         if (!multipleFacingData.getAllowedFaces().contains(BlockFace.UP) && blockFace.equals(BlockFace.UP)) {

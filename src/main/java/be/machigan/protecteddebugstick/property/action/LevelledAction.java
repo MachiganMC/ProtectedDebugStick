@@ -3,21 +3,27 @@ package be.machigan.protecteddebugstick.property.action;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.Levelled;
 import org.jetbrains.annotations.NotNull;
 
-public class WaterLoggedAction implements PropertyAction {
+public class LevelledAction implements PropertyAction {
+
     @Override
     public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
-        Waterlogged waterLoggedData = (Waterlogged) data;
+        Levelled levelled = (Levelled) data;
 
-        waterLoggedData.setWaterlogged(!waterLoggedData.isWaterlogged());
+        if (levelled.getLevel() == levelled.getMaximumLevel()) {
+            levelled.setLevel(1);
+        } else {
+            levelled.setLevel(levelled.getLevel() + 1);
+        }
 
-        block.setBlockData(waterLoggedData);
+        block.setBlockData(levelled);
     }
 
     @Override
     public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
-        return Boolean.toString(((Waterlogged) data).isWaterlogged());
+        Levelled levelled = (Levelled) data;
+        return Integer.toString(levelled.getLevel());
     }
 }

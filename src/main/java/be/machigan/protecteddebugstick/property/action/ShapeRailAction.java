@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ShapeRailAction implements PropertyAction{
     @Override
-    public @NotNull void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         Rail railData = (Rail) data;
 
         if (railData.getShapes().size() == 10) {

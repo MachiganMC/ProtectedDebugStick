@@ -31,14 +31,42 @@ public enum Property implements Serializable {
     LIGHTABLE(5, Permission.Property.LIGHTABLE, Lightable.class, new LightableAction()),
     REDSTONEWIRE(2, Permission.Property.REDSTONE_WIRE, RedstoneWire.class, new RedstoneWireAction()),
     WATER_LOGGED(3, Permission.Property.WATER_LOGGED, Waterlogged.class, new WaterLoggedAction()),
-    POWERABLE(10, Permission.Property.POWERABLE, AnaloguePowerable.class, new PowerableAction()),
+    ANALOGUE_POWERABLE(10, Permission.Property.ANALOGUE_POWERABLE, AnaloguePowerable.class, new AnaloguePowerableAction()),
+    POWERABLE(10, Permission.Property.POWERABLE, Powerable.class, new PowerableAction()),
     AGEABLE(20, Permission.Property.AGEABLE, Ageable.class, new AgeableAction()),
     SAPLING(10, Permission.Property.SAPLING, Sapling.class, new SaplingAction()),
     BEEHIVE(5, Permission.Property.BEEHIVE, Beehive.class, new BeehiveAction()),
     WALL(1, Permission.Property.WALL, Wall.class, new WallAction()),
     SNOWABLE(3, Permission.Property.SNOWABLE, Snowable.class, new SnowableAction()),
     DISTANCE(1, Permission.Property.DISTANCE, Leaves.class, new DistanceAction()),
-    LAYERS(1, Permission.Property.LAYERS, Snow.class, new LayersAction());
+    LAYERS(1, Permission.Property.LAYERS, Snow.class, new LayersAction()),
+    BAMBOO_LEAVES(2, Permission.Property.BAMBOO_LEAVES, Bamboo.class, new BambooLeavesAction()),
+    TILT(5, Permission.Property.TILT, BigDripleaf.class, new TiltAction()),
+    EGGS(50, Permission.Property.EGGS, TurtleEgg.class, new EggsAction()),
+    HATCH(20, Permission.Property.HATCH, TurtleEgg.class, new HatchAction()),
+    SIGNAL_FIRE(5, Permission.Property.SIGNAL_FIRE, Campfire.class, new SignalFireAction()),
+    ATTACHABLE(5, Permission.Property.ATTACHABLE, Attachable.class, new AttachableAction()),
+    EXTENDABLE(10, Permission.Property.EXTENDABLE, Piston.class, new ExtendableAction()),
+    HANGABLE(5, Permission.Property.HANGABLE, Hangable.class, new HangableAction()),
+    CAKE(5, Permission.Property.CAKE, Cake.class, new CakeAction()),
+    BERRY(10, Permission.Property.BERRY, CaveVinesPlant.class, new BerryAction()),
+    CONDITIONAL(10, Permission.Property.CONDITIONAL, CommandBlock.class, new ConditionalAction()),
+    OPENABLE(1, Permission.Property.OPENABLE, Openable.class, new OpenableAction()),
+    END_PORTAL_FRAME(5, Permission.Property.END_PORTAL_FRAME, EndPortalFrame.class, new EndPortalFrameAction()),
+    FACE_ATTACHABLE(3, Permission.Property.FACE_ATTACHABLE, FaceAttachable.class, new FaceAttachableAction()),
+    FARMLAND(3, Permission.Property.FARMLAND, Farmland.class, new FarmlandAction()),
+    GATE(3, Permission.Property.GATE, Gate.class, new GateAction()),
+    LEVELLED(10, Permission.Property.LEVELLED, Levelled.class, new LevelledAction()),
+    THICKNESS(5, Permission.Property.THICNKESS, PointedDripstone.class, new ThicknessAction()),
+    VERTICAL_DIRECTION(1, Permission.Property.VERTICAL_DIRECTION, PointedDripstone.class, new VerticalDirectionAction()),
+    LOCKED(2, Permission.Property.LOCKED, Repeater.class, new LockedAction()),
+    CHARGES(5, Permission.Property.CHARGES, RespawnAnchor.class, new ChargesAction()),
+    BLOOM(10, Permission.Property.BLOOM, SculkCatalyst.class, new BloomAction()),
+    PHASE(3, Permission.Property.PHASE, SculkSensor.class, new PhaseAction()),
+    SUMMON(10, Permission.Property.SUMMON, SculkShrieker.class, new SummonAction()),
+    SHRIEKING(1, Permission.Property.SHRIEKING, SculkShrieker.class, new ShriekingAction()),
+    PICKLES(10, Permission.Property.PICKLES, SeaPickle.class, new PicklesAction()),
+    DISARMED(3, Permission.Property.DISARMED, Tripwire.class, new DisarmedAction());
     final private static long serialVersionUID = 3L;
 
 
@@ -48,7 +76,7 @@ public enum Property implements Serializable {
     @NotNull private final PropertyAction action;
 
 
-    Property(int durability, Permission.Property permission, @NotNull Class<? extends BlockData> dataClass, @NotNull PropertyAction action) {
+    Property(int durability, @NotNull Permission.Property permission, @NotNull Class<? extends BlockData> dataClass, @NotNull PropertyAction action) {
         this.durability = Math.max(durability, 0);
         this.permission = permission;
         this.dataClass = dataClass;

@@ -2,25 +2,28 @@ package be.machigan.protecteddebugstick.property.action;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.RespawnAnchor;
 import org.jetbrains.annotations.NotNull;
 
-public class AgeableAction implements PropertyAction {
+public class ChargesAction implements PropertyAction {
+
     @Override
     public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
-        Ageable ageableData = (Ageable) data;
-        if (ageableData.getAge() == ageableData.getMaximumAge()) {
-            ageableData.setAge(0);
+        RespawnAnchor respawnAnchor = (RespawnAnchor) data;
+
+        if (respawnAnchor.getCharges() == respawnAnchor.getMaximumCharges()) {
+            respawnAnchor.setCharges(0);
         } else {
-            ageableData.setAge(ageableData.getAge() + 1);
+            respawnAnchor.setCharges(respawnAnchor.getCharges() + 1);
         }
 
-        block.setBlockData(ageableData);
+        block.setBlockData(respawnAnchor);
     }
 
     @Override
     public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
-        return Integer.toString(((Ageable) data).getAge());
+        RespawnAnchor respawnAnchor = (RespawnAnchor) data;
+        return Integer.toString(respawnAnchor.getCharges());
     }
 }

@@ -3,21 +3,23 @@ package be.machigan.protecteddebugstick.property.action;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.type.Tripwire;
 import org.jetbrains.annotations.NotNull;
 
-public class WaterLoggedAction implements PropertyAction {
+public class DisarmedAction implements PropertyAction {
+
     @Override
     public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
-        Waterlogged waterLoggedData = (Waterlogged) data;
+        Tripwire tripwire = (Tripwire) data;
 
-        waterLoggedData.setWaterlogged(!waterLoggedData.isWaterlogged());
+        tripwire.setDisarmed(!tripwire.isDisarmed());
 
-        block.setBlockData(waterLoggedData);
+        block.setBlockData(tripwire);
     }
 
     @Override
     public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
-        return Boolean.toString(((Waterlogged) data).isWaterlogged());
+        Tripwire tripwire = (Tripwire) data;
+        return Boolean.toString(tripwire.isDisarmed());
     }
 }

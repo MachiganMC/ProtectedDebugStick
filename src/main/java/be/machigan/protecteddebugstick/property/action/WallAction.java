@@ -12,7 +12,7 @@ import java.util.Random;
 public class WallAction implements PropertyAction {
 
     @Override
-    public @NotNull void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         Wall wallData = (Wall) data;
 
         try {

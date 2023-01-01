@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DirectionalAction implements PropertyAction{
     @Override
-    public @NotNull void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         Directional directionalData = (Directional) data;
 
         if (directionalData.getFaces().size() == 6) {

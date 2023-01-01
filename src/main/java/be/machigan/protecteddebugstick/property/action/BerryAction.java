@@ -3,21 +3,23 @@ package be.machigan.protecteddebugstick.property.action;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.type.CaveVinesPlant;
 import org.jetbrains.annotations.NotNull;
 
-public class WaterLoggedAction implements PropertyAction {
+public class BerryAction implements PropertyAction {
+
     @Override
     public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
-        Waterlogged waterLoggedData = (Waterlogged) data;
+        CaveVinesPlant caveVinesPlant = (CaveVinesPlant) data;
 
-        waterLoggedData.setWaterlogged(!waterLoggedData.isWaterlogged());
+        caveVinesPlant.setBerries(!caveVinesPlant.isBerries());
 
-        block.setBlockData(waterLoggedData);
+        block.setBlockData(caveVinesPlant);
     }
 
     @Override
     public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
-        return Boolean.toString(((Waterlogged) data).isWaterlogged());
+        CaveVinesPlant caveVinesPlant = (CaveVinesPlant) data;
+        return Boolean.toString(caveVinesPlant.isBerries());
     }
 }

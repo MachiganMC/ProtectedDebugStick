@@ -10,7 +10,7 @@ public class DistanceAction implements PropertyAction {
     final private static int MAX_DISTANCE = 7; //currently, the max value for the 'distance' property
 
     @Override
-    public @NotNull void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         Leaves leavesData = (Leaves) data;
 
         if (leavesData.getDistance() == MAX_DISTANCE) {

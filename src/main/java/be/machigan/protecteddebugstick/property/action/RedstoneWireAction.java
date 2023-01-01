@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class RedstoneWireAction implements PropertyAction {
     @Override
-    public @NotNull void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         RedstoneWire redstoneWireData = (RedstoneWire) data;
 
         try {

@@ -3,21 +3,23 @@ package be.machigan.protecteddebugstick.property.action;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Waterlogged;
+import org.bukkit.block.data.Openable;
 import org.jetbrains.annotations.NotNull;
 
-public class WaterLoggedAction implements PropertyAction {
+public class OpenableAction implements PropertyAction {
+
     @Override
     public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
-        Waterlogged waterLoggedData = (Waterlogged) data;
+        Openable openable = (Openable) data;
 
-        waterLoggedData.setWaterlogged(!waterLoggedData.isWaterlogged());
+        openable.setOpen(!openable.isOpen());
 
-        block.setBlockData(waterLoggedData);
+        block.setBlockData(openable);
     }
 
     @Override
     public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
-        return Boolean.toString(((Waterlogged) data).isWaterlogged());
+        Openable openable = (Openable) data;
+        return Boolean.toString(openable.isOpen());
     }
 }
