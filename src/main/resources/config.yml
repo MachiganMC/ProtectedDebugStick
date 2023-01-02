@@ -15,8 +15,8 @@
 #
 #
 # Welcome to the configuration EN of the plugin ! You'll find here a guide to configure the plugin !
-# Si vous êtes un francophone, une aide de configuration en français est disponible dans le fichier
-# "config_fr.yml" dans le dossier ressources.
+# Si vous êtes un francophone, vous pouvez charger une version française de ce fichier via la commande
+# '/pds load config_fr'
 
 
 # Defines the 3 items of the plugin, the settings are the sames for the three items
@@ -26,27 +26,29 @@ Items:
     Material: "BAMBOO"
 
     # The name of the object.
-    Name: "<s:33FFBB>&lBASIC DEBUG STICK<e:33FFBB>"
+    Name: "#33FFBB&lBASIC DEBUG STICK"
 
     # His lore, his description. Each element of the list is a line of the lore.
-    Lore: #{durability}
+    # PH :
+    # {durability} : the durability left of the basic debugstick
+    Lore:
       - ""
       - "&e&lRIGHT-CLICK"
-      - " &7&oto edit rotations properties"
+      - " &7&oto edit properties"
       - ""
       - "&a&lLEFT-CLICK"
-      - " &7&oto edit reverses properties"
+      - " &7&oto change current property"
       - ""
       - "&c&lSHIFT + RIGHT-CLICK"
-      - " &7&oto edit specials properties"
+      - " &7&oto clear permanent value"
       - ""
       - "&9&lSHIFT + LEFT-CLICK"
-      - " &7&oto edit creatives properties"
+      - " &7&oto see all editable properties"
       - ""
-      - "&aUses left : &e{durability}"
+      - "&aDurability left : &e{durability}"
 
-    # Enchant(s) of the items, each element represent an enchant. You don't have to add the  "minecraft:" before
-    # the name of to enchant. It's not necessary for an item to have an enchant.
+    # Enchant(s) of the items, each element represent an enchantement. You don't have to add the  "minecraft:" before
+    # the name of to enchant. It's not necessary for an item to have an enchantement.
     Enchants:
 
     # Flags of the item to enable (true) or disable (false)
@@ -70,20 +72,20 @@ Items:
 
   InfinityDebugStick:
     Material: "DEAD_BUSH"
-    Name: "<s:E60000>&lRACINE DE<e:FFD919><s:FFD919>&l DÉBOGAGE<e:E60000>"
+    Name: "<s:E60000>&lINFINITE<e:FFD919><s:FFD919> &lDEBUG STICK<e:E60000>"
     Lore:
       - ""
       - "&e&lRIGHT-CLICK"
-      - " &7&oto edit rotations properties"
+      - " &7&oto edit properties"
       - ""
       - "&a&lLEFT-CLICK"
-      - " &7&oto edit reverses properties"
+      - " &7&oto change current property"
       - ""
       - "&c&lSHIFT + RIGHT-CLICK"
-      - " &7&oto edit specials properties"
+      - " &7&oto clear permanent value"
       - ""
       - "&9&lSHIFT + LEFT-CLICK"
-      - " &7&oto edit creatives properties"
+      - " &7&oto see all editable properties"
       - ""
       - "&aUse left : &e∞"
 
@@ -118,7 +120,7 @@ Items:
 
 Settings:
   # The damage that the durability will take when the debug stick modify this property.
-  # (see in the file "properties_en.yml" in the folder ressources, the definition of each property)
+  # (see in the file "properties_en" in the folder ressources, the definition of each property)
   # A durability of a property can be 0 but not a negative number.
   Durability:
     ORIENTABLE: 1
@@ -129,15 +131,15 @@ Settings:
     SHAPE_STAIRS: 1
     SHAPE_RAIL: 1
     PERSISTENT: 3
-    MULTIPLEFACING: 1
+    MULTIPLE_FACING: 1
     LIGHTABLE: 5
-    REDSTONEWIRE: 2
-    WATERLOGGED: 3
+    REDSTONE_WIRE: 2
+    WATER_LOGGED: 3
     ANALOGUE_POWERABLE: 10
     POWERABLE: 10
     AGEABLE: 20
-    SAPLING: 10
-    BEEHIVE: 5
+    STAGE: 10
+    HONEY_LEVEL: 5
     WALL: 1
     SNOWABLE: 3
     DISTANCE: 1
@@ -218,7 +220,7 @@ Log:
   # {hour} : the hour when the player edited the block
   # {minute} : the minute when the player edited the block
   # {second} : the second when the player edited the block
-  # {player} : the player name of the player (if you've use PlaceHoldersAPI, this PH isn't useful)
+  # {player} : the player name of the player (if you've use PlaceHoldersAPI, this PH isn't useful -> %player_name%)
   Format: "{player} edited the property {property_name} from {old_value} to {value} of the block at {block_loc_x} {block_loc_y} {block_loc_z} in {block_loc_world}"
 
   # Enable the log in the console ?
@@ -229,9 +231,10 @@ Log:
 # Here you can create recipes for the debug stick of the plugin
 # To create a recipe, you have to create a new field in the recipes section and name
 # it like you want (different name per recipe).
-# In this new field,  you have to have 2 children fields :
-# 'Durability' -> the durability of the debug stick, this field isn't necessary if the field "Item" isn"t "BASIC"
-# 'Craft' -> Represent the slot in the craft table with the material to put in
+# In this new field,  you have to have 3 children fields :
+# 'Item' : in "BASIC", "INFINITY" or "INSPECTOR"
+# 'Durability' : the durability of the debug stick, this field isn't necessary if the field "Item" isn"t "BASIC"
+# 'Craft' : Represent the slot in the craft table with the material to put in
 #
 #   / / / / / / /
 #   / 1 / 2 / 3 /    / / / / / / / / /

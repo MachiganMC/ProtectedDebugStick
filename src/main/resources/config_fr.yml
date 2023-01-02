@@ -14,211 +14,248 @@
 #
 #
 #
-# Bienvenue dans la configuration FR du plugin ! Vous allez trouvé ici un guide pour configurer le plugin !
-# If you are an english speaker, you can the english version of the configuration in the config_fr.yml file from
-# the resources folder.
-#
-# Á savoir que ce fichier n'est pas pris en compte par le plugin ! Seul le fichier "config.yml" dans le dossier ressources
-# est pris comme configuration. Ce fichier ne sert que d'aide, si vous voulez l'utilisez copiez-y son contenu dans celui du
-# fichier config.yml.
-#
-#
-# Tout d'abord, le plugin accepte les couleurs de Minecraft. Par exemple, si vous voulez mettre le texte
-# en rouge utiliser "&4" (codes des couleurs disponibles ici : https://minecraft.tools/fr/color-code.php)
-# Mais vous pouvez aussi générer un gradient de couleur (=variation d'une couleur A vers une couleur B) dans une phrase.
-#en utilisant ce code : "<s:[code RGB 1ère couleur]>[chaîne de caractères à colorer]<e:code couleur RG de la 2ème couleur]>"
-# Exemple :
-# Je veux un gradient de bleu clair (code : 80FFFF) à rose (code : FF99FF) pour la phrase suivante "démonstration d'un gradient"
-# J'aurai le code suivant :
-#   <s:80FFFF>démonstration d'un gradient<e:FF99FF>
-# Notez que vous pouvez utiliser les format de couleur dans la phrase (comme italique ou gras) à rajouter alors devant votre phrase à colorer,
-# donc dans notre exemple au-dessus si je veux mettre la phrase en gras j'aurai :
-#   <s:80FFFF>&ldémonstration d'un gradient<e:FF99FF>
-#
-#
-# Le plugin utilise des "variables internes" permettant de personnaliser vos messages. Chaque nom de variable
-# intern est entourée de "{" et de "}" (exemple : "{player}"). Leurs valeurs dépendent de la situation et ne sont pas toutes
-# utilisables partout, mais voici la signification des plus courantes :
-#   {prefix} : renvoit le prefix du plugin (à définir par vous dans la config)
-#   {player} : renvoit le nom de l'exécuteur de la commande (utilisable dans les parties "messages")
-#   {perm} : renvoit la permission que le joueur ne possède pas alors qu'il a essayé d'effecuter une commande (utilisable dans les parties "no perm")
-#
-# Á savoir que les variables internes {player} et {prefix} sont utilisables partout dans la section "messages" et que {perm} partout
-# dans la section "noPerm"
-# Une variable interne est précisée devant une section quand elle peut être utilisée dedans.
+# Bienvenue dans la configuration FR du plugin ! Vous allez trouver un guide pour configurer le plugin.
+# If you are an english speaker, you can load an EN version of this file by running the command '/pds load config'
+# À savoir que ce fichier n'est pas pris en compte par le plugin s'il n'est pas nommé "config.yml".
 
 
-# Prefix du plugin, définit la variable interne {prefix}
-prefix: "&e&lINFO &8|&r"
+# Défini les 3 items du plugin, la configuration est pareil pour les 3 items
+Items:
+  BasicDebugStick:
+    # Le matériel de l'item (ex : ARROW)
+    Material: "BAMBOO"
 
-# Définition des 3 items, les paramètres sont les mêmes pour les 3
-items:
-  basicDebugStick:
-    # Le type d'objet (exemple : ARROW)
-    material: "BAMBOO"
+    # Le nom de l'item
+    Name: "#33FFBB&lBASIC DEBUG STICK"
 
-    # Le nom de l'objet
-    name: "<s:33FFBB>&lBRANCHE DE DÉBOGAGE<e:33FFBB>"
-
-    # Son lore, sa description. Chaque élément de la liste, représente une ligne de lore.
-    lore: #{durability}
-      - "&6&m-------------------------------"
-      - "&7Cette branche est tombée du grand"
-      - "&7arbre Bogdeh."
+    # Son lore, sa description. Chaque élément de la liste représente une ligne du lore.
+    # PH :
+    # {durability} : la durabilité du debug-stick (évidemment, uniquement le basic debugstick peut avoir ce PH)
+    Lore:
       - ""
-      - "&7Elle semble fragile et risque de"
-      - "&7se casser facilement, mais elle a l'air"
-      - "&7de renfermer un grand pouvoir ..."
-      - "&6&m-------------------------------"
+      - "&e&lCLIQUE DROIT"
+      - " &7&opour éditer les propriétés"
       - ""
-      - "&aUtilisations restantes : &e{durability}"
+      - "&a&lCLIQUE GAUCHE"
+      - " &7&opour changer la propriété courante"
+      - ""
+      - "&c&lSHIFT + CLIQUE DROIT"
+      - " &7&opour supprimer les valeurs permanentes"
+      - ""
+      - "&9&lSHIFT + CLIQUE GAUCHE"
+      - " &7&opour voir toutes les propriétés éditables"
+      - ""
+      - "&aDurabilité restante : &e{durability}"
 
-    # Enchantement(s) de l'item, chaque élément représente un enchantement. Il ne faut pas rajouter le "minecraft:" devant le
-    # de l'enchantement. Il n'est pas obligatoire d'en avoir.
-    enchants:
+    # Les enchantements de l'item, purement visuel. Chaque ligne représente un enchantement.
+    Enchants:
 
-    # Flags de l'item à activer (true) ou désactiver (false) :
     # Cacher les enchantements
-    hideEnchants: true
+    HideEnchants: true
 
-    # Cacher les attributs (exemple : +2 attack damage)
-    hideAttributes: true
+    # Cacher les attributs
+    HideAttributes: true
 
-    # Cacher les effets de potions
-    hidePotionEffets: true
+    # Cacher les effets de potion
+    HidePotionEffets: true
 
-    # Cacher si l'item est teinté ou non
-    hideDye: true
+    # Cacher la teinture
+    HideDye: true
 
-    # Donner le flag indestructible à l'item (ne change rien aux propriétés, juste esthétique)
-    isUnbreakable: true
+    # Cacher si le bloc ne peut être placé qu'à un endroit
+    HidePlacedOn: true
 
-    # Cacher s'il est indestructible
-    hideUnbreakable: true
+    # Ajouter le flag 'unbreakable' (purement esthétique)
+    IsUnbreakable: false
 
-    # Cacher s'il peut être placé uniquement sur certains blocs
-    hidePlacedOn: true
-
-  infinityDebugStick:
-    material: "DEAD_BUSH"
-    name: "<s:E60000>&lRACINE DE<e:FFD919><s:FFD919>&l DÉBOGAGE<e:E60000>"
-    lore:
-      - "<s:8000FF>&m-----------------------------<e:8000FF>"
-      - "&7Cette racine vient du grand arbre"
-      - "&7Bogdeh !"
+  InfinityDebugStick:
+    Material: "DEAD_BUSH"
+    Name: "<s:E60000>&lINFINITE<e:FFD919><s:FFD919> &lDEBUG STICK<e:E60000>"
+    Lore:
       - ""
-      - "&7Une racine de ce légendaire arbre"
-      - "&7s'auto-alimente. Cette relique"
-      - "&7inestimable ne se cassera donc"
-      - "&7jamais !"
-      - "<s:8000FF>&m-----------------------------<e:8000FF>"
+      - "&e&lCLIQUE DROIT"
+      - " &7&opour éditer les propriétés"
       - ""
-      - "&aUtilisations restantes : &e∞"
+      - "&a&lCLIQUE GAUCHE"
+      - " &7&opour changer la propriété courante"
+      - ""
+      - "&c&lSHIFT + CLIQUE DROIT"
+      - " &7&opour supprimer les valeurs permanentes"
+      - ""
+      - "&9&lSHIFT + CLIQUE GAUCHE"
+      - " &7&opour voir toutes les propriétés éditables"
+      - ""
+      - "&aDurabilité restante : &e∞"
 
-    enchants:
+
+    Enchants:
       - "unbreaking"
-    hideEnchants: true
-    hideAttributes: true
-    hidePotionEffets: true
-    hideDye: true
-    isUnbreakable: true
-    hideUnbreakable: false
-    hidePlacedOn: true
+    HideEnchants: true
+    HideAttributes: true
+    HidePotionEffets: true
+    HideDye: true
+    IsUnbreakable: true
+    HideUnbreakable: false
+    HidePlacedOn: true
 
-  inspector:
-    material: "GOLD_INGOT"
-    name: "<s:FF8C19>&lINSPECTEUR DE BLOC<e:FF8C19>"
-    lore:
-      - "<s:FFD919>&m--------------------------<e:FFD919>"
-      - "&7Hé mais qui voilà ? Inspecteur"
-      - "&7Gadget !"
-      - "&7Hum humm... Version du cube ..."
-      - "<s:FFD919>&m--------------------------<e:FFD919>"
+  Inspector:
+    Material: "GOLD_INGOT"
+    Name: "<s:FF8C19>&lINSPECTOR<e:FF8C19>"
+    Lore:
       - ""
-      - "&c» &lCLIQUE GAUCHE :"
-      - "&7&opour connaître ses propriétés"
-      - ""
-      - "&a» &lCLIQUE DROIT :"
-      - "&7&opour connaître ses implémentations"
-    enchants:
+      - "&a&lCLIQUE DROIT &7&opour avoir les implémentations"
+      - "&c&lCLIQUE GAUCHE &7&opour voir les propriétés"
+    Enchants:
       - "unbreaking"
 
-    hideEnchants: false
-    hideAttributes: true
-    hidePotionEffets: true
-    hideDye: true
-    isUnbreakable: true
-    hideUnbreakable: false
-    hidePlacedOn: true
+    HideEnchants: false
+    HideAttributes: true
+    HidePotionEffets: true
+    HideDye: true
+    IsUnbreakable: true
+    HideUnbreakable: false
+    HidePlacedOn: true
 
-settings:
-  # Les dommages de durabilité dont le basic debug stick va prendre à chaque modification de cette propriété
-  # (voir le fichier "properties_fr.yml" dans le dossier ressources pour les descriptions des propriétés)
-  durability:
-    orientable: 1
-    directional: 1
-    type: 1
-    bisected: 1
-    shape: 1
-    persistent: 3
-    multipleFacing: 1
-    lightable: 5
-    redstoneWire: 2
-    waterlogged: 3
-    powerable: 10
-    ageable: 20
-    beehive: 5
-    wall: 1
-    snowable: 3
-    distance: 1
-    layers: 1
+Settings:
+  # Les dégâts de durabilité que le basic debug stick va prendre lorsqu'il va éditer cette propriété.
+  # La définition de chaque propriété se trouve dans le fichier properties_fr.
+  # Les dégâts peuvent valoir 0, mais ne peuvent pas être négatif.
+  Durability:
+    ORIENTABLE: 1
+    DIRECTIONAL: 1
+    ROTATABLE: 1
+    SLAB: 1
+    BISECTED: 1
+    SHAPE_STAIRS: 1
+    SHAPE_RAIL: 1
+    PERSISTENT: 3
+    MULTIPLE_FACING: 1
+    LIGHTABLE: 5
+    REDSTONE_WIRE: 2
+    WATER_LOGGED: 3
+    ANALOGUE_POWERABLE: 10
+    POWERABLE: 10
+    AGEABLE: 20
+    STAGE: 10
+    HONEY_LEVEL: 5
+    WALL: 1
+    SNOWABLE: 3
+    DISTANCE: 1
+    LAYERS: 1
+    BAMBOO_LEAVES: 2
+    TILT: 5
+    EGGS: 50
+    HATCH: 20
+    SIGNAL_FIRE: 5
+    ATTACHABLE: 5
+    EXTENDABLE: 10
+    HANGALBLE: 5
+    CAKE: 5
+    BERRY: 10
+    CONDITIONAL: 10
+    OPENABLE: 1
+    END_PORTAL_FRAME: 5
+    FACE_ATTACHABLE: 3
+    FARMLAND: 3
+    GATE: 3
+    LEVELLED: 10
+    THICKNESS: 5
+    VERTICAL_DIRECTION: 1
+    DELAY: 1
+    LOCKED: 2
+    CHARGES: 5
+    BLOOM: 10
+    PHASE: 3
+    SUMMON: 10
+    SHRIEKING: 1
+    PICKLES: 10
+    DISARMED: 3
 
-  # Liste des matériaux à ne pas pouvoir être modifiés par le debug stick
-  blacklist:
 
-  # Écrit dans la console quand un joueur change une propriété
-  logConsole: false
+  # Lorsqu'un joueur n'a pas la permission d'éditer une propriété, faut-il cacher ou non la propriété
+  # au joueur ?
+  HideNoPermProperty: true
 
-  # Écrit dans un fichier à part quand un joueur change une propriété
-  logFile: false
+  BlackList:
+    # Liste de matériaux qui ne sont pas éditables sans la permission 'pds.bypass.blacklist.material'
+    Material:
+      - "CHEST"
 
-    # Previent le joueur quand son debug stick va casser
-    # Le message dans le tchat et dans la hotbar ne sont pas obligatoires (si vous voulez en envoyer qu'un)
-  preventPlayerWhenBreaking:
-    enable: true
+    # Liste des mondes qui ne peuvent pas être édité sans la permission 'pds.bypass.blacklist.world'
+    World:
+      - "world_the_end"
 
-    # Envoie le message qu'une seule fois quand la durabilité passe en dessous du seuil (true)
-    # ou à chaque fois que la durabilité diminue, une fois que celle-ci est en dessous du seuil (false)
-    sendOneTime: false
-    durability: 5
-    # {prefix}, {property}, {durability}, {player}
-    messageChat: "{prefix} &aTa branche de débogage va bientôt casser &7(&e&o{durability} rest.&7) &a!"
-    messageHotbar:
 
-# Ici vous allez pouvoir créer des recettes de fabrication pour les debug stick
-# Pour créer une nouvelle recette, vous devez créer une nouvelle section et la nommer
-# comme bon vous semble (un nom différent par recette).
-# Dans cette nouvelle section, 2 sections enfantes doivent se trouver : 'durability' -> la durabilité du debug stick
-# (utilisez -1 pour le infinity debug stick) et la section 'craft' composé de 1 ou plusieurs nombres représentants les
-# slots de la table de craft comme dans le schéma ci-dessous :
+  # Avertit le joueur lorsque son basic debug stick va casser
+  # La configuration de ce message se fait dans le fichier 'messages.yml' à 'OnUse' -> 'WarnBreakMessage'
+  WarnPlayerWhenBreaking:
+    Enable: true
+
+    # Send the message one time (true) or each time the player will use the debug stick and his durability
+    # Envoi le message à chaque fois que le joueur va utiliser basic son debug stick et que la durabilité est en
+    # dessous de celle paramétrée.
+    SendOnce: false
+
+    # La durabilité du basic debug stick pour que le joueur soit averti
+    Durability: 5
+
+
+Log:
+  # Le format du log
+  # Si aucune valeur n'est définie et que les logs sont actifs, le plugin va loger ce message par défaut :
+  # "{player} edited the property {property_name} from {old_value} to {value} of the block at {block_loc_x} {block_loc_y} {block_loc_z}"
+  # Exemple de log avec ce format :
+  # [01:04:27 INFO]: [DebugStick] Machigan edited the property bisected from bottom to top of the block at 39 -60 3 in world
+  #
+  # PH : fonctionne de la même manière que dans le fichier 'messages.yml'
+  # tous les place holder liés à un joueur en ligne sont utilisables ici (et ceux pas liés aux joueurs)
+  # {property} : la propriété que le joueur a édité
+  # {value} : la nouvelle valeur de la propriété
+  # {old_value} : l'ancienne valeur de la propriété
+  # {block} : le bloc que le joueur a édité
+  # {year} : l'année de l'édition
+  # {month} : le mois (nombre) de l'édition
+  # {day} : le jour du mois (nombre) de l'édition
+  # {hour} : l'heure de l'édition
+  # {minute} : la minute de l'édition
+  # {second} : la seconde de l'édition
+  # {player} : le nom du joueur (si vous utilisez PlaceHolderAPI, ce PH n'est pas utile -> %player_name%)
+  Format: "{player} edited the property {property_name} from {old_value} to {value} of the block at {block_loc_x} {block_loc_y} {block_loc_z} in {block_loc_world}"
+
+  # Activer les logs dans la console ?
+  Console: false
+
+
+
+# Créer les recettes de craft pour les items du plugin
+# To create a recipe, you have to create a new field in the recipes section and name
+# Pour créer une recette vous devez créer une nouvelle section et la nommer comme vous le voulez
+# Dans cette nouvelle section, il y a 3 sections à créer (avec des noms pré-définis) :
+# 'Item' : parmi "BASIC", "INFINITY" ou "INSPECTOR"
+# 'Durability' : la durabilité que le debug stick va avoir, cette section n'est pas utile si l'item n'est pas "BASIC"
+# 'Craft' : Représente les slots de la table de craft ainsi :
 #
 #   / / / / / / /
 #   / 1 / 2 / 3 /    / / / / / / / / /
-#   / 4 / 5 / 6 / -> /le débug stick /
+#   / 4 / 5 / 6 / -> /the debug stick/
 #   / 7 / 8 / 9 /    / / / / / / / / /
 #   / / / / / / /
 #
-# Vous n'êtes pas obligé d'utiliser tous les slots de la table de craft, mais chaque slot utilisé représente 1 matériel
-# Si dessous, voici 2 exemples de recettes afin de vous guidez dans la fabrication des votres :
-recipes:
-#  first:
-#    durability: 10
-#    craft:
-#      2: "BAMBOO"
-#      5: "BAMBOO"
-#      8: "BAMBOO"
-#  infinity:
-#    durability: -1
-#    craft:
-#      1: "DIAMOND"
-#      3: "EMERALD"
+# You must not use all slot but each slot that you want to use, represent a material
+# here is for you 2 examples of recipes :
+Recipes:
+  basic:
+    Item: "BASIC"
+    Durability: 1000
+    Craft:
+      2: "DIAMOND"
+      5: "BLAZE_ROD"
+      8: "BLAZE_ROD"
+  infinity:
+    Item: "INFINITY"
+    Craft:
+      1: "BEACON"
+      2: "NETHERITE_BLOCK"
+      3: "BEACON"
+      5: "BLAZE_ROD"
+      8: "BLAZE_ROD"

@@ -6,7 +6,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Beehive;
 import org.jetbrains.annotations.NotNull;
 
-public class BeehiveAction implements PropertyAction {
+public class HoneyLevelAction implements PropertyAction {
     @Override
     public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         Beehive beehiveData = (Beehive) data;

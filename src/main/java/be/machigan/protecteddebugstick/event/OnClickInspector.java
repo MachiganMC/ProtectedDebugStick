@@ -13,29 +13,24 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 public class OnClickInspector implements Listener {
-
     @EventHandler
     public static void onClick(PlayerInteractEvent e) {
         Player player = e.getPlayer();
-        if (e.getClickedBlock() == null) {
+        if (e.getClickedBlock() == null)
             return;
-        }
-        if (e.getHand() == null) {
+        if (e.getHand() == null)
             return;
-        }
-        if (!e.getHand().equals(EquipmentSlot.HAND)) {
+        if (!e.getHand().equals(EquipmentSlot.HAND))
             return;
-        }
-        if (e.getPlayer().getInventory().getItemInMainHand() == null) {
+        if (e.getPlayer().getInventory().getItemInMainHand() == null)
             return;
-        }
-        if (e.getPlayer().getInventory().getItemInMainHand().getItemMeta() == null) {
+        if (e.getPlayer().getInventory().getItemInMainHand().getItemMeta() == null)
             return;
-        }
         if (!DebugStick.isInspector(e.getPlayer().getInventory().getItemInMainHand()))
             return;
-
         e.setCancelled(true);
+
+
         String start = "<s:FF0000>&m-------------------<e:FFFF19><s:FF8C19>&lINSPECTOR<e:FF8C19><s:FFFF19>&m------------------------<e:FF0000>&r\n\n";
         String end = "<s:FF0000>&m------------------------<e:FFFF19><s:FFFF19>&m-----------------------------<e:FF0000>";
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
@@ -64,9 +59,8 @@ public class OnClickInspector implements Listener {
 
             for (String line : message.split("\n")) {
                 String[] lineCut = line.split("=");
-                if (lineCut.length <= 1) {
+                if (lineCut.length <= 1)
                     continue;
-                }
 
                 String color;
                 try {

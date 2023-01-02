@@ -11,7 +11,8 @@ public class Permission {
         RELOAD_CONFIG("pds.command.reload-config"),
         LOAD("pds.command.load");
 
-        @NotNull final private String perm;
+        @NotNull
+        private final String perm;
         Command(@NotNull String perm) {
             this.perm = perm;
         }
@@ -36,7 +37,8 @@ public class Permission {
         INSPECTOR_IMPLEMENTATION("pds.item.inspector.implementation"),
         INSPECTOR_PROPERTIES("pds.item.inspector.properties");
 
-        @NotNull final private String perm;
+        @NotNull
+        private final String perm;
         Item(@NotNull String perm) {
             this.perm = perm;
         }
@@ -57,7 +59,8 @@ public class Permission {
         BLACKLIST_MATERIAL("pds.bypass.blacklist.material"),
         BLACKLIST_WORLD("pds.bypass.blacklist.world");
 
-        @NotNull final private String perm;
+        @NotNull
+        private final String perm;
         Bypass(@NotNull String perm) {
             this.perm = perm;
         }
@@ -89,8 +92,8 @@ public class Permission {
         ANALOGUE_POWERABLE("pds.property.analogue-powerable"),
         POWERABLE("pds.property.powerable"),
         AGEABLE("pds.property.ageable"),
-        SAPLING("pds.property.sapling"),
-        BEEHIVE("pds.property.beehive"),
+        STAGE("pds.property.stage"),
+        HONEY_LEVEL("pds.property.honey-level"),
         WALL("pds.property.wall"),
         SNOWABLE("pds.property.snowable"),
         DISTANCE("pds.property.distance"),
@@ -109,7 +112,7 @@ public class Permission {
         OPENABLE("pds.property.openable"),
         END_PORTAL_FRAME("pds.property.end-portal-frame"),
         FACE_ATTACHABLE("pds.property.face-attachable"),
-        FARMLAND("pds.property.farmland"),
+        MOISTURE("pds.property.moisture"),
         GATE("pds.property.gate"),
         LEVELLED("pds.property.levelled"),
         THICNKESS("pds.property.thickness"),
@@ -124,7 +127,8 @@ public class Permission {
         DISARMED("pds.property.disarmed");
 
 
-        @NotNull final private String perm;
+        @NotNull
+        private final String perm;
         Property(@NotNull String perm) {
             this.perm = perm;
         }

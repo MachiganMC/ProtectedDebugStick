@@ -6,6 +6,7 @@ import be.machigan.protecteddebugstick.event.OnClickInspector;
 import be.machigan.protecteddebugstick.event.OnUpdate;
 import be.machigan.protecteddebugstick.event.OnUse;
 import be.machigan.protecteddebugstick.utils.Config;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,11 +44,21 @@ public class ProtectedDebugStick extends JavaPlugin {
             this.getLogger().info("Generating \"messages.yml\" ...");
             ProtectedDebugStick.getInstance().saveResource("messages.yml", false);
         }
-
-
     }
 
     public static ProtectedDebugStick getInstance() {
         return instance;
+    }
+
+    public static boolean isPlaceHolderApiEnable() {
+        try {
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null)
+                throw new ClassNotFoundException();
+
+            Class.forName("me.clip.placeholderapi.PlaceholderAPI");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 }

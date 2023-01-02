@@ -12,8 +12,12 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 public class LogUtil {
-    @NotNull final private static String DEFAULT_FORMAT =
+    @NotNull
+    private static final String DEFAULT_FORMAT =
             "{player} edited the property {property_name} from {old_value} to {value} of the block at {block_loc_x} {block_loc_y} {block_loc_z} in {block_loc_world}";
+
+
+    private LogUtil() {}
 
     public static void logEdit(@NotNull Player player, @NotNull Property property, @NotNull String value, @NotNull Block block, @NotNull String oldValue) {
         if (Config.Log.consoleEnable())
@@ -42,7 +46,9 @@ public class LogUtil {
                 .replace("{second}", Integer.toString(now.getSecond()))
                 .replace("{player}", player.getName());
 
-        return PlaceholderAPI.setPlaceholders(player, format);
+        if (ProtectedDebugStick.isPlaceHolderApiEnable())
+            format = PlaceholderAPI.setPlaceholders(player, format);
+        return format;
     }
 
     @NotNull

@@ -69,7 +69,7 @@ public class OnUse implements Listener {
             try {
                 property.getDataClass().cast(data);
                 if (Config.Settings.hideNoPermProperty() && !property.getPermission().has(player))
-                    continue;
+                    throw new ClassCastException();
             } catch (ClassCastException exception) {
                 continue;
             }

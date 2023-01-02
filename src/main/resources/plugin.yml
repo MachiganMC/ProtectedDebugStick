@@ -1,6 +1,6 @@
 name: ProtectedDebugStick
 author: Machigan
-version: 1.1.0
+version: 2.0.0
 main: be.machigan.protecteddebugstick.ProtectedDebugStick
 database: false
 
@@ -10,7 +10,7 @@ api-version: 1.18
 
 commands:
   pds:
-    description: Allows player to give a protected debug stick or reload the plugin
+    description: Allows player to gives a protected debug stick, reloads the plugin or loads a file
     usage: Somes arguments are not existing
     aliases:
       - protected-debug-stick
@@ -153,8 +153,8 @@ permissions:
       pds.property.water-logged: true
       pds.property.powerable: true
       pds.property.ageable: true
-      pds.property.sapling: true
-      pds.property.beehive: true
+      pds.property.stage: true
+      pds.property.honey-level: true
       pds.property.wall: true
       pds.property.snowable: true
       pds.property.distance: true
@@ -173,12 +173,11 @@ permissions:
       pds.property.openable: true
       pds.property.end-portal-frame: true
       pds.property.face-attachable: true
-      pds.property.farmland: true
+      pds.property.moisture: true
       pds.property.gate: true
       pds.property.levelled: true
       pds.property.thickness: true
       pds.property.vertical-direction: true
-      pds.property.delay: true
       pds.property.locked: true
       pds.property.charges: true
       pds.property.bloom: true
@@ -233,11 +232,11 @@ permissions:
   pds.property.ageable:
     description: Allows player to edit the property ageable
     default: false
-  pds.property.sapling:
-    description: Allows player to edit the property sapling
+  pds.property.stage:
+    description: Allows player to edit the property stage
     default: false
-  pds.property.beehive:
-    description: Allows player to edit the property beehive
+  pds.property.honey-level:
+    description: Allows player to edit the property honey level
     default: false
   pds.property.wall:
     description: Allows player to edit the property wall
@@ -293,8 +292,8 @@ permissions:
   pds.property.face-attachable:
     description: Allows player to edit the face attachable property
     default: true
-  pds.property.farmland:
-    description: Allows player to edit the farmland property
+  pds.property.moisture:
+    description: Allows player to edit the moisture property
     default: true
   pds.property.gate:
     description: Allows player to edit the gate property
@@ -307,9 +306,6 @@ permissions:
     default: true
   pds.property.vertical-direction:
     description: Allows player to edit the vertical direction property
-    default: true
-  pds.property.delay:
-    description: Allows player to edit the delay property
     default: true
   pds.property.locked:
     description: Allows player to edit the locked property

@@ -6,7 +6,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Farmland;
 import org.jetbrains.annotations.NotNull;
 
-public class FarmlandAction implements PropertyAction {
+public class MoistureAction implements PropertyAction {
 
     @Override
     public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {

@@ -73,6 +73,11 @@ public class ShapeRailAction implements PropertyAction{
 
     @Override
     public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
-        return ((Rail) data).getShape().name().toLowerCase();
+        if (data instanceof Rail) {
+            Rail rail = (Rail) data;
+            return rail.getShape().name().toLowerCase();
+        }
+        return "";
+
     }
 }

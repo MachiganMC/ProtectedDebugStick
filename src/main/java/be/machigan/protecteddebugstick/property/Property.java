@@ -29,13 +29,12 @@ public enum Property implements Serializable {
     PERSISTENT(3, Permission.Property.PERSISTENT, Leaves.class, new PersistentAction()),
     MULTIPLE_FACING(1, Permission.Property.MULTIPLE_FACING, MultipleFacing.class, new MultiplefacingAction()),
     LIGHTABLE(5, Permission.Property.LIGHTABLE, Lightable.class, new LightableAction()),
-    REDSTONEWIRE(2, Permission.Property.REDSTONE_WIRE, RedstoneWire.class, new RedstoneWireAction()),
-    WATER_LOGGED(3, Permission.Property.WATER_LOGGED, Waterlogged.class, new WaterLoggedAction()),
+    REDSTONE_WIRE(2, Permission.Property.REDSTONE_WIRE, RedstoneWire.class, new RedstoneWireAction()),
     ANALOGUE_POWERABLE(10, Permission.Property.ANALOGUE_POWERABLE, AnaloguePowerable.class, new AnaloguePowerableAction()),
     POWERABLE(10, Permission.Property.POWERABLE, Powerable.class, new PowerableAction()),
     AGEABLE(20, Permission.Property.AGEABLE, Ageable.class, new AgeableAction()),
-    SAPLING(10, Permission.Property.SAPLING, Sapling.class, new SaplingAction()),
-    BEEHIVE(5, Permission.Property.BEEHIVE, Beehive.class, new BeehiveAction()),
+    STAGE(10, Permission.Property.STAGE, Sapling.class, new StageAction()),
+    HONEY_LEVEL(5, Permission.Property.HONEY_LEVEL, Beehive.class, new HoneyLevelAction()),
     WALL(1, Permission.Property.WALL, Wall.class, new WallAction()),
     SNOWABLE(3, Permission.Property.SNOWABLE, Snowable.class, new SnowableAction()),
     DISTANCE(1, Permission.Property.DISTANCE, Leaves.class, new DistanceAction()),
@@ -54,7 +53,7 @@ public enum Property implements Serializable {
     OPENABLE(1, Permission.Property.OPENABLE, Openable.class, new OpenableAction()),
     END_PORTAL_FRAME(5, Permission.Property.END_PORTAL_FRAME, EndPortalFrame.class, new EndPortalFrameAction()),
     FACE_ATTACHABLE(3, Permission.Property.FACE_ATTACHABLE, FaceAttachable.class, new FaceAttachableAction()),
-    FARMLAND(3, Permission.Property.FARMLAND, Farmland.class, new FarmlandAction()),
+    MOISTURE(3, Permission.Property.MOISTURE, Farmland.class, new MoistureAction()),
     GATE(3, Permission.Property.GATE, Gate.class, new GateAction()),
     LEVELLED(10, Permission.Property.LEVELLED, Levelled.class, new LevelledAction()),
     THICKNESS(5, Permission.Property.THICNKESS, PointedDripstone.class, new ThicknessAction()),
@@ -66,8 +65,9 @@ public enum Property implements Serializable {
     SUMMON(10, Permission.Property.SUMMON, SculkShrieker.class, new SummonAction()),
     SHRIEKING(1, Permission.Property.SHRIEKING, SculkShrieker.class, new ShriekingAction()),
     PICKLES(10, Permission.Property.PICKLES, SeaPickle.class, new PicklesAction()),
-    DISARMED(3, Permission.Property.DISARMED, Tripwire.class, new DisarmedAction());
-    final private static long serialVersionUID = 3L;
+    DISARMED(3, Permission.Property.DISARMED, Tripwire.class, new DisarmedAction()),
+    WATER_LOGGED(3, Permission.Property.WATER_LOGGED, Waterlogged.class, new WaterLoggedAction());
+    private static final long serialVersionUID = 3L;
 
 
     private final int durability;
@@ -103,13 +103,12 @@ public enum Property implements Serializable {
         }
 
         String oldValue = this.action.getValue(block.getBlockData(), blockFace);
+        if (block.getMetadata(DebugStick.METADATA_NAME_FORCE_VALUE).isEmpty())
+            block.setMetadata(DebugStick.METADATA_NAME_FORCE_VALUE, new FixedMetadataValue(ProtectedDebugStick.getInstance(), true));
         this.action.modify(block.getBlockData(), block, blockFace);
         String value =  this.action.getValue(block.getBlockData(), blockFace);
 
         LogUtil.logEdit(player, this, value, block, oldValue);
-
-        if (block.getMetadata(DebugStick.METADATA_NAME_FORCE_VALUE).isEmpty())
-            block.setMetadata(DebugStick.METADATA_NAME_FORCE_VALUE, new FixedMetadataValue(ProtectedDebugStick.getInstance(), true));
 
         Message.getMessage("OnUse.Success", player, false)
                 .replace(block)

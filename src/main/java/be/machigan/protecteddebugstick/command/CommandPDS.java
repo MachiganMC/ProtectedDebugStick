@@ -155,7 +155,7 @@ public class CommandPDS implements CommandExecutor {
             boolean overWrite = strings.length > 2 && strings[2].equalsIgnoreCase("over-write");
 
             String file = strings[1];
-            if (!file.endsWith(".yml"))
+            if (!file.endsWith(".yml") && !file.endsWith(".MD"))
                 file += ".yml";
 
             if (!overWrite && new File(ProtectedDebugStick.getInstance().getDataFolder(), "/" + file).exists()) {

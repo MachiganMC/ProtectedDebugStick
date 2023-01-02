@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Serializable;
 
 public class InfiniteDebugStick extends DebugStick implements Serializable {
-    final private static long serialVersionUID = 3L;
+    private static final long serialVersionUID = 3L;
     @Nullable private Property currentProperty;
 
     @Override

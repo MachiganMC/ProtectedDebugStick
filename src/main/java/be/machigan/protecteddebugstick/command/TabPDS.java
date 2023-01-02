@@ -24,9 +24,9 @@ public class TabPDS implements TabCompleter {
 
         List<String> arg = new ArrayList<>();
         List<String> tab = new ArrayList<>();
-        if (!Permission.Command.USE.has(player)) {
+
+        if (!Permission.Command.USE.has(player))
             return Collections.emptyList();
-        }
 
         if (strings.length == 1) {
             if (Permission.Command.GIVE.has(player))
@@ -39,20 +39,14 @@ public class TabPDS implements TabCompleter {
             return tab;
         }
 
-        if (strings.length == 2)
-            if (strings[0].equalsIgnoreCase("give"))
+        if (strings[0].equalsIgnoreCase("give") && Permission.Command.GIVE.has(player)) {
+            if (strings.length == 2)
                 return null;
-
-        if (strings.length == 3) {
-            if (strings[0].equalsIgnoreCase("give") && Permission.Command.GIVE.has(player)) {
+            if (strings.length == 3) {
                 StringUtil.copyPartialMatches(strings[2], DebugStick.ITEMS, tab);
                 return tab;
             }
-        }
-
-        if (strings.length == 4) {
-            if (strings[0].equalsIgnoreCase("give") && strings[2].equalsIgnoreCase("basic")
-                    && Permission.Command.GIVE.has(player)) {
+            if (strings.length == 4 && strings[2].equalsIgnoreCase("basic")) {
                 arg.add("5");
                 arg.add("20");
                 arg.add("50");
@@ -67,7 +61,8 @@ public class TabPDS implements TabCompleter {
         if (strings[0].equalsIgnoreCase("load") && Permission.Command.LOAD.has(player)) {
             if (strings.length == 2) {
                 List<String> files = Arrays.asList(
-                        "config.yml", "config_fr.yml", "messages.yml", "properties_en.yml", "properties_fr.yml");
+                        "plugin.yml", "config.yml", "config_fr.yml", "messages.yml", "messages_fr.yml",
+                        "properties_en.MD", "properties_fr.MD");
                 StringUtil.copyPartialMatches(strings[1], files, tab);
             }
 

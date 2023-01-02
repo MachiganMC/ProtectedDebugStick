@@ -30,7 +30,7 @@ public final class Config {
      * <br>
      * The plugin will not search in {@link ProtectedDebugStick#getConfig()}
      */
-    @NotNull private static FileConfiguration config = ProtectedDebugStick.getInstance().getConfig();
+    @NotNull private static FileConfiguration configFile = ProtectedDebugStick.getInstance().getConfig();
     private Config() {}
 
     /**
@@ -39,7 +39,11 @@ public final class Config {
      * properly
      */
     public static void reload() throws InvalidConfigurationException {
-        config = YamlConfiguration.loadConfiguration(new File(ProtectedDebugStick.getInstance().getDataFolder(), "/config.yml"));
+        File file = new File(ProtectedDebugStick.getInstance().getDataFolder(), "/config.yml");
+        if (!file.exists())
+            ProtectedDebugStick.getInstance().saveDefaultConfig();
+
+        configFile = YamlConfiguration.loadConfiguration(new File(ProtectedDebugStick.getInstance().getDataFolder(), "/config.yml"));
         try {
             Item.BASIC.get();
             Item.INFINITY.get();
@@ -53,7 +57,7 @@ public final class Config {
 
     @NotNull
     public static FileConfiguration getConfig() {
-        return config;
+        return configFile;
     }
 
 
@@ -65,9 +69,10 @@ public final class Config {
         INFINITY("InfinityDebugStick"),
         INSPECTOR("Inspector");
 
-        final private static String PATH = "Items.";
+        private static final String PATH = "Items.";
 
-        @Nullable final private String configName;
+        @Nullable
+        private final String configName;
 
         Item(@NotNull String configName) {
             this.configName = PATH + configName;
@@ -80,9 +85,8 @@ public final class Config {
          */
         @NotNull
         public ItemStack get() throws NullPointerException {
-            ConfigurationSection configurationSection = getConfig().getConfigurationSection(this.configName);
-            if (configurationSection == null)
-                throw new NullPointerException("Unable to find item description for " + this.name());
+            ConfigurationSection configurationSection = Objects.requireNonNull(configFile.getConfigurationSection(this.configName),
+                    "Unable to find item description for " + this.name().toLowerCase());
 
             Material material = Material.matchMaterial(configurationSection.getString("Material"));
             if (material == null)
@@ -129,7 +133,7 @@ public final class Config {
 
         @NotNull
         public ConfigurationSection getConfigSection() {
-            return config.getConfigurationSection(this.configName);
+            return configFile.getConfigurationSection(this.configName);
         }
     }
 
@@ -139,26 +143,28 @@ public final class Config {
      */
     public static class PreventPlayerWhenBreaking {
         private static final String PATH = "Settings.WarnPlayerWhenBreaking.";
+        
+        private PreventPlayerWhenBreaking() {}
 
         /**
          * @return {@code true} send a message to the player when his basic debug stick is about to break
          */
         public static boolean isEnable() {
-            return config.getBoolean(PATH + "Enable");
+            return configFile.getBoolean(PATH + "Enable");
         }
 
         /**
          * @return {@code true} send only one message to the player
          */
         public static boolean mustSendOnce() {
-            return config.getBoolean(PATH + "SendOnce");
+            return configFile.getBoolean(PATH + "SendOnce");
         }
 
         /**
          * @return The durability of the debug stick from which the plugin will warn the player
          */
         public static int getDurability() {
-            return config.getInt(PATH + "Durability");
+            return configFile.getInt(PATH + "Durability");
         }
     }
 
@@ -167,12 +173,13 @@ public final class Config {
      * All configuration getters for the <i>BlackList</i> section
      */
     public static class BlackList {
-        final private static String PATH = "Settings.BlackList.";
+        @NotNull
+        private static final String PATH = "Settings.BlackList.";
 
         @NotNull
         public static List<Material> getMaterials() {
             List<Material> materials = new ArrayList<>();
-            for (String materialStr : config.getStringList(PATH + "Material")) {
+            for (String materialStr : configFile.getStringList(PATH + "Material")) {
                 Material material = Material.matchMaterial(materialStr);
                 if (material != null)
                     materials.add(material);
@@ -184,7 +191,7 @@ public final class Config {
         @NotNull
         public static List<World> getWorlds() {
             List<World> worlds = new ArrayList<>();
-            for (String worldStr : config.getStringList(PATH + "World")) {
+            for (String worldStr : configFile.getStringList(PATH + "World")) {
                 World world = Bukkit.getWorld(worldStr);
                 if (world != null)
                     worlds.add(world);
@@ -196,31 +203,33 @@ public final class Config {
 
 
     public static class Settings {
-        final public static String PATH = "Settings.";
+        @NotNull
+        public static final String PATH = "Settings.";
 
         public static boolean hideNoPermProperty() {
-            return config.getBoolean(PATH + "HideNoPermProperty");
+            return configFile.getBoolean(PATH + "HideNoPermProperty");
         }
     }
 
 
     public static class Log {
-        final private static String PATH = "Log.";
+        @NotNull
+        private static final String PATH = "Log.";
 
         public static boolean consoleEnable() {
-            return config.getBoolean(PATH + "Console");
+            return configFile.getBoolean(PATH + "Console");
         }
 
         @Nullable
         public static String getFormat() {
-            return config.getString(PATH + "Format");
+            return configFile.getString(PATH + "Format");
         }
     }
 
 
     public static class Recipe {
-        final private static String PATH = "Recipes";
-        final private static List<String> POSSIBLE_FIELDS = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
+        private static final String PATH = "Recipes";
+        private static final List<String> POSSIBLE_FIELDS = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
 
 
         public static void reload() {
@@ -257,9 +266,8 @@ public final class Config {
                     continue;
                 }
                 fields = fields.stream().filter(POSSIBLE_FIELDS::contains).collect(Collectors.toSet());
-                if (fields.size() == 0) {
+                if (fields.isEmpty())
                     removed.add(key);
-                }
             }
             recipesName.removeAll(removed);
 
@@ -320,7 +328,9 @@ public final class Config {
                                     "\" doesn't" + " exist from the recipe \"" +
                                     key + "\" (slot N°" + i + ") ! This slot has been replaces by a barrier block");
                         }
-                    } catch (IllegalArgumentException ignored) {}
+                    } catch (IllegalArgumentException ignored) {
+                        // no material for key i
+                    }
                 }
 
                 recipes.add(recipe);

@@ -110,7 +110,8 @@ public class Message {
 
         try {
             message.content = messagesFile.getString(path);
-            message.content = PlaceholderAPI.setPlaceholders(player, message.content);
+            if (ProtectedDebugStick.isPlaceHolderApiEnable())
+                message.content = PlaceholderAPI.setPlaceholders(player, message.content);
         } catch (NullPointerException e) {
             if (message.isNecessary) {
                 LogUtil.getLogger().warning("The message from \"" + path + "\" doesn't exist.");
@@ -152,24 +153,30 @@ public class Message {
      *               If {@code null}, no PlaceHolder that concerns an online player.
      */
     private void additionalContent(@Nullable Player player) {
+        boolean isPlaceHolderAPIEnable = ProtectedDebugStick.isPlaceHolderApiEnable();
+
         try {
             this.hoverContent = messagesFile.getString(this.path + "Hover");
-            this.hoverContent = PlaceholderAPI.setPlaceholders(player, this.hoverContent);
+            if (isPlaceHolderAPIEnable)
+                this.hoverContent = PlaceholderAPI.setPlaceholders(player, this.hoverContent);
         } catch (NullPointerException ignored) {}
 
         try {
             this.runCommand = messagesFile.getString(this.path + "Run");
-            this.runCommand = PlaceholderAPI.setPlaceholders(player, this.runCommand);
+            if (isPlaceHolderAPIEnable)
+                this.runCommand = PlaceholderAPI.setPlaceholders(player, this.runCommand);
         } catch (NullPointerException ignored) {}
 
         try {
             this.suggestedCommand = messagesFile.getString(this.path + "Suggest");
-            this.suggestedCommand = PlaceholderAPI.setPlaceholders(player, this.suggestedCommand);
+            if (isPlaceHolderAPIEnable)
+                this.suggestedCommand = PlaceholderAPI.setPlaceholders(player, this.suggestedCommand);
         } catch (NullPointerException ignored) {}
 
         try {
             this.hotbarContent = messagesFile.getString(this.path + "Hotbar");
-            this.hotbarContent = PlaceholderAPI.setPlaceholders(player, this.hotbarContent);
+            if (isPlaceHolderAPIEnable)
+                this.hotbarContent = PlaceholderAPI.setPlaceholders(player, this.hotbarContent);
         } catch (NullPointerException ignored) {}
     }
 

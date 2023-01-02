@@ -24,7 +24,7 @@
 # But you can alose generate a gradient (=variation of one color A to another color B) in a chars string
 # by using the code : "<s:[code RGB of the first color]>[your chars string]<e:[code RGB of the second color]>"
 # Example :
-# I want  a gradient from light blue (code : 80FFFF) to pink (code : FF99FF) for the following sentence : "demonstration of a gradient"
+# I want a gradient from light blue (code : 80FFFF) to pink (code : FF99FF) for the following sentence : "demonstration of a gradient"
 # I'll have the following code :
 #    <s:80FFFF>demonstration of a gradient<e:FF99FF>
 # Note that you can use format code in you sentence (like italic or bold) to add before your sentence to color,
@@ -74,15 +74,15 @@
 #
 # {property_name} : write this to have the property name
 # {property_durability} : write this to have the cost in durability of the property
-# {property_perm} : wire this to have the required perm to modify the property
+# {property_perm} : write this to have the required perm to modify the property
 #
 #
 #
 # The plugin can use PlaceHolderAPI (or PAPI). You can, in each type of message put a placeholder from PAPI (don't
 # forget to install the placeholders via "/papi ecloud download <placeholders>").
 # In PlaceHolderAPI you can use three type of placeholders :
-# - those who concern no player : usable everywhere in the plugin
-# - those who concern an online player : your will be notified when you can use them
+# - those who concern no player (eg: %server_name%) : usable everywhere in the plugin
+# - those who concern an online player (eg:%player_name%) : your will be notified when you can use them
 # - those who concern an offline player : for the moment, nowhere in the plugin
 #
 #
@@ -102,7 +102,9 @@
 
 
 PersonalVariable:
-  prefix: "&3[&6&lProtected&e-DS&3]&r"
+  # In this case, I will be able to use this string in any message by writing '{prefix}'
+  # <!> The case is important ! {pRefiX} ≠ {prefix}
+  prefix: "#3399FF[<s:667db6>Debug<e:0082c8>#3399FF-<s:0082c8>Stick<e:667db6>#3399FF]&r"
 
 
 # In the children fields of "OnUse", you can use all PlaceHolders from PAPI that concern a player.
@@ -114,7 +116,7 @@ OnUse:
   # here, because the plugin that doesn't allow the player will already
   # send one to the player
   # PH :
-  # {block}
+  # {block} : the block that the player wants to edit
   PluginPrevent:
 
   NoPerm:
@@ -123,7 +125,6 @@ OnUse:
     # This message is not necessary.
     # PH :
     # {property} : the property that the player wants to edit
-    # {perm} : the name of the permission
     Property:  "{prefix} &cYou don't have permission to modify this property !"
 
     Infinite:
@@ -167,8 +168,6 @@ OnUse:
   # This message is not necessary.
   # PH :
   # {property} : the property that the player wants to modify,
-  # {need} : the durability that the property needs to be modified
-  #
   NotEnoughDurability: "{prefix} &cYour debug stick hasn't enough durability &7"
 
   BlackList:
@@ -194,7 +193,7 @@ OnUse:
   # This message isn't necessary
   # PH :
   # {property} : the property that the player has now
-  # {block : the block that the player clicked
+  # {block} : the block that the player clicked
   ChangeProperty:
   ChangePropertyHotbar: "{prefix} &aChanging property to &e{property_name}"
 
@@ -213,7 +212,7 @@ OnUse:
     Before: "{prefix} &aList of properties for &e{block_material} &a:"
     After:
 
-    # For "Property" and current the PH are the same
+    # For "Property" and 'Current' the PH are the same
     # These are necessary
     # PH :
     # {property} : the current property
@@ -228,7 +227,7 @@ OnUse:
   # {block} : the block that the player removes the values
   RemovePermanentValue: "{prefix} &aAll permanents values have been removed"
 
-  # When the player change the property of the block
+  # When the player change the value of a property of the block
   # This message isn't necessary
   # PH :
   # {block} : The block that the player has edited

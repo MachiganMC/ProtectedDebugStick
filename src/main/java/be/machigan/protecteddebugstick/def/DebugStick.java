@@ -4,6 +4,7 @@ import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Tools;
+import com.google.common.base.Preconditions;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -14,28 +15,26 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public abstract class DebugStick implements Serializable {
-    final private static long serialVersionUID = 2L;
-    final public static NamespacedKey DEBUG_STICK_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-key");
-    final public static NamespacedKey INSPECTOR_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-inspector");
-    final public static String METADATA_NAME_FORCE_VALUE = "debug-stick-force-value";
-    final public static List<String> ITEMS = new ArrayList<>(Arrays.asList("basic", "infinity", "inspector"));
+    private static final long serialVersionUID = 2L;
+    public static final NamespacedKey DEBUG_STICK_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-key");
+    public static final NamespacedKey INSPECTOR_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-inspector");
+    public static final String METADATA_NAME_FORCE_VALUE = "debug-stick-force-value";
+    public static final List<String> ITEMS = Arrays.asList("basic", "infinity", "inspector");
 
 
     @NotNull
     public static ItemStack getBasicDebugStick(int durability) throws IllegalArgumentException {
-        if (durability <= 0)
-            throw new IllegalArgumentException("Durability can be equal or below to 0");
+        Preconditions.checkArgument(durability > 0, "Durability can't be equal or below to 0");
 
         ItemStack debugStickClone = Config.Item.BASIC.get().clone();
         ItemMeta debugStickCloneMeta = debugStickClone.getItemMeta();
         debugStickCloneMeta.getPersistentDataContainer().set(DEBUG_STICK_KEY, DebugStickDataType.INSTANCE, new DebugStickData(durability));
 
-        List<String> lore = ProtectedDebugStick.getInstance().getConfig().getStringList("Items.BasicDebugStick.Lore");
+        List<String> lore = Config.getConfig().getStringList("Items.BasicDebugStick.Lore");
         lore.replaceAll(line -> line = Tools.replaceColor(line).replace("{durability}", Integer.toString(durability)));
         debugStickCloneMeta.setLore(lore);
 
@@ -95,8 +94,7 @@ public abstract class DebugStick implements Serializable {
     }
 
     public static void removeDurability(@NotNull Player player, int durability) {
-        if (durability <= 0)
-            throw new IllegalArgumentException("Cannot remove durability below or equal to 0");
+        Preconditions.checkArgument(durability > 0, "Durability cannot be equal or below to 0");
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -122,7 +120,7 @@ public abstract class DebugStick implements Serializable {
         basicDebugStick.setDurability(current);
         meta.getPersistentDataContainer().set(DEBUG_STICK_KEY, DebugStickDataType.INSTANCE, new DebugStickData(basicDebugStick));
 
-        List<String> lore = ProtectedDebugStick.getInstance().getConfig().getStringList("Items.BasicDebugStick.Lore");
+        List<String> lore = Config.getConfig().getStringList("Items.BasicDebugStick.Lore");
         int finalCurrent = current;
         lore.replaceAll(s -> Tools.replaceColor(s).replace("{durability}", Integer.toString(finalCurrent)));
         meta.setLore(lore);
@@ -132,8 +130,7 @@ public abstract class DebugStick implements Serializable {
     }
 
     public static boolean hasNotEnoughDurability(@NotNull ItemStack item, @NotNull Property property) throws IllegalArgumentException {
-        if (!isDebugStick(item))
-            throw new IllegalArgumentException("Not a debug stick");
+        Preconditions.checkArgument(isDebugStick(item), "Item to check has to be a debug stick");
 
         if (isInfinityDebugStick(item))
             return false;
@@ -143,19 +140,16 @@ public abstract class DebugStick implements Serializable {
 
     public static int getDurability(@NotNull ItemStack item) throws IllegalArgumentException {
         ItemMeta itemMeta = item.getItemMeta();
-        if (itemMeta == null)
-            throw new IllegalArgumentException("Not a debug stick");
 
-        if (!isBasicDebugStick(item))
-           throw new IllegalArgumentException("Not a basic debug stick");
+        Preconditions.checkArgument(itemMeta != null, "Not a debug stick");
+        Preconditions.checkArgument(isDebugStick(item), "Not a debug stick");
 
         DebugStick debugStick = item.getItemMeta().getPersistentDataContainer().get(DEBUG_STICK_KEY, DebugStickDataType.INSTANCE).getDebugStick();
         return ((BasicDebugStick) debugStick).getDurability();
     }
 
     public static boolean willBreak(@NotNull ItemStack item) throws IllegalArgumentException {
-        if (!isDebugStick(item))
-            throw new IllegalArgumentException("Not a debug stick");
+        Preconditions.checkArgument(isDebugStick(item), "Not a debug stick");
 
         if (isInfinityDebugStick(item))
             return false;

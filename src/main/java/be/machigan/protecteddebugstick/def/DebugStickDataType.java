@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 
 public class DebugStickDataType implements PersistentDataType<byte[], DebugStickData> {
-    final public static DebugStickDataType INSTANCE = new DebugStickDataType();
+    public static final DebugStickDataType INSTANCE = new DebugStickDataType();
 
     @NotNull
     @Override
@@ -41,7 +41,7 @@ public class DebugStickDataType implements PersistentDataType<byte[], DebugStick
             return (DebugStickData) o.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            return null;
+            throw new IllegalStateException("Unable to re-create the class");
         }
     }
 }

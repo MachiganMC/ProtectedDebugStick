@@ -6,7 +6,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Sapling;
 import org.jetbrains.annotations.NotNull;
 
-public class SaplingAction implements PropertyAction {
+public class StageAction implements PropertyAction {
     @Override
     public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         Sapling saplingData = (Sapling) data;
