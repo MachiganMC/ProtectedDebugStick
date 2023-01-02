@@ -1,13 +1,14 @@
 package be.machigan.protecteddebugstick.property.action;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Stairs;
 import org.jetbrains.annotations.NotNull;
 
 public class ShapeStairsAction implements PropertyAction{
     @Override
-    public @NotNull String modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
         Stairs stairsData = (Stairs) data;
 
         switch (stairsData.getShape()) {
@@ -29,6 +30,10 @@ public class ShapeStairsAction implements PropertyAction{
         }
 
         block.setBlockData(stairsData);
-        return stairsData.getShape().name();
+    }
+
+    @Override
+    public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
+        return ((Stairs) data).getShape().name().toLowerCase();
     }
 }

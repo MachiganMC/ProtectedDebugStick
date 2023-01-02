@@ -15,140 +15,113 @@
 #
 #
 # Welcome to the configuration EN of the plugin ! You'll find here a guide to configure the plugin !
-# Si vous êtes un francophone, une aide de configuration en français est disponible dans le fichier
-# "config_fr.yml" dans le dossier ressources.
-#
-#
-# First, the plugin allow you to use the Minecraft color code. For example, if you want to put the test
-# in red, you have to use "&4" before the text (all allowed color code are here : https://minecraft.tools/fr/color-code.php)
-# But you can alose generate a gradient (=variation of one color A to another color B) in a chars string
-# by using the code : "<s:[code RGB of the first color]>[your chars string]<e:[code RGB of the second color]>"
-# Example :
-# I want  a gradient from light blue (code : 80FFFF) to pink (code : FF99FF) for the following sentence : "demonstration of a gradient"
-# I'll have the following code :
-#    <s:80FFFF>demonstration of a gradient<e:FF99FF>
-# Note that you can use format code in you sentence (like italic or bold) to add before your sentence to color,
-# so for our example before, if I want to have my gradient in bold, I'll have :
-#    <s:80FFFF>&ldemonstration of a gradient<e:FF99FF>
-#
-#
-#The plugin use "intern variable" allowing you to personnalise your messages. Each variable name is between "{" and "}"
-#(e.g.: "{player}"). Values depending on the situation and all can't be used everywhere, but here is the mainly used :
-#  {prefix} : return the prefix of the plugin (configured by you)
-#  {player} : return the sender name of the command
-#  {perm} : return the name of the permission that the player doesn't have to use a command
-#
-# You have to know that the inter variables {player} and {prefix} can be used everywhere in the "messages" field. And that
-# {perm} can be used everywhere in the "noPerm" field.
-# An intern variable is written above the field name when she can be used in this field.
+# Si vous êtes un francophone, vous pouvez charger une version française de ce fichier via la commande
+# '/pds load config_fr'
 
-
-# Prefix of the plugin, defines the value of {prefix}
-prefix: "&3[&6&lP&eD-S&3]&r"
 
 # Defines the 3 items of the plugin, the settings are the sames for the three items
-items:
-  basicDebugStick:
+Items:
+  BasicDebugStick:
     # The material of the object (e.g. : ARROW)
-    material: "BAMBOO"
+    Material: "BAMBOO"
 
     # The name of the object.
-    name: "<s:33FFBB>&lBASIC DEBUG STICK<e:33FFBB>"
+    Name: "#33FFBB&lBASIC DEBUG STICK"
 
     # His lore, his description. Each element of the list is a line of the lore.
-    lore: #{durability}
+    # PH :
+    # {durability} : the durability left of the basic debugstick
+    Lore:
       - ""
       - "&e&lRIGHT-CLICK"
-      - " &7&oto edit rotations properties"
+      - " &7&oto edit properties"
       - ""
       - "&a&lLEFT-CLICK"
-      - " &7&oto edit reverses properties"
+      - " &7&oto change current property"
       - ""
       - "&c&lSHIFT + RIGHT-CLICK"
-      - " &7&oto edit specials properties"
+      - " &7&oto clear permanent value"
       - ""
       - "&9&lSHIFT + LEFT-CLICK"
-      - " &7&oto edit creatives properties"
+      - " &7&oto see all editable properties"
       - ""
-      - "&aUses left : &e{durability}"
+      - "&aDurability left : &e{durability}"
 
-    # Enchant(s) of the items, each element represent an enchant. You don't have to add the  "minecraft:" before
-    # the name of to enchant. It's not necessary for an item to have an enchant.
-    enchants:
+    # Enchant(s) of the items, each element represent an enchantement. You don't have to add the  "minecraft:" before
+    # the name of to enchant. It's not necessary for an item to have an enchantement.
+    Enchants:
 
     # Flags of the item to enable (true) or disable (false)
     # Hide enchants
-    hideEnchants: true
+    HideEnchants: true
 
     # Hide attributes (example : +2 attack damage)
-    hideAttributes: true
+    HideAttributes: true
 
     # Hide potion effect
-    hidePotionEffets: true
+    HidePotionEffets: true
 
     # Hide if the item is dyed or not
-    hideDye: true
-
-    # Give the flag "unbreakable" to the item (this field don't change the properties of the item, it's juste cosmetic)
-    isUnbreakable: true
-
-    # Hide if the item is unbreakable
-    hideUnbreakable: true
+    HideDye: true
 
     # Hide if the item can be placed only on some blocks
-    hidePlacedOn: true
+    HidePlacedOn: true
 
-  infinityDebugStick:
-    material: "DEAD_BUSH"
-    name: "<s:E60000>&lRACINE DE<e:FFD919><s:FFD919>&l DÉBOGAGE<e:E60000>"
-    lore:
+    # Give the flag "unbreakable" to the item (this field don't change the properties of the item, it's juste cosmetic)
+    IsUnbreakable: false
+
+  InfinityDebugStick:
+    Material: "DEAD_BUSH"
+    Name: "<s:E60000>&lINFINITE<e:FFD919><s:FFD919> &lDEBUG STICK<e:E60000>"
+    Lore:
       - ""
       - "&e&lRIGHT-CLICK"
-      - " &7&oto edit rotations properties"
+      - " &7&oto edit properties"
       - ""
       - "&a&lLEFT-CLICK"
-      - " &7&oto edit reverses properties"
+      - " &7&oto change current property"
       - ""
       - "&c&lSHIFT + RIGHT-CLICK"
-      - " &7&oto edit specials properties"
+      - " &7&oto clear permanent value"
       - ""
       - "&9&lSHIFT + LEFT-CLICK"
-      - " &7&oto edit creatives properties"
+      - " &7&oto see all editable properties"
       - ""
       - "&aUse left : &e∞"
 
 
-    enchants:
+    Enchants:
       - "unbreaking"
-    hideEnchants: true
-    hideAttributes: true
-    hidePotionEffets: true
-    hideDye: true
-    isUnbreakable: true
-    hideUnbreakable: false
-    hidePlacedOn: true
+    HideEnchants: true
+    HideAttributes: true
+    HidePotionEffets: true
+    HideDye: true
+    IsUnbreakable: true
+    HideUnbreakable: false
+    HidePlacedOn: true
 
-  inspector:
-    material: "GOLD_INGOT"
-    name: "<s:FF8C19>&lINSPECTOR<e:FF8C19>"
-    lore:
+  Inspector:
+    Material: "GOLD_INGOT"
+    Name: "<s:FF8C19>&lINSPECTOR<e:FF8C19>"
+    Lore:
       - ""
       - "&a&lRIGHT-CLICK &7&oto have implementations"
       - "&c&lLEFT-CLICK &7&oto have values of properties"
-    enchants:
+    Enchants:
       - "unbreaking"
 
-    hideEnchants: false
-    hideAttributes: true
-    hidePotionEffets: true
-    hideDye: true
-    isUnbreakable: true
-    hideUnbreakable: false
-    hidePlacedOn: true
+    HideEnchants: false
+    HideAttributes: true
+    HidePotionEffets: true
+    HideDye: true
+    IsUnbreakable: true
+    HideUnbreakable: false
+    HidePlacedOn: true
 
 Settings:
   # The damage that the durability will take when the debug stick modify this property.
-  # (see in the file "properties_en.yml" in the folder ressources, the definition of each property)
+  # (see in the file "properties_en" in the folder ressources, the definition of each property)
+  # A durability of a property can be 0 but not a negative number.
   Durability:
     ORIENTABLE: 1
     DIRECTIONAL: 1
@@ -158,46 +131,110 @@ Settings:
     SHAPE_STAIRS: 1
     SHAPE_RAIL: 1
     PERSISTENT: 3
-    MULTIPLEFACING: 1
+    MULTIPLE_FACING: 1
     LIGHTABLE: 5
-    REDSTONEWIRE: 2
-    WATERLOGGED: 3
+    REDSTONE_WIRE: 2
+    WATER_LOGGED: 3
+    ANALOGUE_POWERABLE: 10
     POWERABLE: 10
     AGEABLE: 20
-    SAPLING: 10
-    BEEHIVE: 5
+    STAGE: 10
+    HONEY_LEVEL: 5
     WALL: 1
     SNOWABLE: 3
     DISTANCE: 1
     LAYERS: 1
+    BAMBOO_LEAVES: 2
+    TILT: 5
+    EGGS: 50
+    HATCH: 20
+    SIGNAL_FIRE: 5
+    ATTACHABLE: 5
+    EXTENDABLE: 10
+    HANGALBLE: 5
+    CAKE: 5
+    BERRY: 10
+    CONDITIONAL: 10
+    OPENABLE: 1
+    END_PORTAL_FRAME: 5
+    FACE_ATTACHABLE: 3
+    FARMLAND: 3
+    GATE: 3
+    LEVELLED: 10
+    THICKNESS: 5
+    VERTICAL_DIRECTION: 1
+    DELAY: 1
+    LOCKED: 2
+    CHARGES: 5
+    BLOOM: 10
+    PHASE: 3
+    SUMMON: 10
+    SHRIEKING: 1
+    PICKLES: 10
+    DISARMED: 3
 
-  # List of materials that can't be modified
-  blacklist:
 
-  # Write in the console when a player changes a property
-  logConsole: false
+  # The properties that the player doesn't have the permissions to edit will be hide
+  # It's like, for the player, the properties never existed
+  HideNoPermProperty: true
 
-  # Write in apart file when a player changes a property
-  logFile: false
+  BlackList:
+    # List of materials that can't be modified
+    Material:
+      - "CHEST"
 
-  # Prevent the player when his debug stick will break
-  # The message in the chat and in the hotbar aren't necessaries to be set (if you want only one message)
-  preventPlayerWhenBreaking:
-    enable: true
+    # List of worlds name where the debug stick cannot be used
+    World:
+      - "world_the_end"
+
+
+  # Warn the player when his debug stick will break
+  # The configuration of the message is in the "messages.yml" file at "OnUse" -> "WarnBreakMessage"
+  WarnPlayerWhenBreaking:
+    Enable: true
 
     # Send the message one time (true) or each time the player will use the debug stick and his durability
     # is below or equal to the durability settled (false)
-    sendOneTime: false
-    durability: 5
-    # {prefix}, {property}, {durability}, {player}, {value}, {block}
-    messageChat: "{prefix} &cBe careful &4{player} &c! Your debug stick has &4{durability} &cleft, he will be break soon !"
-    messageHotbar:
+    SendOnce: false
+
+    # The durability of the debug stick from which the plugin will warn the player
+    Durability: 5
+
+
+Log:
+  # The display of the log
+  # If no value is provided and the log is active, the plugin will display this message by default :
+  # "{player} edited the property {property_name} from {old_value} to {value} of the block at {block_loc_x} {block_loc_y} {block_loc_z}"
+  # For example, it wil display this kind of log :
+  # [01:04:27 INFO]: [DebugStick] Machigan edited the property bisected from bottom to top of the block at 39 -60 3 in world
+  #
+  # PH : (same way than in messages.yml)
+  # all PlaceHolders linked to an online player
+  # {property} : the property that the player edited
+  # {value} : the value of the property
+  # {old_value} : the old value of the property
+  # {block} : the block that the player edited
+  # {year} : the year when the player edited the block
+  # {month} : the month (number) when the player edited the block
+  # {day} : the day of the month (number) when the player edited the block
+  # {hour} : the hour when the player edited the block
+  # {minute} : the minute when the player edited the block
+  # {second} : the second when the player edited the block
+  # {player} : the player name of the player (if you've use PlaceHoldersAPI, this PH isn't useful -> %player_name%)
+  Format: "{player} edited the property {property_name} from {old_value} to {value} of the block at {block_loc_x} {block_loc_y} {block_loc_z} in {block_loc_world}"
+
+  # Enable the log in the console ?
+  Console: false
+
+
 
 # Here you can create recipes for the debug stick of the plugin
 # To create a recipe, you have to create a new field in the recipes section and name
 # it like you want (different name per recipe).
-# In this new field,  you have to have 2 children fields : 'durability' -> the durability of the debug stick (use -1 for
-# the infinity debug stick) and the 'craft' field composed of number representing the slot in a crafting table like this :
+# In this new field,  you have to have 3 children fields :
+# 'Item' : in "BASIC", "INFINITY" or "INSPECTOR"
+# 'Durability' : the durability of the debug stick, this field isn't necessary if the field "Item" isn"t "BASIC"
+# 'Craft' : Represent the slot in the craft table with the material to put in
 #
 #   / / / / / / /
 #   / 1 / 2 / 3 /    / / / / / / / / /
@@ -207,76 +244,19 @@ Settings:
 #
 # You must not use all slot but each slot that you want to use, represent a material
 # here is for you 2 examples of recipes :
-recipes:
-#  first:
-#    durability: 10
-#    craft:
-#      2: "BAMBOO"
-#      5: "BAMBOO"
-#      8: "BAMBOO"
-#  infinity:
-#    durability: -1
-#    craft:
-#      1: "DIAMOND"
-#      3: "EMERALD"
-
-
-
-
-
-messages: #{prefix}, {player}
-  #{block}, {property}, {value}, {durability} -> This field isn't necessary
-  successChat:
-  #{block}, {property}, {value}, {durability} -> This field isn't necessary
-  successHotbar: "{prefix} &aProperties &e{property} &achanged to &e{value}"
-
-  #{block} -> This field isn't necessary
-  blacklisted: "{prefix} &cThis block is blacklisted"
-
-  onBreak: "{prefix} &c&oCRAK !\n&aYou basic debug stick has just broke"
-
-  noPlayerClaim: "{prefix} &cYou don't have permission to edit this clam"
-  noTurnable: "{prefix} &cThis block isn't turntable"
-  noReversed: "{prefix} &cThis block can't ben reversed"
-  noSpecial: "{prefix} &cThis block doesn't have specials properties"
-  noCreative: "{prefix} &cThis block doesn't have creatives properties"
-  #{durability}, {needed}
-  notEnoughDurability: "{prefix} &aYou debug stick doesn't have enough durability &7(&e&o{durability}&7) &ato edit this block &7(&e&o{needed} min.&7)"
-
-  command:
-    notEnoughArg: "{prefix} &cPlease, specify the action to execute"
-    noCommandFound: "{prefix} &cNo command has been found"
-    arg:
-      give:
-        notEnoughArg: "{prefix} &cPlease, specify the username of an online player"
-        #{arg}
-        playerNotFound: "{prefix} &aLe joueur &e{arg} &an'est pas connecté"
-        #{arg}
-        whatToGive: "{prefix} &aPlease specify the item to give to &e{arg}"
-        #{arg}, {item}
-        badItem: "{prefix} &aThe item &e{item} &adoesn't exist"
-        #{arg}, {item}
-        whatDurability: "{prefix} &aPlease specify the durability of the &ebasic debug stick &ato give to &e{arg}"
-        #{arg}, {item}, {durability}
-        badDurability: "{prefix} &aThe durability &e{durability} &aisn't valid ! Please specify an &einteger &abiggest than &e0&a !"
-        #{arg}, {item}
-        success: "{prefix} &aYou have given &e{item} &ato &e{arg} &awith success !"
-      reloadConfig:
-        success: "{prefix} &aThe config is up now !"
-
-  noPerm: #{perm}
-    #{property}
-    noPermProperty: "{prefix} &cYou don't have permission to modify this property"
-    noPermCommand: "{prefix} &cYou don't have permission to use this command"
-    noPermArgGive: "{prefix} &cYou don't have permission to give items"
-    noPermReloadConfig: "{prefix} &cYou don't have permission to reload the config"
-
-
-
-
-
-
-
-
-
-
+Recipes:
+  basic:
+    Item: "BASIC"
+    Durability: 1000
+    Craft:
+      2: "DIAMOND"
+      5: "BLAZE_ROD"
+      8: "BLAZE_ROD"
+  infinity:
+    Item: "INFINITY"
+    Craft:
+      1: "BEACON"
+      2: "NETHERITE_BLOCK"
+      3: "BEACON"
+      5: "BLAZE_ROD"
+      8: "BLAZE_ROD"

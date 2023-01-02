@@ -1,43 +1,16 @@
 package be.machigan.protecteddebugstick.utils;
 
-import be.machigan.protecteddebugstick.ProtectedDebugStick;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Tools {
-    final public static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    final public static String LOG_INFO = "info";
-    final public static String LOG_WARNING = "warning";
-    final public static String LOG_SEVERE = "severe";
-
 
     public static String replaceColor(String text) {
         String b1;
@@ -94,6 +67,7 @@ public class Tools {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
 
+
     public static BaseComponent[] replaceColor(TextComponent text) {
         List<TextComponent> bc = new ArrayList<>();
         String s = Tools.replaceColor(text.getText());
@@ -117,6 +91,7 @@ public class Tools {
         }
         return bc.toArray(new BaseComponent[0]);
     }
+
 
     public static String gradient(String message, String from, String to, String subS) {
         if (message == null) {
@@ -162,127 +137,4 @@ public class Tools {
             return message;
         }
     }
-
-
-
-
-    /**
-     * Gets the UUID of a player with his username
-     * @param name the username you want to get UUID
-     * @return the UUID of the player
-     * @throws IOException if the UUID isn't found
-     */
-    public static String getUUID(String name) throws IOException {
-        URL url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);
-        URLConnection uc = url.openConnection();
-        BufferedReader bf = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-        StringBuilder response = new StringBuilder();
-        String inputLine;
-        while ((inputLine = bf.readLine()) != null) {
-            response.append(inputLine);
-        }
-        bf.close();
-
-        if (response.toString().isEmpty()) {
-            throw new IOException("Username not found");
-        }
-        JSONParser parser = new JSONParser();
-        Object object;
-        try {
-            object = parser.parse(response.toString());
-        } catch (org.json.simple.parser.ParseException ignored) {
-            throw new IOException("Parse error");
-        }
-        JSONObject jo = (JSONObject) object;
-        String str = (String) jo.get("id");
-        return str.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
-    }
-
-
-    /**
-     * Gets a head with a custom texture
-     * @param value The link of the texture head to get
-     * @return The head with the texture
-     */
-    public static ItemStack getCustomTextureHead(String value) {
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
-        SkullMeta meta = (SkullMeta) head.getItemMeta();
-        GameProfile profile = new GameProfile(UUID.randomUUID(), "");
-        profile.getProperties().put("textures", new Property("textures", value));
-        try {
-            Field profileField = meta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(meta, profile);
-        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-            return head;
-        }
-        head.setItemMeta(meta);
-        return head;
-    }
-
-
-    /**
-     * Converts a LocalDateTime object into a Date object
-     * @param ldt The local date time object you want to convert
-     * @return The local date time object converted
-     */
-    public static Date convertLocalDateTime(LocalDateTime ldt) {
-        return Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
-    }
-
-
-    /**
-     * Search in the config file a string to color
-     * @param path The path in the config to search
-     * @return The string you want in the config
-     */
-    public static String configColor(String path) {
-        try {
-            return replaceColor(ProtectedDebugStick.getInstance().getConfig().getString(path));
-        } catch (NullPointerException ignored) {
-            log("Warning, the field \"" + path + "\" is empty in the configuration file", Tools.LOG_SEVERE);
-            return Tools.replaceColor(ProtectedDebugStick.PREFIX + "&4Missing section &c&o" + path + " &4in the configuration file");
-        }
-    }
-
-
-    /**
-     * Make console execute a command
-     * @param command The command you to execute
-     */
-    public void sudo(String command) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(ProtectedDebugStick.getInstance(), () -> Bukkit.getServer().dispatchCommand(
-                Bukkit.getServer().getConsoleSender(), command), 0);
-    }
-
-
-    /**
-     * Log into the console a message
-     * @param message The message you want to log
-     * @param logType The type of log
-     */
-    public static void log(String message, String logType) {
-        Logger log = Logger.getLogger("Minecraft");
-        switch (logType) {
-            case Tools.LOG_INFO:
-                log.info(ProtectedDebugStick.NAME + " " + message);
-                return;
-            case Tools.LOG_WARNING:
-                log.warning(ProtectedDebugStick.NAME + " " + message);
-                return;
-            case Tools.LOG_SEVERE:
-                log.severe(ProtectedDebugStick.NAME + " " + message);
-
-        }
-    }
-
-
-    /**
-     * The type of the log will always be "info"
-     * @param message message you want to log
-     */
-    public static void log(String message) {
-        log(message, Tools.LOG_INFO);
-    }
-
 }
