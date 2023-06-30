@@ -141,8 +141,8 @@ public final class Config {
         @NotNull
         public List<String> getLore() {
             if (this.lore != null)
-                return lore;
-            List<String> configLore = this.configurationSection.getStringList("Lore");
+                return new ArrayList<>(lore);
+            List<String> configLore = new ArrayList<>(this.configurationSection.getStringList("Lore"));
             configLore.replaceAll(Tools::replaceColor);
             this.lore = configLore;
             return configLore;

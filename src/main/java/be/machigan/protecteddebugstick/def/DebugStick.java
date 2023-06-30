@@ -14,11 +14,13 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 public abstract class DebugStick implements Serializable {
+    @Serial
     private static final long serialVersionUID = 2L;
     public static final NamespacedKey DEBUG_STICK_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-key");
     public static final NamespacedKey INSPECTOR_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-inspector");
@@ -30,12 +32,12 @@ public abstract class DebugStick implements Serializable {
     public static ItemStack getBasicDebugStick(int durability) throws IllegalArgumentException {
         Preconditions.checkArgument(durability > 0, "Durability can't be equal or below to 0");
 
-        ItemStack debugStickClone = Config.Item.BASIC.get().clone();
+        ItemStack debugStickClone = Config.Item.BASIC.getItemFromConfig().clone();
         ItemMeta debugStickCloneMeta = debugStickClone.getItemMeta();
         debugStickCloneMeta.getPersistentDataContainer().set(DEBUG_STICK_KEY, DebugStickDataType.INSTANCE, new DebugStickData(durability));
 
-        List<String> lore = Config.getConfig().getStringList("Items.BasicDebugStick.Lore");
-        lore.replaceAll(line -> line = Tools.replaceColor(line).replace("{durability}", Integer.toString(durability)));
+        List<String> lore = Config.Item.BASIC.getLore();
+        lore.replaceAll(line -> line.replace("{durability}", Integer.toString(durability)));
         debugStickCloneMeta.setLore(lore);
 
         debugStickClone.setItemMeta(debugStickCloneMeta);
@@ -44,7 +46,7 @@ public abstract class DebugStick implements Serializable {
 
     @NotNull
     public static ItemStack getInfiniteDebugStick() {
-        ItemStack infinityDebugStick = Config.Item.INFINITY.get();
+        ItemStack infinityDebugStick = Config.Item.INFINITY.getItemFromConfig();
         ItemMeta infinityDebugStickMeta = infinityDebugStick.getItemMeta();
         infinityDebugStickMeta.getPersistentDataContainer().set(DEBUG_STICK_KEY, DebugStickDataType.INSTANCE, new DebugStickData(new InfiniteDebugStick()));
 
@@ -54,7 +56,7 @@ public abstract class DebugStick implements Serializable {
 
     @NotNull
     public static ItemStack getInspector() {
-        ItemStack inspector = Config.Item.INSPECTOR.get();
+        ItemStack inspector = Config.Item.INSPECTOR.getItemFromConfig();
         ItemMeta inspectorMeta = inspector.getItemMeta();
         inspectorMeta.getPersistentDataContainer().set(INSPECTOR_KEY, PersistentDataType.INTEGER, 1);
         inspector.setItemMeta(inspectorMeta);

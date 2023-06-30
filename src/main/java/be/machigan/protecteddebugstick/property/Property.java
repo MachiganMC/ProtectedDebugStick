@@ -1,19 +1,14 @@
 package be.machigan.protecteddebugstick.property;
 
-import be.machigan.protecteddebugstick.ProtectedDebugStick;
-import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.property.action.*;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.LogUtil;
-import be.machigan.protecteddebugstick.utils.Message;
 import be.machigan.protecteddebugstick.utils.Permission;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.*;
 import org.bukkit.block.data.type.*;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -85,69 +80,22 @@ public enum Property implements Serializable {
 
 
     public void edit(@NotNull Player player, @NotNull Block block, @NotNull BlockFace blockFace) {
-        ItemStack item = player.getInventory().getItemInMainHand();
+        PropertyEditEvent editEvent = new PropertyEditEvent(this, player, block, blockFace);
         if (!this.permission.has(player)) {
-            Message.getMessage("OnUse.NoPerm.Property", player, false)
-                    .replace(this)
-                    .replace("{perm}", this.permission.toString())
-                    .send(player);
+            editEvent.sendNoPermPropertyMessage();
             return;
         }
 
-        if (DebugStick.isDebugStick(item) && DebugStick.hasNotEnoughDurability(item, this)) {
-            Message.getMessage("OnUse.NotEnoughDurability", player, false)
-                    .replace(this)
-                    .replace("{need}", Integer.toString(this.durability))
-                    .send(player);
+        if (editEvent.hasNotEnoughDurability()) {
+            editEvent.sendNotEnoughDurabilityMessage();
             return;
         }
 
-        String oldValue = this.action.getValue(block.getBlockData(), blockFace);
-        if (block.getMetadata(DebugStick.METADATA_NAME_FORCE_VALUE).isEmpty())
-            block.setMetadata(DebugStick.METADATA_NAME_FORCE_VALUE, new FixedMetadataValue(ProtectedDebugStick.getInstance(), true));
-        this.action.modify(block.getBlockData(), block, blockFace);
-        String value =  this.action.getValue(block.getBlockData(), blockFace);
-
-        LogUtil.logEdit(player, this, value, block, oldValue);
-
-        Message.getMessage("OnUse.Success", player, false)
-                .replace(block)
-                .replace(this)
-                .replace("{value}", value)
-                .send(player);
-
-        if (DebugStick.isInfinityDebugStick(item))
-            return;
-
-        DebugStick.removeDurability(player, this.durability);
-        if (DebugStick.willBreak(item)) {
-            player.getInventory().setItemInMainHand(null);
-            Message.getMessage("OnUse.Break", player, false)
-                    .replace(block)
-                    .replace(this)
-                    .replace("{value}", value)
-                    .send(player);
-            return;
-        }
-
-        if (Config.PreventPlayerWhenBreaking.isEnable()) {
-            int durability = DebugStick.getDurability(item);
-            if (DebugStick.isInfinityDebugStick(item)) {
-                Message message = Message.getMessage("OnUse.WarnBreakMessage", player, false)
-                        .replace(block)
-                        .replace(this)
-                        .replace("{value}", value)
-                        .replace("{durability}", Integer.toString(durability));
-
-                if ((!Config.PreventPlayerWhenBreaking.mustSendOnce()) && durability <= Config.PreventPlayerWhenBreaking.getDurability()) {
-                    message.send(player);
-                } else if (Config.PreventPlayerWhenBreaking.mustSendOnce() &&
-                        (durability + this.durability > Config.PreventPlayerWhenBreaking.getDurability()) &&
-                        durability <= Config.PreventPlayerWhenBreaking.getDurability()) {
-                    message.send(player);
-                }
-            }
-        }
+        editEvent.editBlockData();
+        editEvent.registerEditedBlock();
+        LogUtil.logEdit(player, this, editEvent.getBlockDataNewValue(), block, editEvent.getBlockDataNewValue());
+        editEvent.sendSuccessMessage();
+        editEvent.removeDurability();
     }
 
 

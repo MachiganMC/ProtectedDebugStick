@@ -6,11 +6,14 @@ import be.machigan.protecteddebugstick.event.OnClickInspector;
 import be.machigan.protecteddebugstick.event.OnUpdate;
 import be.machigan.protecteddebugstick.event.OnUse;
 import be.machigan.protecteddebugstick.utils.Config;
+import be.machigan.protecteddebugstick.utils.LogUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.logging.Level;
 
 public class ProtectedDebugStick extends JavaPlugin {
     private static ProtectedDebugStick instance;
@@ -20,16 +23,9 @@ public class ProtectedDebugStick extends JavaPlugin {
         instance = this;
 
         try {
-            Config.reload();
+            Config.checkReload();
         } catch (InvalidConfigurationException e) {
-            if (Config.Item.BASIC.getConfigSection() == null)
-                this.getLogger().severe("The configuration of BasicDebugStick cannot be found. Disabling the plugin");
-            if (Config.Item.INFINITY.getConfigSection() == null)
-                this.getLogger().severe("The configuration of InfinityDebugStick cannot be found. Disabling the plugin");
-            if (Config.Item.INSPECTOR.getConfigSection() == null)
-                this.getLogger().severe("The configuration of Inspector cannot be found. Disabling the plugin");
-
-            ProtectedDebugStick.getInstance().getPluginLoader().disablePlugin(ProtectedDebugStick.getInstance());
+            ProtectedDebugStick.disable();
             return;
         }
 
@@ -39,11 +35,7 @@ public class ProtectedDebugStick extends JavaPlugin {
         getCommand("pds").setExecutor(new CommandPDS());
         getCommand("pds").setTabCompleter(new TabPDS());
 
-        File file = new File(ProtectedDebugStick.getInstance().getDataFolder() + "/messages.yml");
-        if (!file.exists()) {
-            this.getLogger().info("Generating \"messages.yml\" ...");
-            ProtectedDebugStick.getInstance().saveResource("messages.yml", false);
-        }
+        ProtectedDebugStick.generateFileIfNotExist("messages.yml");
     }
 
     public static ProtectedDebugStick getInstance() {
@@ -59,6 +51,18 @@ public class ProtectedDebugStick extends JavaPlugin {
             return true;
         } catch (ClassNotFoundException e) {
             return false;
+        }
+    }
+
+    public static void disable() {
+        ProtectedDebugStick.instance.getPluginLoader().disablePlugin(ProtectedDebugStick.instance);
+    }
+
+    public static void generateFileIfNotExist(@NotNull String fileName) {
+        File file = new File(ProtectedDebugStick.getInstance().getDataFolder(), fileName);
+        if (!file.exists()) {
+            LogUtil.getLogger().log(Level.INFO, "Generating \"{0}\" ...", fileName);
+            ProtectedDebugStick.getInstance().saveResource("messages.yml", false);
         }
     }
 }
