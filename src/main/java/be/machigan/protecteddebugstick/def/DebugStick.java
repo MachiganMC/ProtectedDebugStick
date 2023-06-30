@@ -159,6 +159,15 @@ public abstract class DebugStick implements Serializable {
         return getDurability(item) <= 0;
     }
 
+    public static void changeCurrentProperty(@NotNull Property property, @NotNull ItemStack item) {
+        Preconditions.checkArgument(DebugStick.isDebugStick(item), "Cannot change property on item that is not a debug stick");
+        ItemMeta meta = item.getItemMeta();
+        DebugStick debugStick = meta.getPersistentDataContainer().get(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE).getDebugStick();
+        debugStick.setCurrentProperty(property);
+        meta.getPersistentDataContainer().set(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE, new DebugStickData(debugStick));
+        item.setItemMeta(meta);
+    }
+
     @Nullable
     public abstract Property getCurrentProperty();
     public abstract void setCurrentProperty(@NotNull Property property);

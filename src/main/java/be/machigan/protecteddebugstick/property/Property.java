@@ -1,5 +1,6 @@
 package be.machigan.protecteddebugstick.property;
 
+import be.machigan.protecteddebugstick.event.PropertyEditEvent;
 import be.machigan.protecteddebugstick.property.action.*;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.LogUtil;
