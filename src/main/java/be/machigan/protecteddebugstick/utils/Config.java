@@ -1,7 +1,7 @@
 package be.machigan.protecteddebugstick.utils;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
-import be.machigan.protecteddebugstick.def.DebugStick;
+import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.logging.Level;
 
 
 public final class Config {
@@ -39,16 +39,15 @@ public final class Config {
      * properly
      */
     public static void reload() throws InvalidConfigurationException {
-        File file = new File(ProtectedDebugStick.getInstance().getDataFolder(), "/config.yml");
-        if (!file.exists())
-            ProtectedDebugStick.getInstance().saveDefaultConfig();
+        ProtectedDebugStick.generateFileIfNotExist("config.yml");
 
-        configFile = YamlConfiguration.loadConfiguration(new File(ProtectedDebugStick.getInstance().getDataFolder(), "/config.yml"));
+        configFile = YamlConfiguration.loadConfiguration(new File(ProtectedDebugStick.getInstance().getDataFolder(), "config.yml"));
+        Item.reloadConfig();
         try {
-            Item.BASIC.get();
-            Item.INFINITY.get();
-            Item.INSPECTOR.get();
-        } catch (NullPointerException e) {
+            Item.BASIC.getItemFromConfig();
+            Item.INFINITY.getItemFromConfig();
+            Item.INSPECTOR.getItemFromConfig();
+        } catch (IllegalStateException e) {
             throw new InvalidConfigurationException("Configuration of items not found");
         }
 
@@ -58,6 +57,21 @@ public final class Config {
     @NotNull
     public static FileConfiguration getConfig() {
         return configFile;
+    }
+
+    public static void checkReload() throws InvalidConfigurationException {
+        try {
+            Config.reload();
+        } catch (InvalidConfigurationException e) {
+            if (Config.Item.BASIC.getConfigSection() == null)
+                LogUtil.getLogger().severe("The configuration of BasicDebugStick cannot be found. Disabling the plugin");
+            if (Config.Item.INFINITY.getConfigSection() == null)
+                LogUtil.getLogger().severe("The configuration of InfinityDebugStick cannot be found. Disabling the plugin");
+            if (Config.Item.INSPECTOR.getConfigSection() == null)
+                LogUtil.getLogger().severe("The configuration of Inspector cannot be found. Disabling the plugin");
+
+            throw new InvalidConfigurationException();
+        }
     }
 
 
@@ -70,9 +84,10 @@ public final class Config {
         INSPECTOR("Inspector");
 
         private static final String PATH = "Items.";
+        @Nullable private List<String> lore;
 
-        @Nullable
-        private final String configName;
+        @Nullable private final String configName;
+        @Nullable private ConfigurationSection configurationSection;
 
         Item(@NotNull String configName) {
             this.configName = PATH + configName;
@@ -84,56 +99,74 @@ public final class Config {
          * @throws NullPointerException When the section of the items is {@code null}
          */
         @NotNull
-        public ItemStack get() throws NullPointerException {
-            ConfigurationSection configurationSection = Objects.requireNonNull(configFile.getConfigurationSection(this.configName),
-                    "Unable to find item description for " + this.name().toLowerCase());
-
-            Material material = Material.matchMaterial(configurationSection.getString("Material"));
-            if (material == null)
-                material = Material.SCUTE;
-
-            ItemStack item = new ItemStack(material);
+        public ItemStack getItemFromConfig() throws IllegalStateException {
+            Preconditions.checkState(this.configurationSection != null, "Unable to find configuration section of %s", configName);
+            ItemStack item = new ItemStack(this.getMaterial());
             ItemMeta meta = item.getItemMeta();
-
-            String name = configurationSection.getString("Name");
-            if (name != null)
-                name = Tools.replaceColor(name);
-            meta.setDisplayName(name);
-
-            List<String> lore = configurationSection.getStringList("Lore");
-            lore.replaceAll((String line) -> line = Tools.replaceColor(line));
-            meta.setLore(lore);
-
-            for (String enchantStr : configurationSection.getStringList("Enchants")) {
-                Enchantment enchantment = Enchantment.getByKey(NamespacedKey.fromString("minecraft:" + enchantStr));
-                if (enchantment != null)
-                    meta.addEnchant(enchantment, 1, false);
-            }
-
-            if (configurationSection.getBoolean("HideEnchants"))
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
-            if (configurationSection.getBoolean("HideAttributes"))
-                meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-
-            if (configurationSection.getBoolean("HidePotionEffets"))
-                meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-
-            if (configurationSection.getBoolean("HideDye"))
-                meta.addItemFlags(ItemFlag.HIDE_DYE);
-
-            if (configurationSection.getBoolean("HidePlacedOn"))
-                meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
-
+            meta.setDisplayName(this.getName());
+            meta.setLore(this.getLore());
+            this.getEnchantments().forEach(enchantment -> meta.addEnchant(enchantment, 1, false));
+            meta.addItemFlags(this.getItemFlags());
             meta.setUnbreakable(configurationSection.getBoolean("IsUnbreakable"));
-
             item.setItemMeta(meta);
             return item;
         }
 
-        @NotNull
+        public static void reloadConfig() {
+            for (Item item : Item.values())
+                item.configurationSection = configFile.getConfigurationSection(item.configName);
+        }
+
+        @Nullable
         public ConfigurationSection getConfigSection() {
-            return configFile.getConfigurationSection(this.configName);
+            return this.configurationSection;
+        }
+
+        @NotNull
+        private Material getMaterial() {
+            try {
+                return Tools.getOrDefault(Material.matchMaterial(this.configurationSection.getString("Material")), Material.SCUTE);
+            } catch (IllegalArgumentException e) {
+                return Material.SCUTE;
+            }
+        }
+
+        @Nullable
+        private String getName() {
+            final String[] name = {this.configurationSection.getString("Name")};
+            Tools.doIfNotNull(name[0], () -> name[0] =  Tools.replaceColor(name[0]));
+            return name[0];
+        }
+
+        @NotNull
+        public List<String> getLore() {
+            if (this.lore != null)
+                return lore;
+            List<String> configLore = this.configurationSection.getStringList("Lore");
+            configLore.replaceAll(Tools::replaceColor);
+            this.lore = configLore;
+            return configLore;
+        }
+
+        @NotNull
+        private List<Enchantment> getEnchantments() {
+            List<Enchantment> enchantments = new ArrayList<>();
+            for (String enchantStr : this.configurationSection.getStringList("Enchants")) {
+                Enchantment enchantment = Enchantment.getByKey(NamespacedKey.fromString("minecraft:" + enchantStr));
+                Tools.doIfNotNull(enchantment, () -> enchantments.add(enchantment));
+            }
+            return enchantments;
+        }
+
+        @NotNull
+        private ItemFlag[] getItemFlags() {
+            Set<ItemFlag> flags = new HashSet<>();
+            Tools.doIfTrue(configurationSection.getBoolean("HideEnchants"), () -> flags.add(ItemFlag.HIDE_ENCHANTS));
+            Tools.doIfTrue(configurationSection.getBoolean("HideAttributes"), () -> flags.add(ItemFlag.HIDE_ATTRIBUTES));
+            Tools.doIfTrue(configurationSection.getBoolean("HidePotionEffets"), () -> flags.add(ItemFlag.HIDE_POTION_EFFECTS));
+            Tools.doIfTrue(configurationSection.getBoolean("HideDye"), () -> flags.add(ItemFlag.HIDE_DYE));
+            Tools.doIfTrue(configurationSection.getBoolean("HidePlacedOn"), () -> flags.add(ItemFlag.HIDE_PLACED_ON));
+            return flags.toArray(new ItemFlag[0]);
         }
     }
 
@@ -181,10 +214,8 @@ public final class Config {
             List<Material> materials = new ArrayList<>();
             for (String materialStr : configFile.getStringList(PATH + "Material")) {
                 Material material = Material.matchMaterial(materialStr);
-                if (material != null)
-                    materials.add(material);
+                Tools.doIfNotNull(material,() -> materials.add(material));
             }
-
             return materials;
         }
 
@@ -193,12 +224,12 @@ public final class Config {
             List<World> worlds = new ArrayList<>();
             for (String worldStr : configFile.getStringList(PATH + "World")) {
                 World world = Bukkit.getWorld(worldStr);
-                if (world != null)
-                    worlds.add(world);
+                Tools.doIfNotNull(world, () -> worlds.add(world));
             }
-
             return worlds;
         }
+
+        private BlackList() {}
     }
 
 
@@ -209,6 +240,8 @@ public final class Config {
         public static boolean hideNoPermProperty() {
             return configFile.getBoolean(PATH + "HideNoPermProperty");
         }
+
+        private Settings() {}
     }
 
 
@@ -224,131 +257,50 @@ public final class Config {
         public static String getFormat() {
             return configFile.getString(PATH + "Format");
         }
+
+        private Log() {}
     }
 
 
     public static class Recipe {
         private static final String PATH = "Recipes";
-        private static final List<String> POSSIBLE_FIELDS = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9");
-
 
         public static void reload() {
-            Set<String> recipesName;
-            ConfigurationSection configurationSection;
-            try {
-                configurationSection = Config.getConfig().getConfigurationSection(PATH);
-                recipesName = configurationSection.getKeys(false);
-            } catch (NullPointerException e) {
-                return;
-            }
+            List<ShapedRecipe> recipes = Recipe.getValidRecipes();
+            recipes.forEach(Bukkit::addRecipe);
+            LogUtil.getLogger().log(Level.INFO, () -> recipes.size() + " recipes has been registered");
+        }
 
-            Set<String> removed = new HashSet<>();
-            for (String key : recipesName) {
-
-                try {
-                    Item itemType = Item.valueOf(configurationSection.getString(key + ".Item").toUpperCase());
-                    if (itemType == null) {
-                        throw new NullPointerException();
-                    }
-                } catch (NullPointerException e) {
-                    removed.add(key);
-                    LogUtil.getLogger().warning("Item type for " + key + " not found or invalid");
-                    continue;
-                }
-
-
-                Set<String> fields;
-                try {
-                    fields = configurationSection.getConfigurationSection(key + ".Craft").getKeys(false);
-                } catch (NullPointerException ignored) {
-                    LogUtil.getLogger().warning("Recipes \"" + key + "\" has no slot. Ignoring the recipe");
-                    removed.add(key);
-                    continue;
-                }
-                fields = fields.stream().filter(POSSIBLE_FIELDS::contains).collect(Collectors.toSet());
-                if (fields.isEmpty())
-                    removed.add(key);
-            }
-            recipesName.removeAll(removed);
-
+        @NotNull
+        private static List<ShapedRecipe> getValidRecipes() {
+            Recipe.removeOldRecipes();
+            ConfigurationSection configurationSection = Config.getConfig().getConfigurationSection(PATH);
+            if (configurationSection == null)
+                return Collections.emptyList();
 
             List<ShapedRecipe> recipes = new ArrayList<>();
-            for (String key : recipesName) {
-                NamespacedKey namespacedKey = new NamespacedKey(ProtectedDebugStick.getInstance(), key);
-
-                Item itemType = Item.valueOf(configurationSection.getString(key + ".Item").toUpperCase());
-                if (itemType == null)
-                    continue;
-
-                ItemStack ds;
-                switch (itemType) {
-                    case BASIC:
-                        int durability = configurationSection.getInt(key + ".Durability");
-                        if (durability <= 0) {
-                            LogUtil.getLogger().info("The craft \" + key + \" for a basic debug stick has a invalid durability (\" + durability + \")");
-                            continue;
-                        }
-                        ds = DebugStick.getBasicDebugStick(durability);
-                        break;
-                    case INFINITY:
-                        ds = DebugStick.getInfiniteDebugStick();
-                        break;
-                    case INSPECTOR:
-                        ds = DebugStick.getInspector();
-                        break;
-                    default:
-                        continue;
+            for (String key : configurationSection.getKeys(false)) {
+                RecipeValidator validator = new RecipeValidator(configurationSection.getConfigurationSection(key), key);
+                if (validator.getInvalidReason() == null) {
+                    recipes.add(validator.toRecipe());
+                } else {
+                    LogUtil.getLogger().warning(validator.getInvalidReason());
                 }
-
-                Set<String> shapeSet;
-                try {
-                    shapeSet = configurationSection.getConfigurationSection(key + ".Craft").getKeys(false);
-                } catch (NullPointerException e) {
-                    LogUtil.getLogger().warning("Recipes \"" + key + "\" has no slot. Ignoring the recipe");
-                    continue;
-                }
-
-                ShapedRecipe recipe = new ShapedRecipe(namespacedKey, ds);
-
-                recipe.shape(
-                        (shapeSet.contains("1") ? "1" : " ") + (shapeSet.contains("2") ? "2" : " ") + (shapeSet.contains("3") ? "3" : " "),
-                        (shapeSet.contains("4") ? "4" : " ") + (shapeSet.contains("5") ? "5" : " ") + (shapeSet.contains("6") ? "6" : " "),
-                        (shapeSet.contains("7") ? "7" : " ") + (shapeSet.contains("8") ? "8" : " ") + (shapeSet.contains("9") ? "9" : " ")
-                );
-
-                for (int i = 1; i <= 9; i++) {
-                    try {
-                        Material m = Material.matchMaterial(configurationSection.getString(key + ".Craft." + i));
-                        if (m != null) {
-                            recipe.setIngredient(Integer.toString(i).toCharArray()[0], m);
-                        } else {
-                            recipe.setIngredient(Integer.toString(i).toCharArray()[0], Material.BARRIER);
-                            LogUtil.getLogger().warning("The material \"" +
-                                    configurationSection.getString(key + ".Craft." + i) +
-                                    "\" doesn't" + " exist from the recipe \"" +
-                                    key + "\" (slot N°" + i + ") ! This slot has been replaces by a barrier block");
-                        }
-                    } catch (IllegalArgumentException ignored) {
-                        // no material for key i
-                    }
-                }
-
-                recipes.add(recipe);
             }
+            return recipes;
+        }
 
+        private static void removeOldRecipes() {
             Iterator<org.bukkit.inventory.Recipe> iterator = Bukkit.recipeIterator();
             while (iterator.hasNext()) {
                 try {
-                    org.bukkit.inventory.ShapedRecipe recipe = (ShapedRecipe) iterator.next();
+                    ShapedRecipe recipe = (ShapedRecipe) iterator.next();
                     if (recipe.getKey().getNamespace().equalsIgnoreCase(ProtectedDebugStick.getInstance().getName()))
                         Bukkit.removeRecipe(recipe.getKey());
                 } catch (ClassCastException ignored) {}
             }
-
-            for (ShapedRecipe recipe : recipes)
-                Bukkit.addRecipe(recipe);
-
-            LogUtil.getLogger().info(recipes.size() + " recipes has been registered");
         }
+
+        private Recipe() {}
     }
 }
