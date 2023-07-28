@@ -2,10 +2,11 @@ package be.machigan.protecteddebugstick.def;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class DebugStickData implements Serializable {
-    private static final long serialVersionUID = 1L;
+    @Serial private static final long serialVersionUID = 1L;
     @NotNull
     private final DebugStick debugStick;
 

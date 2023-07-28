@@ -4,6 +4,8 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +62,7 @@ public class Tools {
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             String hex = text.substring(matcher.start(), matcher.end());
-            text = text.replace(hex, net.md_5.bungee.api.ChatColor.of(hex) + "");
+            text = text.replace(hex, net.md_5.bungee.api.ChatColor.of(hex).toString());
             matcher = pattern.matcher(text);
         }
 
@@ -136,5 +138,20 @@ public class Tools {
         } catch (IllegalArgumentException ignored) {
             return message;
         }
+    }
+
+    @NotNull
+    public static <T> T getOrDefault(@Nullable T object, @NotNull T defaultValue) {
+        return object != null ? object : defaultValue;
+    }
+
+    public static void doIfNotNull(@Nullable Object object, Runnable runnable) {
+        if (object != null)
+            runnable.run();
+    }
+
+    public static void doIfTrue(boolean condition, Runnable runnable) {
+        if (condition)
+            runnable.run();
     }
 }

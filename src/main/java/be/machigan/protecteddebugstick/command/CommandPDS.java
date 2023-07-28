@@ -2,11 +2,13 @@ package be.machigan.protecteddebugstick.command;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
+import be.machigan.protecteddebugstick.persistent.LocationListDataType;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.LogUtil;
 import be.machigan.protecteddebugstick.utils.Message;
 import be.machigan.protecteddebugstick.utils.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -175,6 +177,45 @@ public class CommandPDS implements CommandExecutor {
                         .send(commandSender);
             }
             return true;
+        }
+
+        if (strings[0].equalsIgnoreCase("chunk")) {
+            if (!(commandSender instanceof Player player)) {
+                Message.getMessage("Command.PDS.Arg.Chunk.OnlyPlayer").send(commandSender);
+                return true;
+            }
+            if (strings.length == 1) {
+                Message.getMessage("Command.PDS.Arg.Chunk.NotEnoughArg").send(player);
+                return  true;
+            }
+            if (strings[1].equalsIgnoreCase("info")) {
+                Chunk chunk = player.getLocation().getChunk();
+                if (!Permission.Chunk.INFO.has(player)) {
+                    Message.getMessage("Command.PDS.Arg.Chunk.Arg.Info.NoPerm", false).replace(Permission.Chunk.INFO).send(player);
+                    return true;
+                }
+                if (!LocationListDataType.chunkHasLocation(chunk) ||LocationListDataType.getChunkLocations(chunk).isEmpty()) {
+                    Message.getMessage("Command.PDS.Arg.Chunk.Arg.Info.NoInfo").send(player);
+                    return true;
+                }
+                Message.getMessage("Command.PDS.Arg.Chunk.Arg.Info.FirstLine").send(player);
+                LocationListDataType.getChunkLocations(chunk).stream()
+                        .map(locationSerializable -> locationSerializable.toLocation().getBlock())
+                        .forEach(block -> {
+                            Message.getMessage("Command.PDS.Arg.Chunk.Arg.Info.Line").replace(block).send(player);
+                });
+                return true;
+            }
+
+            if (strings[1].equalsIgnoreCase("clear")) {
+                if (!Permission.Chunk.CLEAR.has(player)) {
+                    Message.getMessage("Command.PDS.Arg.Chunk.Arg.Clear.NoPerm", false).replace(Permission.Chunk.INFO).send(player);
+                    return true;
+                }
+                LocationListDataType.clearLocations(player.getLocation().getChunk());
+                Message.getMessage("Command.PDS.Arg.Chunk.Arg.Clear.Success").send(player);
+                return true;
+            }
         }
 
         Message.getMessage("Command.PDS.NoCommandFound", false)
