@@ -142,4 +142,26 @@ public class Permission {
             return this.perm;
         }
     }
+
+    public enum Chunk {
+        INFO("pds.chunk.info"),
+        CLEAR("pds.chunk.clear");
+
+        @NotNull
+        private final String perm;
+
+        Chunk(@NotNull String perm) {
+            this.perm = perm;
+        }
+
+        public boolean has(@NotNull Player player) {
+            return player.hasPermission(this.perm);
+        }
+
+
+        @Override
+        public String toString() {
+            return this.perm;
+        }
+    }
 }

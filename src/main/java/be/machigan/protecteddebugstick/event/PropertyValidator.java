@@ -1,8 +1,8 @@
 package be.machigan.protecteddebugstick.event;
 
-import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.def.DebugStickDataType;
+import be.machigan.protecteddebugstick.persistent.LocationListDataType;
 import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Message;
@@ -97,8 +97,8 @@ public class PropertyValidator {
 
     public boolean playerCannotEditWithCurrentDebugStick() {
         ItemStack item = this.player.getInventory().getItemInMainHand();
-        return !(DebugStick.isBasicDebugStick(item) && Permission.Item.BASIC_EDIT.has(this.player))
-                || (DebugStick.isInfinityDebugStick(item) && Permission.Item.INFINITE_EDIT.has(this.player));
+        return !((DebugStick.isBasicDebugStick(item) && Permission.Item.BASIC_EDIT.has(this.player))
+                || (DebugStick.isInfinityDebugStick(item) && Permission.Item.INFINITE_EDIT.has(this.player)));
     }
 
     public void sendPlayerCannotEditWithCurrentDebugStickMessage() {
@@ -124,12 +124,10 @@ public class PropertyValidator {
     }
 
     public void removeFromEditedBlocks() {
-        if (!this.clickedBlock.getMetadata(DebugStick.METADATA_NAME_FORCE_VALUE).isEmpty()) {
-            this.clickedBlock.removeMetadata(DebugStick.METADATA_NAME_FORCE_VALUE, ProtectedDebugStick.getInstance());
-            Message.getMessage("OnUse.RemovePermanentValue", this.player, false)
-                    .replace(this.clickedBlock)
-                    .send(this.player);
-        }
+        LocationListDataType.removeBlock(this.clickedBlock);
+        Message.getMessage("OnUse.RemovePermanentValue", this.player, false)
+                .replace(this.clickedBlock)
+                .send(this.player);
     }
 
     public boolean playerCanEditAtLocation() {

@@ -1,7 +1,7 @@
 package be.machigan.protecteddebugstick.event;
 
-import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
+import be.machigan.protecteddebugstick.persistent.LocationListDataType;
 import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Message;
@@ -9,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +18,7 @@ public class PropertyEditEvent {
     private final Block block;
     private final BlockFace face;
     private final ItemStack itemInHand;
-    final private String blockDataOldValue;
+    private final String blockDataOldValue;
 
     @Nullable String blockDataNewValue;
 
@@ -52,8 +51,7 @@ public class PropertyEditEvent {
     }
 
     public void registerEditedBlock() {
-        if (this.block.getMetadata(DebugStick.METADATA_NAME_FORCE_VALUE).isEmpty())
-            this.block.setMetadata(DebugStick.METADATA_NAME_FORCE_VALUE, new FixedMetadataValue(ProtectedDebugStick.getInstance(), true));
+        LocationListDataType.addNewBlock(this.block);
     }
 
     public void editBlockData() {
@@ -117,12 +115,6 @@ public class PropertyEditEvent {
                         && (currentDurability + this.property.getDurability()) > durabilityPrevention
                         && currentDurability <= durabilityPrevention
                 );
-    }
-
-
-    @NotNull
-    public String getBlockDataOldValue() {
-        return this.blockDataOldValue;
     }
 
     @Nullable

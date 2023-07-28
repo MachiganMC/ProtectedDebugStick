@@ -13,6 +13,7 @@ import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -102,7 +103,7 @@ public class Message {
      */
     @NotNull
     public static Message getMessage(@NotNull String path, @Nullable Player player, boolean necessary) {
-        messagesFile = YamlConfiguration.loadConfiguration(new File(ProtectedDebugStick.getInstance().getDataFolder(), "/messages.yml"));
+        messagesFile = YamlConfiguration.loadConfiguration(new File(ProtectedDebugStick.getInstance().getDataFolder(), "messages.yml"));
         Message message = new Message();
         message.path = path;
         message.additionalContent(player);
@@ -225,7 +226,7 @@ public class Message {
      * @see #replace(Property)
      */
     public Message replace(Block block) {
-        return this.replace("{block_material}", block.getType().name().toLowerCase())
+        return this.replace("{block_material}", block.getType().name().toLowerCase().replace("_", " "))
                 .replace("{block_loc_x}", Integer.toString(block.getLocation().getBlockX()))
                 .replace("{block_loc_y}", Integer.toString(block.getLocation().getBlockY()))
                 .replace("{block_loc_z}", Integer.toString(block.getLocation().getBlockZ()))
@@ -267,6 +268,10 @@ public class Message {
         return this.replace("{perm}", permission.toString());
     }
 
+    public Message replace(@NotNull Permission.Chunk permission) {
+        return this.replace("{perm}", permission.toString());
+    }
+
 
     /**
      * Finalize the message by colorized and replace personal variable
@@ -278,11 +283,11 @@ public class Message {
     private void complete() {
         Map<String, String> personalVariables = new HashMap<>();
         Set<String> variables;
-        try {
-            variables = messagesFile.getConfigurationSection("PersonalVariable").getKeys(false);
-        } catch (NullPointerException e) {
+        ConfigurationSection variableSection = messagesFile.getConfigurationSection("PersonalVariable");
+        if (variableSection == null)
             variables = new HashSet<>();
-        }
+        else
+            variables = variableSection.getKeys(false);
 
         for (String variable : variables) {
             String value = messagesFile.getString("PersonalVariable." + variable);
@@ -303,7 +308,6 @@ public class Message {
         if (this.hoverContent != null) {
             Content finalHoverContent = new Text(Tools.replaceColor(new TextComponent(this.hoverContent)));
             for (BaseComponent b : this.finalContent) {
-                System.out.println("1) " + b.toLegacyText());
                 b.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, finalHoverContent));
             }
         }
@@ -345,8 +349,8 @@ public class Message {
         if (this.content == null)
             return;
 
-        if (sender instanceof Player) {
-            this.send((Player) sender);
+        if (sender instanceof Player player) {
+            this.send(player);
             return;
         }
         Bukkit.getConsoleSender().sendMessage(Tools.replaceColor(this.content));

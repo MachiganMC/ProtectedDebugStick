@@ -17,10 +17,8 @@ public class TabPDS implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (!(commandSender instanceof Player))
+        if (!(commandSender instanceof Player player))
             return Collections.emptyList();
-
-        Player player = (Player) commandSender;
 
         List<String> arg = new ArrayList<>();
         List<String> tab = new ArrayList<>();
@@ -29,6 +27,7 @@ public class TabPDS implements TabCompleter {
             return Collections.emptyList();
 
         if (strings.length == 1) {
+            arg.add("chunk");
             if (Permission.Command.GIVE.has(player))
                 arg.add("give");
             if (Permission.Command.RELOAD_CONFIG.has(player))
@@ -69,6 +68,15 @@ public class TabPDS implements TabCompleter {
             if (strings.length == 3)
                 StringUtil.copyPartialMatches(strings[2], Collections.singletonList("over-write"), tab);
 
+            return tab;
+        }
+
+        if (strings[0].equalsIgnoreCase("chunk")) {
+            if (Permission.Chunk.INFO.has(player))
+                arg.add("info");
+            if (Permission.Chunk.CLEAR.has(player))
+                arg.add("clear");
+            StringUtil.copyPartialMatches(strings[1], arg, tab);
             return tab;
         }
 

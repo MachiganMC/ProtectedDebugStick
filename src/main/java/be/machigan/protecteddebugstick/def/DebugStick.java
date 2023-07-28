@@ -24,7 +24,6 @@ public abstract class DebugStick implements Serializable {
     private static final long serialVersionUID = 2L;
     public static final NamespacedKey DEBUG_STICK_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-key");
     public static final NamespacedKey INSPECTOR_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-inspector");
-    public static final String METADATA_NAME_FORCE_VALUE = "debug-stick-force-value";
     public static final List<String> ITEMS = Arrays.asList("basic", "infinity", "inspector");
 
 

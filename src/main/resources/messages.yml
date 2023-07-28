@@ -376,6 +376,54 @@ Command:
         # {file} : the file that has been loaded
         Success: "{prefix} &aThe file &2{file} &ahas been loaded !"
 
+      Chunk:
+
+        # When the command sender is not a player (command is based on location)
+        # This message is necessary
+        OnlyPlayer:  "{prefix} &cOnly players can use this command !"
+
+        # When the player doesn't provide the next arg
+        # This message is necessary
+        NotEnoughArg: "{prefix} &cPlease, provide more argument !"
+
+        Arg:
+          Info:
+            # When the player wants to perform the command "/pds chunk info" but
+            # he doesn't have the perm
+            # This message is not necessary
+            # PH :
+            # {perm} : the permission
+            NoPerm: "{prefix} &cYou don't have the permission to use this argument !"
+
+            # When the chunk has no info about the plugin
+            # This message is necessary
+            NoInfo: "{prefix} &8&oThe chunk doesn't have informations ..."
+
+            # The first line of information, to explains that is the info
+            # This message is necessary
+            FirstLine: "{prefix} &aList of blocks that cannot be modified &enaturally &a:"
+
+            # Represent a line of the message of information (each one is a block)
+            # This message is necessary
+            # PH :
+            # {block} : the block that will not suffer from the physic
+            Line: "   &8» &9{block_material} &7= &c{block_loc_x} &2{block_loc_y} &b{block_loc_z}"
+            LineHover: "&aClick to teleport to &c{block_loc_x} &2{block_loc_y} &b{block_loc_z}"
+            LineRun: "/tp {block_loc_x} {block_loc_y} {block_loc_z}"
+          Clear:
+            # When the player wants to perform the command "/pds chunk clear" but
+            # he doesn't have the perm
+            # This message is not necessary
+            # PH :
+            # {perm} : the permission
+            NoPerm: "{prefix} &cYou don't have the permission to use this argument !"
+
+            # When all locations of unmodifiable (naturally) block of the chunk  has been cleared
+            # This message is necessary
+            Success: "{prefix} &aThe chunk is now &anormal"
+
+
+
     # When the argument isn't a command
     # This message isn't necessary
     # PH :

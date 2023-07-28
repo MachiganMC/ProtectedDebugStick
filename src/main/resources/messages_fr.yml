@@ -379,6 +379,50 @@ Command:
         # {file} : le fichier qui a été chargé
         Success: "{prefix} &aLe fichier &2{file} &aa été chargé !"
 
+      Chunk:
+
+        # When the command sender is not a player (command is based on location)
+        # This message is necessary
+        OnlyPlayer: "{prefix} &cSeuls les joueurs peuvent exécuter cette commande !"
+
+        # When the player doesn't provide the next arg
+        # This message is necessary
+        NotEnoughArg: "{prefix} &cVeuillez préciser plus d'argument !"
+
+        Arg:
+          Info:
+            # Lorsque le joueur n'a pas la permission d'utiliser la commande '/pds chunk info'
+            # Ce message n'est pas nécessaire
+            # PH :
+            # {perm} : la permission manquante
+            NoPerm: "{prefix} &cVous n'avez pas la permission d'utiliser cette commande !"
+
+            # Lorsque le chunk n'a pas stocké d'informations sur le plugin
+            # Ce message est nécessaire
+            NoInfo: "{prefix} &8&oLe chunk n'a pas d'informations ..."
+
+            # La première ligne avant chaque ligne d'informations
+            # Ce message est nécessaire
+            FirstLine: "{prefix} &aListe des blocs ne pouvant pas être modifiés &enaturellement &a:"
+
+            # Représente une ligne par bloc ne pouvant pas être modifié naturellement dans le chunk
+            # Ce message est nécessaire
+            # PH :
+            # {block} : le bloc qui ne peut pas être modifié naturellement
+            Line: "   &8» &9{block_material} &7= &c{block_loc_x} &2{block_loc_y} &b{block_loc_z}"
+            LineHover: "&aCliquez pour vous téléportez en &c{block_loc_x} &2{block_loc_y} &b{block_loc_z}"
+            LineRun: "/tp {block_loc_x} {block_loc_y} {block_loc_z}"
+          Clear:
+            # Lorsque le joueur n'a pas la permission d'utiliser la commande '/pds chunk info'
+            # Ce message n'est pas nécessaire
+            # PH :
+            # {perm} : la permission manquante
+            NoPerm: "{prefix} &cVous n'avez pas la permission d'utiliser cette commande !"
+
+            # Lorsque tous les blocs du chunk peuvent maintenant subir la physique
+            # Ce message est nécessaire
+            Success: "{prefix} &aLe chunk est revenu à la &anormal"
+
     # Lorsque l'argument n'existe pas
     # ce message n'est pas nécessaire !
     # PH :
