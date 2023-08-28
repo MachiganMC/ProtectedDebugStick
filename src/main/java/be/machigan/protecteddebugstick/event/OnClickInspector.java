@@ -15,6 +15,8 @@ import org.bukkit.inventory.EquipmentSlot;
 public class OnClickInspector implements Listener {
     @EventHandler
     public static void onClick(PlayerInteractEvent e) {
+        if (e.isCancelled())
+            return;
         Player player = e.getPlayer();
         if (e.getClickedBlock() == null)
             return;
