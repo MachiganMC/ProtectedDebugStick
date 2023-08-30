@@ -62,7 +62,7 @@ public class ProtectedDebugStick extends JavaPlugin {
         File file = new File(ProtectedDebugStick.getInstance().getDataFolder(), fileName);
         if (!file.exists()) {
             LogUtil.getLogger().log(Level.INFO, "Generating \"{0}\" ...", fileName);
-            ProtectedDebugStick.getInstance().saveResource("messages.yml", false);
+            ProtectedDebugStick.getInstance().saveResource(fileName, false);
         }
     }
 }
