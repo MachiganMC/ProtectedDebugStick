@@ -2,7 +2,7 @@ package be.machigan.protecteddebugstick.utils;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,11 +19,11 @@ public class Tools {
         String b2;
         String w;
         while (true) {
-            b1 = org.apache.commons.lang.StringUtils.substringBetween(text, "<s:", ">");
+            b1 = StringUtils.substringBetween(text, "<s:", ">");
             if (b1 == null) {
                 break;
             }
-            b2 = org.apache.commons.lang.StringUtils.substringBetween(text, "<e:", ">");
+            b2 = StringUtils.substringBetween(text, "<e:", ">");
             if (b2 == null) {
                 break;
             }

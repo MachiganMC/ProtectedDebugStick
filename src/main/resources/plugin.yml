@@ -6,7 +6,7 @@ database: false
 
 softdepend: [PlaceholderAPI]
 
-api-version: 1.18
+api-version: 1.20
 
 commands:
   pds:
@@ -200,8 +200,11 @@ permissions:
       pds.property.phase: true
       pds.property.summon: true
       pds.property.shrieking: true
-      pds.propery.pickles: true
+      pds.property.pickles: true
       pds.property.disarmed: true
+      pds.property.brushable: true
+      pds.property.occupied-slot: true
+      pds.property.petals: true
   # Children permissions of property :
   pds.property.orientable:
     description: Allows player to edit the property orientable
@@ -346,4 +349,13 @@ permissions:
     default: false
   pds.property.disarmed:
     description: Allows player to edit the disarmed property
+    default: true
+  pds.property.brushable:
+    description: Allows player to edit the brushable property
+    default: true
+  pds.property.occupied-slot:
+    description: Allows player to edit the number of slot occupied in a chiseled bookshelf
+    default: false
+  pds.property.petals:
+    description: Allows player to set the number of petals
     default: true
