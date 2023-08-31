@@ -1,7 +1,7 @@
 package be.machigan.protecteddebugstick.persistent;
 
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
-import org.apache.commons.lang.SerializationUtils;
+import org.apache.commons.lang3.SerializationUtils;
 import org.bukkit.Chunk;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;

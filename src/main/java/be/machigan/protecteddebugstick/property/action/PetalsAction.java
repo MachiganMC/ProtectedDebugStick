@@ -3,27 +3,23 @@ package be.machigan.protecteddebugstick.property.action;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Hatchable;
+import org.bukkit.block.data.type.PinkPetals;
 import org.jetbrains.annotations.NotNull;
 
-public class HatchAction implements PropertyAction {
-
+public class PetalsAction implements PropertyAction {
     @Override
     public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
-        Hatchable eggData = (Hatchable) data;
-
-        if (eggData.getHatch() == eggData.getMaximumHatch()) {
-            eggData.setHatch(0);
-        } else {
-            eggData.setHatch(eggData.getHatch() + 1);
-        }
-
-        block.setBlockData(eggData);
+        PinkPetals petals = (PinkPetals) data;
+        petals.setFlowerAmount(
+                petals.getFlowerAmount() == petals.getMaximumFlowerAmount() ?
+                        1 :
+                        petals.getFlowerAmount() + 1
+        );
+        block.setBlockData(petals);
     }
 
     @Override
     public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
-        Hatchable eggData = (Hatchable) data;
-        return Integer.toString(eggData.getHatch());
+        return Integer.toString(((PinkPetals) data).getFlowerAmount());
     }
 }

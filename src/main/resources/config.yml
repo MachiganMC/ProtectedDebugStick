@@ -151,7 +151,7 @@ Settings:
     SIGNAL_FIRE: 5
     ATTACHABLE: 5
     EXTENDABLE: 10
-    HANGALBLE: 5
+    HANGABLE: 5
     CAKE: 5
     BERRY: 10
     CONDITIONAL: 10
@@ -172,6 +172,9 @@ Settings:
     SHRIEKING: 1
     PICKLES: 10
     DISARMED: 3
+    BRUSHABLE: 3
+    OCCUPIED_SLOT: 5
+    PETALS: 20
 
 
   # The properties that the player doesn't have the permissions to edit will be hide

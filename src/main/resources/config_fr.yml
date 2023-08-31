@@ -149,7 +149,7 @@ Settings:
     SIGNAL_FIRE: 5
     ATTACHABLE: 5
     EXTENDABLE: 10
-    HANGALBLE: 5
+    HANGABLE: 5
     CAKE: 5
     BERRY: 10
     CONDITIONAL: 10
@@ -170,6 +170,9 @@ Settings:
     SHRIEKING: 1
     PICKLES: 10
     DISARMED: 3
+    BRUSHABLE: 3
+    OCCUPIED_SLOT: 5
+    PETALS: 20
 
 
   # Lorsqu'un joueur n'a pas la permission d'éditer une propriété, faut-il cacher ou non la propriété
