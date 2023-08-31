@@ -124,7 +124,10 @@ public class Permission {
         SUMMON("pds.property.summon"),
         SHRIEKING("pds.property.shrieking"),
         PICKLES("pds.property.pickles"),
-        DISARMED("pds.property.disarmed");
+        DISARMED("pds.property.disarmed"),
+        BRUSHABLE("pds.property.brushable"),
+        OCCUPIED_SLOT("pds.property.occupied-slot"),
+        PETALS("pds.property.petals");
 
 
         @NotNull

@@ -38,7 +38,7 @@ public enum Property implements Serializable {
     BAMBOO_LEAVES(2, Permission.Property.BAMBOO_LEAVES, Bamboo.class, new BambooLeavesAction()),
     TILT(5, Permission.Property.TILT, BigDripleaf.class, new TiltAction()),
     EGGS(50, Permission.Property.EGGS, TurtleEgg.class, new EggsAction()),
-    HATCH(20, Permission.Property.HATCH, TurtleEgg.class, new HatchAction()),
+    HATCH(20, Permission.Property.HATCH, Hatchable.class, new HatchAction()),
     SIGNAL_FIRE(5, Permission.Property.SIGNAL_FIRE, Campfire.class, new SignalFireAction()),
     ATTACHABLE(5, Permission.Property.ATTACHABLE, Attachable.class, new AttachableAction()),
     EXTENDABLE(10, Permission.Property.EXTENDABLE, Piston.class, new ExtendableAction()),
@@ -62,7 +62,11 @@ public enum Property implements Serializable {
     SHRIEKING(1, Permission.Property.SHRIEKING, SculkShrieker.class, new ShriekingAction()),
     PICKLES(10, Permission.Property.PICKLES, SeaPickle.class, new PicklesAction()),
     DISARMED(3, Permission.Property.DISARMED, Tripwire.class, new DisarmedAction()),
-    WATER_LOGGED(3, Permission.Property.WATER_LOGGED, Waterlogged.class, new WaterLoggedAction());
+    WATER_LOGGED(3, Permission.Property.WATER_LOGGED, Waterlogged.class, new WaterLoggedAction()),
+    BRUSHABLE(3, Permission.Property.BRUSHABLE, Brushable.class, new BrushableAction()),
+    OCCUPIED_SLOT(5, Permission.Property.OCCUPIED_SLOT, ChiseledBookshelf.class, new OccupiedSlotAction()),
+    PETALS(20, Permission.Property.PETALS, PinkPetals.class, new PetalsAction());
+
     private static final long serialVersionUID = 3L;
 
 

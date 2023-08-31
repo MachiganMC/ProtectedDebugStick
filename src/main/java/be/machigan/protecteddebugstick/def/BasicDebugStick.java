@@ -5,10 +5,12 @@ import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class BasicDebugStick extends DebugStick implements Serializable {
-    final private static long serialVersionUID = 4L;
+    @Serial
+    private static final long serialVersionUID = 4L;
     private int durability;
     @Nullable private Property currentProperty;
 
@@ -26,7 +28,7 @@ public class BasicDebugStick extends DebugStick implements Serializable {
      * @throws IllegalArgumentException If the {@code durability} is negative
      */
     public void setDurability(int durability) throws IllegalArgumentException {
-        Preconditions.checkArgument(durability >= 0, "Cannot remove negative durability");
+        Preconditions.checkArgument(durability >= 0, "Cannot set negative durability");
         this.durability = durability;
 
     }

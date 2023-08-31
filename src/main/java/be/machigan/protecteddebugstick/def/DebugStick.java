@@ -95,7 +95,7 @@ public abstract class DebugStick implements Serializable {
     }
 
     public static void removeDurability(@NotNull Player player, int durability) {
-        Preconditions.checkArgument(durability > 0, "Durability cannot be equal or below to 0");
+        Preconditions.checkArgument(durability >= 0, "Durability cannot be below to 0");
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
