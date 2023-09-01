@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -153,5 +154,11 @@ public class Tools {
     public static void doIfTrue(boolean condition, Runnable runnable) {
         if (condition)
             runnable.run();
+    }
+
+    public static byte[] intToByteArray(int i) {
+        ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES);
+        buffer.putInt(i);
+        return buffer.array();
     }
 }

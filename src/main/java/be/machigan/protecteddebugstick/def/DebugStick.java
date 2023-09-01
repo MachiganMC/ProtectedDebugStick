@@ -20,12 +20,24 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class DebugStick implements Serializable {
+    @Nullable protected Property currentProperty;
     @Serial
     private static final long serialVersionUID = 2L;
     public static final NamespacedKey DEBUG_STICK_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-key");
     public static final NamespacedKey INSPECTOR_KEY = new NamespacedKey(ProtectedDebugStick.getInstance(), "debug-stick-inspector");
     public static final List<String> ITEMS = Arrays.asList("basic", "infinity", "inspector");
 
+    @Nullable
+    public abstract Property getCurrentProperty();
+    public abstract void setCurrentProperty(@Nullable Property property);
+
+    public byte[] convertToByteArray() {
+        return new byte[] {
+                this.currentProperty == null ?
+                        0 :
+                        this.currentProperty.toByte()
+        };
+    }
 
     @NotNull
     public static ItemStack getBasicDebugStick(int durability) throws IllegalArgumentException {
@@ -47,7 +59,8 @@ public abstract class DebugStick implements Serializable {
     public static ItemStack getInfiniteDebugStick() {
         ItemStack infinityDebugStick = Config.Item.INFINITY.getItemFromConfig();
         ItemMeta infinityDebugStickMeta = infinityDebugStick.getItemMeta();
-        infinityDebugStickMeta.getPersistentDataContainer().set(DEBUG_STICK_KEY, DebugStickDataType.INSTANCE, new DebugStickData(new InfiniteDebugStick()));
+        infinityDebugStickMeta.getPersistentDataContainer()
+                .set(DEBUG_STICK_KEY, DebugStickDataType.INSTANCE, new DebugStickData(new InfiniteDebugStick()));
 
         infinityDebugStick.setItemMeta(infinityDebugStickMeta);
         return infinityDebugStick;
@@ -117,7 +130,8 @@ public abstract class DebugStick implements Serializable {
         }
 
         ItemMeta meta = item.getItemMeta();
-        BasicDebugStick basicDebugStick = (BasicDebugStick) meta.getPersistentDataContainer().get(DEBUG_STICK_KEY, DebugStickDataType.INSTANCE).getDebugStick();
+        BasicDebugStick basicDebugStick = (BasicDebugStick) meta.getPersistentDataContainer()
+                .get(DEBUG_STICK_KEY, DebugStickDataType.INSTANCE).getDebugStick();
         basicDebugStick.setDurability(current);
         meta.getPersistentDataContainer().set(DEBUG_STICK_KEY, DebugStickDataType.INSTANCE, new DebugStickData(basicDebugStick));
 
@@ -145,7 +159,8 @@ public abstract class DebugStick implements Serializable {
         Preconditions.checkArgument(itemMeta != null, "Not a debug stick");
         Preconditions.checkArgument(isDebugStick(item), "Not a debug stick");
 
-        DebugStick debugStick = item.getItemMeta().getPersistentDataContainer().get(DEBUG_STICK_KEY, DebugStickDataType.INSTANCE).getDebugStick();
+        DebugStick debugStick = item.getItemMeta().getPersistentDataContainer()
+                .get(DEBUG_STICK_KEY, DebugStickDataType.INSTANCE).getDebugStick();
         return ((BasicDebugStick) debugStick).getDurability();
     }
 
@@ -161,13 +176,11 @@ public abstract class DebugStick implements Serializable {
     public static void changeCurrentProperty(@NotNull Property property, @NotNull ItemStack item) {
         Preconditions.checkArgument(DebugStick.isDebugStick(item), "Cannot change property on item that is not a debug stick");
         ItemMeta meta = item.getItemMeta();
-        DebugStick debugStick = meta.getPersistentDataContainer().get(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE).getDebugStick();
+        DebugStick debugStick = meta.getPersistentDataContainer()
+                .get(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE).getDebugStick();
         debugStick.setCurrentProperty(property);
-        meta.getPersistentDataContainer().set(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE, new DebugStickData(debugStick));
+        meta.getPersistentDataContainer()
+                .set(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE, new DebugStickData(debugStick));
         item.setItemMeta(meta);
     }
-
-    @Nullable
-    public abstract Property getCurrentProperty();
-    public abstract void setCurrentProperty(@NotNull Property property);
 }
