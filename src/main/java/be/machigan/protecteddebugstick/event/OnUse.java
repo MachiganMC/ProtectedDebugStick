@@ -33,6 +33,11 @@ public class OnUse implements Listener {
             return;
         }
 
+        if (validator.isDebugStickContainsCorruptedData()) {
+            validator.sendDebugStickContainsCorruptedDataMessage();
+            return;
+        }
+
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             handleRightClick(validator);
             return;

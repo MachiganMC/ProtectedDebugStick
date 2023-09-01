@@ -193,6 +193,14 @@ OnUse:
   # {block} : le bloc que le joueur voulait éditer
   NoPropertyType:
 
+  # Lorsque le joueur utilise un debug stick qui contient des données invalides (sûrement dû à un debug stick
+  # d'une ancienne version).
+  # Celui-ci n'est pas récupérable, il faut lui demander de le remplacer.
+  # Ce message est nécessaire.
+  InvalidDebugStick: "{prefix} &cVotre DebugStick est corrompu, veuillez contacter un administrateur afin d'en récupérer
+  un nouveau !
+  \nLe votre n'est plus utilisable !"
+
   # Lorsque le joueur change la propriété de son debug stick
   # Ce message n'est pas nécessaire
   # PH :
