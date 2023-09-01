@@ -189,6 +189,12 @@ OnUse:
   # {block} : the block that the player wants to modify
   NoPropertyType:
 
+  # When the player uses a debug stick that contains invalid data (often because of a debug stick from an older version).
+  # It's not possible to restore it to a usable debug stick. It needs to ask to the player to get a new one.
+  # This message is necessary.
+  InvalidDebugStick: "{prefix} &cYour DebugStick is corrupted, please contact an administrator to get a new one !
+  \nYours is not usable anymore !"
+
   # When the player change the current property of the debug stick
   # This message isn't necessary
   # PH :

@@ -7,6 +7,7 @@ import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.utils.Config;
 import be.machigan.protecteddebugstick.utils.Message;
 import be.machigan.protecteddebugstick.utils.Permission;
+import org.apache.commons.lang3.SerializationException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -17,6 +18,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -82,6 +84,21 @@ public class PropertyValidator {
         Message.getMessage("OnUse.NoPropertyType", this.player, false)
                 .replace(this.clickedBlock)
                 .send(this.player);
+    }
+
+    public boolean isDebugStickContainsCorruptedData() {
+        try {
+            ItemMeta itemMeta = this.player.getInventory().getItemInMainHand().getItemMeta();
+            if (itemMeta == null)return true;
+            itemMeta.getPersistentDataContainer().get(DebugStick.DEBUG_STICK_KEY, DebugStickDataType.INSTANCE);
+            return false;
+        } catch (SerializationException e) {
+            return true;
+        }
+    }
+
+    public void sendDebugStickContainsCorruptedDataMessage() {
+        Message.getMessage("OnUse.InvalidDebugStick", this.player, true).send(this.player);
     }
 
     @NotNull
