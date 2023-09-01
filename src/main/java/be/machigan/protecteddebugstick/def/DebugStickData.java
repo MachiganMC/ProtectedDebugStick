@@ -1,9 +1,12 @@
 package be.machigan.protecteddebugstick.def;
 
+import be.machigan.protecteddebugstick.property.Property;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 public class DebugStickData implements Serializable {
     @Serial private static final long serialVersionUID = 1L;
@@ -21,5 +24,16 @@ public class DebugStickData implements Serializable {
     @NotNull
     public DebugStick getDebugStick() {
         return this.debugStick;
+    }
+
+    public static DebugStickData fromByteArray(byte[] bytes) {
+        DebugStick debugStick;
+        if (bytes.length == 1) {
+            debugStick = new InfiniteDebugStick();
+        } else {
+            debugStick = new BasicDebugStick(ByteBuffer.wrap(ArrayUtils.subarray(bytes, 1, bytes.length)).getInt());
+        }
+        debugStick.setCurrentProperty(Property.fromByte(bytes[0]));
+        return new DebugStickData(debugStick);
     }
 }

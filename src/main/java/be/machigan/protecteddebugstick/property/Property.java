@@ -11,6 +11,7 @@ import org.bukkit.block.data.*;
 import org.bukkit.block.data.type.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 
@@ -122,5 +123,18 @@ public enum Property implements Serializable {
     @NotNull
     public PropertyAction getAction() {
         return action;
+    }
+
+    public byte toByte() {
+        return (byte) (this.ordinal() - 128);
+    }
+
+    @Nullable
+    public static Property fromByte(byte b) {
+        try {
+            return Property.values()[b + 128];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
     }
 }
