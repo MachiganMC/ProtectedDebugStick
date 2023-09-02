@@ -9,6 +9,9 @@ import org.jetbrains.annotations.NotNull;
 public class OnUse implements Listener {
     @EventHandler
     public static void onUse(PlayerInteractEvent e) {
+        if (e.isCancelled())
+            return;
+
         if (!PropertyValidator.isPlayerHoldADebugStick(e))
             return;
 
