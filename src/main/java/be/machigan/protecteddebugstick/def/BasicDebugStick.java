@@ -19,7 +19,7 @@ public class BasicDebugStick extends DebugStick implements Serializable {
      * @throws IllegalArgumentException If the {@code durability} is below or equal to 0
      */
     public BasicDebugStick(int durability) throws IllegalArgumentException {
-        Preconditions.checkArgument(durability > 0, "Durability below or equal to 0");
+        Preconditions.checkArgument(durability >= 0, "Durability below to 0");
         this.durability = durability;
     }
 

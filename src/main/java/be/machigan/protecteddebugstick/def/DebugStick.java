@@ -41,7 +41,7 @@ public abstract class DebugStick implements Serializable {
 
     @NotNull
     public static ItemStack getBasicDebugStick(int durability) throws IllegalArgumentException {
-        Preconditions.checkArgument(durability > 0, "Durability can't be equal or below to 0");
+        Preconditions.checkArgument(durability >= 0, "Durability can't below to 0");
 
         ItemStack debugStickClone = Config.Item.BASIC.getItemFromConfig().clone();
         ItemMeta debugStickCloneMeta = debugStickClone.getItemMeta();

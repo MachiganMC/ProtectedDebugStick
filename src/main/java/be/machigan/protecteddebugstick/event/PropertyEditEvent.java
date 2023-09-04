@@ -75,9 +75,7 @@ public class PropertyEditEvent {
         if (DebugStick.willBreak(this.itemInHand)) {
             this.player.getInventory().setItemInMainHand(null);
             this.sendDebugStickBrokeMessage();
-        }
-
-        if (Config.PreventPlayerWhenBreaking.isEnable()) {
+        } else if (Config.PreventPlayerWhenBreaking.isEnable()) {
             this.sendAlertDurabilityMessage();
         }
     }
