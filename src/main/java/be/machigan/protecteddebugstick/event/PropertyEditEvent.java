@@ -120,4 +120,7 @@ public class PropertyEditEvent {
         return this.blockDataNewValue;
     }
 
+    public String getBlockDataOldValue() {
+        return blockDataOldValue;
+    }
 }

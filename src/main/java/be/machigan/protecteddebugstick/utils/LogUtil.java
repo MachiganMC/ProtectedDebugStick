@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LogUtil {
@@ -21,7 +22,7 @@ public class LogUtil {
 
     public static void logEdit(@NotNull Player player, @NotNull Property property, @NotNull String value, @NotNull Block block, @NotNull String oldValue) {
         if (Config.Log.consoleEnable())
-            Logger.getLogger("DebugStick").info(getMessage(player, property, value, block, oldValue));
+            Logger.getLogger("DebugStick").log(Level.INFO, () -> getMessage(player, property, value, block, oldValue));
     }
 
     @NotNull

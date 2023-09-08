@@ -99,7 +99,7 @@ public enum Property implements Serializable {
 
         editEvent.editBlockData();
         editEvent.registerEditedBlock();
-        LogUtil.logEdit(player, this, editEvent.getBlockDataNewValue(), block, editEvent.getBlockDataNewValue());
+        LogUtil.logEdit(player, this, editEvent.getBlockDataNewValue(), block, editEvent.getBlockDataOldValue());
         editEvent.sendSuccessMessage();
         editEvent.removeDurability();
     }
