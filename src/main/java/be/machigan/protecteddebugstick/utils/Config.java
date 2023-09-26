@@ -50,7 +50,7 @@ public final class Config {
         } catch (IllegalStateException e) {
             throw new InvalidConfigurationException("Configuration of items not found");
         }
-
+        Lang.reload();
         Recipe.reload();
     }
 
@@ -302,5 +302,38 @@ public final class Config {
         }
 
         private Recipe() {}
+    }
+
+    public static class Lang {
+        private static FileConfiguration messageFile;
+        private static final List<String> LANG_FILES = Arrays.asList("messages_en.yml", "messages_fr.yml");
+        private static final File DEFAULT_LANG = new File(ProtectedDebugStick.getInstance().getDataFolder(), "lang/messages_en.yml");
+
+        public static void reload() {
+            generateLangFilesIfNotExist();
+            String lang = getConfig().getString("Lang");
+            if (lang == null)
+                lang = "en";
+            File file = strToLangFile("messages_" + lang + ".yml");
+            if (!file.exists())
+                file = DEFAULT_LANG;
+            messageFile = YamlConfiguration.loadConfiguration(file);
+        }
+
+        private static void generateLangFilesIfNotExist() {
+            LANG_FILES.stream()
+                    .filter(lang -> !strToLangFile(lang).exists())
+                    .forEach(lang -> ProtectedDebugStick.generateFileIfNotExist("lang/" + lang));
+        }
+
+        private static File strToLangFile(String lang) {
+            return new File(ProtectedDebugStick.getInstance().getDataFolder(), "lang/" + lang);
+        }
+
+        public static FileConfiguration getMessageFile() {
+            return messageFile != null ? messageFile : YamlConfiguration.loadConfiguration(DEFAULT_LANG);
+        }
+
+        private Lang() {}
     }
 }

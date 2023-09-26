@@ -20,6 +20,10 @@
 
 
 # Defines the 3 items of the plugin, the settings are the sames for the three items
+
+# Currently, only en or fr. If the lang is not one these two it will be en
+Lang: 'en'
+
 Items:
   BasicDebugStick:
     # The material of the object (e.g. : ARROW)
@@ -192,7 +196,7 @@ Settings:
 
 
   # Warn the player when his debug stick will break
-  # The configuration of the message is in the "messages.yml" file at "OnUse" -> "WarnBreakMessage"
+  # The configuration of the message is in the "messages_en.yml" file at "OnUse" -> "WarnBreakMessage"
   WarnPlayerWhenBreaking:
     Enable: true
 
@@ -211,7 +215,7 @@ Log:
   # For example, it wil display this kind of log :
   # [01:04:27 INFO]: [DebugStick] Machigan edited the property bisected from bottom to top of the block at 39 -60 3 in world
   #
-  # PH : (same way than in messages.yml)
+  # PH : (same way than in messages_en.yml)
   # all PlaceHolders linked to an online player
   # {property} : the property that the player edited
   # {value} : the value of the property

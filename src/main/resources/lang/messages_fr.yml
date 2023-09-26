@@ -14,7 +14,7 @@
 #
 #
 # Bienvenu dans le fichier de la configuration des messages.
-# À savoir que ce fichier n'est pas pris en compte par le plugin s'il n'est pas nommé "messages.yml"
+# À savoir que ce fichier n'est pas pris en compte par le plugin s'il n'est pas nommé "messages_en.yml"
 # Quand vous faites un changement dans ce fichier, il n'y a pas besoin d'exécuter une commande. Juste sauvegardez le
 # fichier et le plugin va prendre en compte les changements.
 #

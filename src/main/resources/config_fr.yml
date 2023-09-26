@@ -18,8 +18,11 @@
 # If you are an english speaker, you can load an EN version of this file by running the command '/pds load config'
 # À savoir que ce fichier n'est pas pris en compte par le plugin s'il n'est pas nommé "config.yml".
 
+# Actuellement, il n'y a que l'anglais (en) et le français (fr). Si aucune de ces 2 valeurs n'est mise, par défaut
+# l'anglais sera choisi.
+Lang: 'fr'
 
-# Défini les 3 items du plugin, la configuration est pareil pour les 3 items
+# Définie les 3 items du plugin, la configuration est pareil pour les 3 items
 Items:
   BasicDebugStick:
     # Le matériel de l'item (ex : ARROW)
@@ -190,7 +193,7 @@ Settings:
 
 
   # Avertit le joueur lorsque son basic debug stick va casser
-  # La configuration de ce message se fait dans le fichier 'messages.yml' à 'OnUse' -> 'WarnBreakMessage'
+  # La configuration de ce message se fait dans le fichier 'messages_en.yml' à 'OnUse' -> 'WarnBreakMessage'
   WarnPlayerWhenBreaking:
     Enable: true
 
@@ -210,7 +213,7 @@ Log:
   # Exemple de log avec ce format :
   # [01:04:27 INFO]: [DebugStick] Machigan edited the property bisected from bottom to top of the block at 39 -60 3 in world
   #
-  # PH : fonctionne de la même manière que dans le fichier 'messages.yml'
+  # PH : fonctionne de la même manière que dans le fichier 'messages_en.yml'
   # tous les place holder liés à un joueur en ligne sont utilisables ici (et ceux pas liés aux joueurs)
   # {property} : la propriété que le joueur a édité
   # {value} : la nouvelle valeur de la propriété

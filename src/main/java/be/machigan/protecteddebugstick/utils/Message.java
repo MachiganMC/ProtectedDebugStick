@@ -14,12 +14,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -30,7 +29,7 @@ public class Message {
     /**
      * The file that contains all the messages.
      */
-    private static YamlConfiguration messagesFile;
+    private static FileConfiguration messagesFile;
 
 
     /**
@@ -103,7 +102,7 @@ public class Message {
      */
     @NotNull
     public static Message getMessage(@NotNull String path, @Nullable Player player, boolean necessary) {
-        messagesFile = YamlConfiguration.loadConfiguration(new File(ProtectedDebugStick.getInstance().getDataFolder(), "messages.yml"));
+        messagesFile = Config.Lang.getMessageFile();
         Message message = new Message();
         message.path = path;
         message.additionalContent(player);

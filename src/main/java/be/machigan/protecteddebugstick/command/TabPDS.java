@@ -60,7 +60,7 @@ public class TabPDS implements TabCompleter {
         if (strings[0].equalsIgnoreCase("load") && Permission.Command.LOAD.has(player)) {
             if (strings.length == 2) {
                 List<String> files = Arrays.asList(
-                        "plugin.yml", "config.yml", "config_fr.yml", "messages.yml", "messages_fr.yml",
+                        "plugin.yml", "config.yml", "config_fr.yml", "lang/messages_en.yml", "lang/messages_fr.yml",
                         "properties_en.MD", "properties_fr.MD");
                 StringUtil.copyPartialMatches(strings[1], files, tab);
             }

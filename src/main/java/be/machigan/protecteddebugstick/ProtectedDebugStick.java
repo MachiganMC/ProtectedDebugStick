@@ -35,7 +35,8 @@ public class ProtectedDebugStick extends JavaPlugin {
         getCommand("pds").setExecutor(new CommandPDS());
         getCommand("pds").setTabCompleter(new TabPDS());
 
-        ProtectedDebugStick.generateFileIfNotExist("messages.yml");
+        ProtectedDebugStick.generateFileIfNotExist("lang/messages_en.yml");
+        ProtectedDebugStick.generateFileIfNotExist("lang/messages_fr.yml");
     }
 
     public static ProtectedDebugStick getInstance() {
