@@ -1,0 +1,361 @@
+name: ProtectedDebugStick
+author: Machigan
+version: 2.1.1
+main: be.machigan.protecteddebugstick.ProtectedDebugStick
+database: false
+api-version: 1.16
+
+softdepend: [PlaceholderAPI]
+
+
+commands:
+  pds:
+    description: Allows player to gives a protected debug stick, reloads the plugin or loads a file
+    usage: Somes arguments are not existing
+    aliases:
+      - protected-debug-stick
+
+
+
+permissions:
+  pds.*:
+    description: Allows player to have all permissions of the plugin
+    default: false
+    children:
+      pds.command.*: true
+      pds.property.*: true
+      pds.item.*: true
+      pds.chunk.*: true
+
+
+  # Command permissions :
+  pds.command.*:
+    description: Allows player to use all the argument of the be.machigan.protecteddebugstickl.command /PDS
+    default: op
+    children:
+      pds.command.use: true
+      pds.command.give: true
+      pds.command.reload-config: true
+      pds.command.load: true
+  # Children permissions of be.machigan.protecteddebugstickl.command :
+  pds.command.use:
+    description: Allows player to use the be.machigan.protecteddebugstickl.command /PDS
+    default: op
+  pds.command.give:
+    description: Allows player to use the be.machigan.protecteddebugstickl.command /PDS give
+    default: op
+  pds.command.reload-config:
+    description: Allows player to use the be.machigan.protecteddebugstickl.command /PDS reload-config
+    default: op
+  pds.command.load:
+    description: Allows player to load a file from resources folder
+    default: op
+
+
+  # Item permissions :
+  pds.item.*:
+    description: Allows player to use all items
+    default: false
+    children:
+      pds.item.basic.*: true
+      pds.item.infinite.*: true
+      pds.item.inspector.*: true
+  # Children permissions of item :
+
+  # Basic debugstick permissions :
+  pds.item.basic.*:
+    description: Allows player to use all fonctionnalities of the basic debug stick
+    children:
+      pds.item.basic.edit: true
+      pds.item.basic.see: true
+  # Children permissions of basic debugstick :
+  pds.item.basic.edit:
+    description: Allows player to edit the property with the basic
+    default: true
+  pds.item.basic.see:
+    description: Allows player to see all editables properties of a block (and it cost) with the basic
+    default: true
+
+  # Infinite debugstick permissions :
+  pds.item.infinite.*:
+    description: Allows player to use all fonctionnalities of the infinite debug stick
+    default: false
+    children:
+      pds.item.infinite.edit: true
+      pds.item.infinite.see: true
+  # Children permissions of infinite debugstick :
+  pds.item.infinite.edit:
+    description: Allows player to edit the property with the infinite
+    default: false
+  pds.item.infinite.see:
+    description: Allows player to see all editables properties of a block (and it cost) with the infinite
+    default: false
+
+  # Inspector permissions :
+  pds.item.inspector.*:
+    description: Allows player to use all fonctionnalities of the inspector
+    default: false
+    children:
+      pds.item.inspector.implementation: true
+      pds.item.inspector.properties: true
+  # Children permissions of inspector :
+  pds.item.inspector.implementation:
+    description: Allows player to see all implementations of a block with the inspector
+    default: false
+  pds.item.inspector.properties:
+    description: Allows player to see all properties and it values of a block with the inspector
+    default: false
+
+
+  # Bypass permissions :
+  pds.bypass.*:
+    description: Allows player to bypass all restrictions of the plugin
+    default: op
+    children:
+      pds.bypass.blacklist.*: true
+      pds.bypass.plugin-block: true
+  # Children permissions of bypass :
+  pds.bypass.plugin-block:
+    description: Allows player to bypass the others plugin protection
+    default: op
+
+  # Permissions of blacklist
+  pds.bypass.blacklist.*:
+    description: Allows player to bypass all blacklist
+    default: op
+    children:
+      pds.bypass.blacklist.material: true
+      pds.bypass.blacklist.world: true
+  # Children permissions of blacklist :
+  pds.bypass.blacklist.material:
+    description: Allows player to bypass the material blacklist
+    default: op
+  pds.bypass.blacklist.world:
+    description: Allows player to bypass the world blacklist
+    default: op
+
+  # Permissions of chunk
+  pds.chunk.*:
+    description: Allows player to see and edit the informations about the chunk (about properties)
+    default: op
+    children:
+      pds.chunk.info: true
+      pds.chunk.clear: true
+
+  pds.chunk.info:
+    description: Allows player to see all locations that cannot be edited by physic of Minecraft
+    default: op
+  pds.chunk.clear:
+    description: Allows player to remove all locations (of the chunks) that cannot be edited by the physic of Minecraft
+
+
+
+  # Property permissions :
+  pds.property.*:
+    description: Allows player to edit all the properties
+    default: false
+    children:
+      pds.property.orientable: true
+      pds.property.directional: true
+      pds.property.rotatable: true
+      pds.property.slab: true
+      pds.property.bisected: true
+      pds.property.shape-stairs: true
+      pds.property.shape-rail: true
+      pds.property.persistent: true
+      pds.property.multiple-facing: true
+      pds.property.lightable: true
+      pds.property.redstone-wire: true
+      pds.property.water-logged: true
+      pds.property.powerable: true
+      pds.property.ageable: true
+      pds.property.stage: true
+      pds.property.honey-level: true
+      pds.property.wall: true
+      pds.property.snowable: true
+      pds.property.distance: true
+      pds.property.layers: true
+      pds.property.bamboo-leaves: true
+      pds.property.tilt: true
+      pds.property.eggs: true
+      pds.property.hatch: true
+      pds.property.signal-fire: true
+      pds.property.attachable: true
+      pds.property.extendable: true
+      pds.property.hangable: true
+      pds.property.cake: true
+      pds.property.berry: true
+      pds.property.conditional: true
+      pds.property.openable: true
+      pds.property.end-portal-frame: true
+      pds.property.face-attachable: true
+      pds.property.moisture: true
+      pds.property.gate: true
+      pds.property.levelled: true
+      pds.property.thickness: true
+      pds.property.vertical-direction: true
+      pds.property.locked: true
+      pds.property.charges: true
+      pds.property.bloom: true
+      pds.property.phase: true
+      pds.property.summon: true
+      pds.property.shrieking: true
+      pds.property.pickles: true
+      pds.property.disarmed: true
+      pds.property.brushable: true
+      pds.property.occupied-slot: true
+      pds.property.petals: true
+  # Children permissions of property :
+  pds.property.orientable:
+    description: Allows player to edit the property orientable
+    default: true
+  pds.property.directional:
+    description: Allows player to edit the property directional
+    default: true
+  pds.property.rotatable:
+    description: Allows player to edit the property rotatable
+    default: true
+  pds.property.slab:
+    description: Allows player to edit the property slab
+    default: true
+  pds.property.bisected:
+    description: Allows player to edit the property bisected
+    default: true
+  pds.property.shape-stairs:
+    description: Allows player to edit the property shape of stairs
+    default: true
+  pds.property.shape-rail:
+    description: Allows player to edit the property shape of rail
+    default: true
+  pds.property.persistent:
+    description: Allows player to edit the property be.machigan.protecteddebugstickl.persistent
+    default: true
+  pds.property.multiple-facing:
+    description: Allows player to edit the property multiple facing
+    default: true
+  pds.property.lightable:
+    description: Allows player to edit the property lightable
+    default: true
+  pds.property.redstone-wire:
+    description: Allows player to edit the property redstone wire
+    default: true
+  pds.property.water-logged:
+    description: Allows player to edit the property water logged
+    default: false
+  pds.property.analogue-powerable:
+    description: Allows player to edit the analogue powerable property
+    default: true
+  pds.property.powerable:
+    description: Allows player to edit the property powerable
+    default: true
+  pds.property.ageable:
+    description: Allows player to edit the property ageable
+    default: false
+  pds.property.stage:
+    description: Allows player to edit the property stage
+    default: false
+  pds.property.honey-level:
+    description: Allows player to edit the property honey level
+    default: false
+  pds.property.wall:
+    description: Allows player to edit the property wall
+    default: true
+  pds.property.snowable:
+    description: Allows player to edit the property snowable
+    default: true
+  pds.property.distance:
+    description: Allows player to edit the property distance
+    default: true
+  pds.property.layers:
+    description: Allows player to edit the property layers
+    default: false
+  pds.property.bamboo-leaves:
+    description: Allows player to edit the property leaves of a bamboo
+    default: true
+  pds.property.tilt:
+    description: Allows player to edit the property tilt
+    default: true
+  pds.property.eggs:
+    description: Allows player to edit the number of eggs on a turtle egg
+    default: false
+  pds.property.hatch:
+    description: Allows player to edit the hatch property of a turtle egg
+    default: true
+  pds.property.signal-fire:
+    description: Allows player to edit the signal fire property
+    default: true
+  pds.property.attachable:
+    description: Allows player to edit the attachable property
+    default: false
+  pds.property.extendable:
+    description: Allows player to edit the extendable property
+    default: false
+  pds.property.hangable:
+    description: Allows player to edit the hangable property
+    default: false
+  pds.property.cake:
+    description: Allows player to edit the cake property
+    default: true
+  pds.property.berry:
+    description: Allows player to edit the berry property
+    default: true
+  pds.property.conditional:
+    description: Allows player to edit the conditional property
+    default: false
+  pds.property.openable:
+    description: Allows player to edit openable property
+    default: true
+  pds.property.end-portal-frame:
+    description: Allows player to the eye of an end portal frame
+    default: true
+  pds.property.face-attachable:
+    description: Allows player to edit the face attachable property
+    default: true
+  pds.property.moisture:
+    description: Allows player to edit the moisture property
+    default: true
+  pds.property.gate:
+    description: Allows player to edit the gate property
+    default: true
+  pds.property.levelled:
+    description: Allows player to edit the levelled property
+    default: true
+  pds.property.thickness:
+    description: Allows player to edit the thickness property
+    default: true
+  pds.property.vertical-direction:
+    description: Allows player to edit the vertical direction property
+    default: true
+  pds.property.locked:
+    description: Allows player to edit the locked property
+    default: true
+  pds.property.charges:
+    description: Allows player to edit the charges property
+    default: true
+  pds.property.bloom:
+    description: Allows player to edit the bloom property
+    default: true
+  pds.property.phase:
+    description: Allows player to edit the phase property
+    default: true
+  pds.property.summon:
+    description: Allows player to edit the summon property
+    default: true
+  pds.property.shrieking:
+    description: Allows player to edit the shrieking property
+    default: true
+  pds.property.pickles:
+    description: Allows player to edit the number of pickles of a pickle
+    default: false
+  pds.property.disarmed:
+    description: Allows player to edit the disarmed property
+    default: true
+  pds.property.brushable:
+    description: Allows player to edit the brushable property
+    default: true
+  pds.property.occupied-slot:
+    description: Allows player to edit the number of slot occupied in a chiseled bookshelf
+    default: false
+  pds.property.petals:
+    description: Allows player to set the number of petals
+    default: true

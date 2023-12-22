@@ -48,7 +48,7 @@ Each time you'll use the **Basic Debug Stick**, he'll take some durability damag
 (*depending on the property and how you have configured it*).
 
 
-If you don't want to execute a command to give a debugstick to a player each time (because it isn't very survival),
+If you don't want to execute a be.machigan.protecteddebugstick.command to give a debugstick to a player each time (because it isn't very survival),
 you can create your own recipes for each item of the plugin. And, of course, if you want to create 2 recipes for
 2 durability for the basic debugstick, you can !
 

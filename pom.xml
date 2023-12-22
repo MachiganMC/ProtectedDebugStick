@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>be.machigan</groupId>
-    <artifactId>ProtectedDebugStick</artifactId>
-    <version>2.1.1</version>
+    <artifactId>ProtectedDebugStick-parent</artifactId>
+    <version>parent</version>
+    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -15,10 +16,24 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
+    <modules>
+        <module>global</module>
+        <module>plugin</module>
+        <module>v1_19_R0</module>
+        <module>v1_19_R1</module>
+        <module>v1_19_R2</module>
+        <module>v1_19_R3</module>
+        <module>v1_20_R0</module>
+        <module>v1_20_R1</module>
+        <module>v1_20_R2</module>
+        <module>v1_20_R3</module>
+        <module>v1_20_R4</module>
+    </modules>
+
     <build>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>plugin/src/main/resources</directory>
                 <excludes>
                     <exclude>icon.png</exclude>
                 </excludes>
@@ -49,44 +64,4 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
     </repositories>
-
-    <dependencies>
-
-<!--        Spigot : -->
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.20.1-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-
-<!--        Json : -->
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-
-<!--        JetBrains Annotations : -->
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
-        </dependency>
-
-<!--        PlaceHolder API : -->
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.9.2</version>
-            <scope>provided</scope>
-        </dependency>
-
-<!--        Commons lang-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.13.0</version>
-        </dependency>
-    </dependencies>
 </project>
