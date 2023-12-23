@@ -51,6 +51,8 @@ Items:
       - ""
       - "&aDurability left : &e{durability}"
 
+    # CustomModelData: 100
+
     # Enchant(s) of the items, each element represent an enchantement. You don't have to add the  "minecraft:" before
     # the name of to enchant. It's not necessary for an item to have an enchantement.
     Enchants:
@@ -93,6 +95,7 @@ Items:
       - ""
       - "&aUse left : &e∞"
 
+  # CustomModelData: 100
 
     Enchants:
       - "unbreaking"
@@ -114,6 +117,7 @@ Items:
     Enchants:
       - "unbreaking"
 
+  # CustomModelData: 100
     HideEnchants: false
     HideAttributes: true
     HidePotionEffets: true

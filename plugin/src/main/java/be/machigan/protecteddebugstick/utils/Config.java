@@ -110,6 +110,8 @@ public final class Config {
             this.getEnchantments().forEach(enchantment -> meta.addEnchant(enchantment, 1, false));
             meta.addItemFlags(this.getItemFlags());
             meta.setUnbreakable(configurationSection.getBoolean("IsUnbreakable"));
+            if (configurationSection.contains("CustomModelData"))
+                meta.setCustomModelData(configurationSection.getInt("CustomModelData"));
             item.setItemMeta(meta);
             return item;
         }
@@ -142,8 +144,6 @@ public final class Config {
 
         @NotNull
         public List<String> getLore() {
-            if (this.lore != null)
-                return new ArrayList<>(lore);
             List<String> configLore = new ArrayList<>(this.configurationSection.getStringList("Lore"));
             configLore.replaceAll(Tools::replaceColor);
             this.lore = configLore;
