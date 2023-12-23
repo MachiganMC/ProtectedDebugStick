@@ -16,7 +16,6 @@ commands:
       - protected-debug-stick
 
 
-
 permissions:
   pds.*:
     description: Allows player to have all permissions of the plugin
@@ -26,6 +25,10 @@ permissions:
       pds.property.*: true
       pds.item.*: true
       pds.chunk.*: true
+
+  pds.version:
+    description: Allows player to knows (when connecting) if there is new version
+    default: op
 
 
   # Command permissions :
