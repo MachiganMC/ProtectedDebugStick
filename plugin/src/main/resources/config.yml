@@ -21,7 +21,7 @@
 
 # Defines the 3 items of the plugin, the settings are the sames for the three items
 
-# Currently, only en or fr. If the lang is not one these two it will be en
+# Currently, en, fr or zh-cn. If the lang is not 1 these 3 it will be en
 Lang: 'en'
 
 Items:

@@ -37,8 +37,7 @@ public class ProtectedDebugStick extends JavaPlugin {
         getCommand("pds").setExecutor(new CommandPDS());
         getCommand("pds").setTabCompleter(new TabPDS());
 
-        ProtectedDebugStick.generateFileIfNotExist("lang/messages_en.yml");
-        ProtectedDebugStick.generateFileIfNotExist("lang/messages_fr.yml");
+        Config.Lang.generateLangFilesIfNotExist();
         setProperties();
         if (PROPERTIES.isEmpty()) {
             instance.getLogger().severe("No valid properties has been found for you're server version");

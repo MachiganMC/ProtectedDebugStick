@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Stream;
 
 
 public final class Config {
@@ -308,7 +309,9 @@ public final class Config {
 
     public static class Lang {
         private static FileConfiguration messageFile;
-        private static final List<String> LANG_FILES = Arrays.asList("messages_en.yml", "messages_fr.yml");
+        private static final List<String> LANG_FILES = Stream.of("en", "fr", "zh-cn")
+                .map(lang -> "messages_" + lang + ".yml")
+                .toList();
         private static final File DEFAULT_LANG = new File(ProtectedDebugStick.getInstance().getDataFolder(), "lang/messages_en.yml");
 
         public static void reload() {
@@ -322,7 +325,7 @@ public final class Config {
             messageFile = YamlConfiguration.loadConfiguration(file);
         }
 
-        private static void generateLangFilesIfNotExist() {
+        public static void generateLangFilesIfNotExist() {
             LANG_FILES.stream()
                     .filter(lang -> !strToLangFile(lang).exists())
                     .forEach(lang -> ProtectedDebugStick.generateFileIfNotExist("lang/" + lang));

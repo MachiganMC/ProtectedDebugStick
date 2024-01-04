@@ -18,7 +18,7 @@
 # If you are an english speaker, you can load an EN version of this file by running the be.machigan.protecteddebugstickl.command '/pds load config'
 # À savoir que ce fichier n'est pas pris en compte par le plugin s'il n'est pas nommé "config.yml".
 
-# Actuellement, il n'y a que l'anglais (en) et le français (fr). Si aucune de ces 2 valeurs n'est mise, par défaut
+# Actuellement, il n'y a que en, fr, zh-cn. Si aucune de ces 3 valeurs n'est mise, par défaut
 # l'anglais sera choisi.
 Lang: 'fr'
 
