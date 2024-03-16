@@ -7,31 +7,26 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Wall;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Random;
-
 public class WallAction implements PropertyAction {
+    private final BlockFace blockFace;
 
+    public WallAction(BlockFace blockFace) {
+        this.blockFace = blockFace;
+    }
+    
     @Override
-    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
         Wall wallData = (Wall) data;
 
-        try {
-            wallData.getHeight(blockFace);
-        } catch (ArrayIndexOutOfBoundsException ignored){
-            blockFace = Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST)
-                    .get(new Random().nextInt(4));
-        }
-
-        switch (wallData.getHeight(blockFace)) {
+        switch (wallData.getHeight(this.blockFace)) {
             case NONE:
-                wallData.setHeight(blockFace, Wall.Height.LOW);
+                wallData.setHeight(this.blockFace, Wall.Height.LOW);
                 break;
             case LOW:
-                wallData.setHeight(blockFace, Wall.Height.TALL);
+                wallData.setHeight(this.blockFace, Wall.Height.TALL);
                 break;
             case TALL:
-                wallData.setHeight(blockFace, Wall.Height.NONE);
+                wallData.setHeight(this.blockFace, Wall.Height.NONE);
                 break;
         }
 
@@ -39,14 +34,7 @@ public class WallAction implements PropertyAction {
     }
 
     @Override
-    public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
-        try {
-            ((Wall) data).getHeight(blockFace);
-        } catch (ArrayIndexOutOfBoundsException ignored){
-            blockFace = Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST)
-                    .get(new Random().nextInt(4));
-        }
-
-        return ((Wall) data).getHeight(blockFace).name().toLowerCase();
+    public @NotNull String getValue(@NotNull BlockData data) throws ClassCastException {
+        return ((Wall) data).getHeight(this.blockFace).name().toLowerCase();
     }
 }

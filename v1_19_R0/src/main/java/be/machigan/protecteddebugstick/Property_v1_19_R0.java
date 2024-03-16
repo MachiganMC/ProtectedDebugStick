@@ -2,6 +2,7 @@ package be.machigan.protecteddebugstick;
 
 import be.machigan.protecteddebugstick.action.*;
 import be.machigan.protecteddebugstick.property.Property;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.*;
 import org.bukkit.block.data.type.*;
 
@@ -38,14 +39,20 @@ public class Property_v1_19_R0 implements PropertyHandler {
                 new Property("lightable",Lightable.class, new LightableAction()),
                 new Property("locked", Repeater.class, new LockedAction()),
                 new Property("moisture", Farmland.class, new MoistureAction()),
-                new Property("multiple-facing", MultipleFacing.class, new MultiplefacingAction()),
+                new Property("multiple-facing-north","multiple-facing", MultipleFacing.class, new MultiplefacingAction(BlockFace.NORTH)),
+                new Property("multiple-facing-east","multiple-facing", MultipleFacing.class, new MultiplefacingAction(BlockFace.EAST)),
+                new Property("multiple-facing-south","multiple-facing", MultipleFacing.class, new MultiplefacingAction(BlockFace.SOUTH)),
+                new Property("multiple-facing-west","multiple-facing", MultipleFacing.class, new MultiplefacingAction(BlockFace.WEST)),
                 new Property("openable", Openable.class, new OpenableAction()),
                 new Property("orientable",Orientable.class,new OrientableAction()),
                 new Property("persistent", Leaves.class, new PersistentAction()),
                 new Property("pickles", SeaPickle.class, new PicklesAction()),
                 new Property("phase", SculkShrieker.class, new PhaseAction()),
                 new Property("powerable", Powerable.class, new PowerableAction()),
-                new Property("redstone-wire", RedstoneRail.class, new RedstoneWireAction()),
+                new Property("redstone-wire-north", "redstone-wire", RedstoneWire.class, new RedstoneWireAction(BlockFace.NORTH)),
+                new Property("redstone-wire-east", "redstone-wire", RedstoneWire.class, new RedstoneWireAction(BlockFace.EAST)),
+                new Property("redstone-wire-south", "redstone-wire", RedstoneWire.class, new RedstoneWireAction(BlockFace.SOUTH)),
+                new Property("redstone-wire-west", "redstone-wire", RedstoneWire.class, new RedstoneWireAction(BlockFace.WEST)),
                 new Property("rotatable", Rotatable.class, new RotatableAction()),
                 new Property("shape-rail", Rail.class, new ShapeRailAction()),
                 new Property("shape-stairs", Stairs.class, new ShapeStairsAction()),
@@ -58,7 +65,10 @@ public class Property_v1_19_R0 implements PropertyHandler {
                 new Property("thickness", PointedDripstone.class, new ThicknessAction()),
                 new Property("tilt", BigDripleaf.class, new TiltAction()),
                 new Property("vertical-direction", PointedDripstone.class, new VerticalDirectionAction()),
-                new Property("wall", Wall.class, new WallAction()),
+                new Property("wall-north", "wall", Wall.class, new WallAction(BlockFace.NORTH)),
+                new Property("wall-east", "wall", Wall.class, new WallAction(BlockFace.EAST)),
+                new Property("wall-south", "wall", Wall.class, new WallAction(BlockFace.SOUTH)),
+                new Property("wall-west", "wall", Wall.class, new WallAction(BlockFace.WEST)),
                 new Property("water-logged", Waterlogged.class, new WaterLoggedAction())
         );
     }

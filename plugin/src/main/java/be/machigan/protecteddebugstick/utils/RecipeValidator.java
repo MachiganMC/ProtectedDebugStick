@@ -28,7 +28,6 @@ public class RecipeValidator {
         this.invalidReason = this.getCraftFieldReason();
         this.invalidReason = this.getDurabilityReason();
         this.invalidReason = this.getIngredientReason();
-
     }
 
     @Nullable

@@ -2,7 +2,6 @@ package be.machigan.protecteddebugstick.action;
 
 import be.machigan.protecteddebugstick.property.PropertyAction;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.PointedDripstone;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class ThicknessAction implements PropertyAction {
 
     @Override
-    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
         PointedDripstone dripstone = (PointedDripstone) data;
 
         switch (dripstone.getThickness()) {
@@ -35,7 +34,7 @@ public class ThicknessAction implements PropertyAction {
     }
 
     @Override
-    public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
+    public @NotNull String getValue(@NotNull BlockData data) throws ClassCastException {
         PointedDripstone dripstone = (PointedDripstone) data;
         return dripstone.getThickness().name().toLowerCase();
     }

@@ -2,7 +2,6 @@ package be.machigan.protecteddebugstick.action;
 
 import be.machigan.protecteddebugstick.property.PropertyAction;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.FaceAttachable;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class FaceAttachableAction implements PropertyAction {
 
     @Override
-    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
         FaceAttachable faceAttachable = (FaceAttachable) data;
 
         switch (faceAttachable.getAttachedFace()) {
@@ -29,7 +28,7 @@ public class FaceAttachableAction implements PropertyAction {
     }
 
     @Override
-    public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
+    public @NotNull String getValue(@NotNull BlockData data) throws ClassCastException {
         FaceAttachable faceAttachable = (FaceAttachable) data;
         return faceAttachable.getAttachedFace().name().toLowerCase();
     }

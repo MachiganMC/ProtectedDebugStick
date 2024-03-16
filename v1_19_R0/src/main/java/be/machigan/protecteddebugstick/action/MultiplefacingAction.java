@@ -7,36 +7,24 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.MultipleFacing;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
-
 public class MultiplefacingAction implements PropertyAction {
+    private final BlockFace blockFace;
+
+    public MultiplefacingAction(BlockFace blockFace) {
+        this.blockFace = blockFace;
+    }
 
     @Override
-    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
         MultipleFacing multipleFacingData = (MultipleFacing) data;
 
-        if (!multipleFacingData.getAllowedFaces().contains(BlockFace.UP) && blockFace.equals(BlockFace.UP)) {
-            blockFace = (BlockFace) multipleFacingData.getAllowedFaces().toArray()[new Random().nextInt(multipleFacingData.getAllowedFaces().size())];
-        }
-        if (!((MultipleFacing) data).getAllowedFaces().contains(BlockFace.DOWN) && blockFace.equals(BlockFace.DOWN)) {
-            blockFace = (BlockFace) multipleFacingData.getAllowedFaces().toArray()[new Random().nextInt(multipleFacingData.getAllowedFaces().size())];
-        }
-
-        multipleFacingData.setFace(blockFace, !multipleFacingData.hasFace(blockFace));
+        multipleFacingData.setFace(this.blockFace, !multipleFacingData.hasFace(this.blockFace));
         block.setBlockData(multipleFacingData);
     }
 
     @Override
-    public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
+    public @NotNull String getValue(@NotNull BlockData data) throws ClassCastException {
         MultipleFacing multipleFacingData = (MultipleFacing) data;
-
-        if (!multipleFacingData.getAllowedFaces().contains(BlockFace.UP) && blockFace.equals(BlockFace.UP)) {
-            blockFace = (BlockFace) multipleFacingData.getAllowedFaces().toArray()[new Random().nextInt(multipleFacingData.getAllowedFaces().size())];
-        }
-        if (!((MultipleFacing) data).getAllowedFaces().contains(BlockFace.DOWN) && blockFace.equals(BlockFace.DOWN)) {
-            blockFace = (BlockFace) multipleFacingData.getAllowedFaces().toArray()[new Random().nextInt(multipleFacingData.getAllowedFaces().size())];
-        }
-
-        return Boolean.toString(multipleFacingData.hasFace(blockFace));
+        return Boolean.toString(multipleFacingData.hasFace(this.blockFace));
     }
 }

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class VerticalDirectionAction implements PropertyAction {
 
     @Override
-    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
         PointedDripstone dripstone = (PointedDripstone) data;
 
         switch (dripstone.getVerticalDirection()) {
@@ -26,7 +26,7 @@ public class VerticalDirectionAction implements PropertyAction {
     }
 
     @Override
-    public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
+    public @NotNull String getValue(@NotNull BlockData data) throws ClassCastException {
         PointedDripstone dripstone = (PointedDripstone) data;
         return dripstone.getVerticalDirection().name().toLowerCase();
     }

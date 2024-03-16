@@ -44,8 +44,7 @@ public final class Config {
 
         configFile = YamlConfiguration.loadConfiguration(new File(ProtectedDebugStick.getInstance().getDataFolder(), "config.yml"));
         Item.reloadConfig();
-        ProtectedDebugStick.PROPERTIES.forEach(property ->
-                property.setDurability(configFile.getInt("Settings.Durability." + property.toString().toUpperCase().replace("-", "_"))));
+        ProtectedDebugStick.PROPERTIES.forEach(property -> property.reloadDurabilityFromConfig(configFile));
         try {
             Item.BASIC.getItemFromConfig();
             Item.INFINITY.getItemFromConfig();

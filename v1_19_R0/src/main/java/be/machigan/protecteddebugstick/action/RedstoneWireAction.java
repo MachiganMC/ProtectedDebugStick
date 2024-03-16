@@ -7,30 +7,26 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.RedstoneWire;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
-
 public class RedstoneWireAction implements PropertyAction {
+    private final BlockFace blockFace;
+
+    public RedstoneWireAction(BlockFace blockFace) {
+        this.blockFace = blockFace;
+    }
+
     @Override
-    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
         RedstoneWire redstoneWireData = (RedstoneWire) data;
 
-        try {
-            redstoneWireData.getFace(blockFace);
-            block.getFace(block);
-
-        } catch (IllegalArgumentException ignored) {
-            blockFace = (BlockFace) redstoneWireData.getAllowedFaces().toArray()[new Random().nextInt(redstoneWireData.getAllowedFaces().size())];
-        }
-
-        switch (redstoneWireData.getFace(blockFace)) {
+        switch (redstoneWireData.getFace(this.blockFace)) {
             case NONE:
-                redstoneWireData.setFace(blockFace, RedstoneWire.Connection.SIDE);
+                redstoneWireData.setFace(this.blockFace, RedstoneWire.Connection.SIDE);
                 break;
             case SIDE:
-                redstoneWireData.setFace(blockFace, RedstoneWire.Connection.UP);
+                redstoneWireData.setFace(this.blockFace, RedstoneWire.Connection.UP);
                 break;
             case UP:
-                redstoneWireData.setFace(blockFace, RedstoneWire.Connection.NONE);
+                redstoneWireData.setFace(this.blockFace, RedstoneWire.Connection.NONE);
                 break;
         }
 
@@ -38,15 +34,7 @@ public class RedstoneWireAction implements PropertyAction {
     }
 
     @Override
-    public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
-        RedstoneWire redstoneWireData = (RedstoneWire) data;
-
-        try {
-            redstoneWireData.getFace(blockFace);
-        } catch (IllegalArgumentException ignored) {
-            blockFace = (BlockFace) redstoneWireData.getAllowedFaces().toArray()[new Random().nextInt(redstoneWireData.getAllowedFaces().size())];
-        }
-
-        return blockFace.name().toLowerCase() + " facing " + ((RedstoneWire) data).getFace(blockFace).name().toLowerCase();
+    public @NotNull String getValue(@NotNull BlockData data) throws ClassCastException {
+        return ((RedstoneWire) data).getFace(blockFace).name().toLowerCase();
     }
 }

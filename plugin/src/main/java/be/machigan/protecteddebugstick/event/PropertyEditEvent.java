@@ -29,7 +29,7 @@ public class PropertyEditEvent {
         this.block = block;
         this.face = face;
         this.itemInHand = player.getInventory().getItemInMainHand();
-        this.blockDataOldValue = this.property.getAction().getValue(block.getBlockData(), face);
+        this.blockDataOldValue = this.property.getAction().getValue(block.getBlockData());
     }
 
     public void editBlock() {
@@ -74,8 +74,8 @@ public class PropertyEditEvent {
     }
 
     public void editBlockData() {
-        this.property.getAction().modify(block.getBlockData(), this.block, this.face);
-        this.blockDataNewValue = this.property.getAction().getValue(block.getBlockData(), this.face);
+        this.property.getAction().modify(block.getBlockData(), this.block);
+        this.blockDataNewValue = this.property.getAction().getValue(block.getBlockData());
     }
 
     public void sendSuccessMessage() {

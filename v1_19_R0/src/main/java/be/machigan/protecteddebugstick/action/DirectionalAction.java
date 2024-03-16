@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DirectionalAction implements PropertyAction {
     @Override
-    public void modify(@NotNull BlockData data, @NotNull Block block, @NotNull BlockFace blockFace) throws ClassCastException {
+    public void modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
         Directional directionalData = (Directional) data;
 
         if (directionalData.getFaces().size() == 6) {
@@ -55,7 +55,7 @@ public class DirectionalAction implements PropertyAction {
     }
 
     @Override
-    public @NotNull String getValue(@NotNull BlockData data, @NotNull BlockFace blockFace) throws ClassCastException {
+    public @NotNull String getValue(@NotNull BlockData data) throws ClassCastException {
         return ((Directional) data).getFacing().name().toLowerCase();
     }
 }
