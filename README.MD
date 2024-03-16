@@ -1,4 +1,4 @@
-![icon](https://github.com/MachiganMC/ProtectedDebugStick/blob/master/src/main/resources/icon.png?raw=true)
+![icon](https://raw.githubusercontent.com/MachiganMC/ProtectedDebugStick/master/plugin/src/main/resources/icon.png)
 
 [![Spiget Downloads](https://img.shields.io/spiget/downloads/102630?color=A87D17&style=for-the-badge)](https://www.spigotmc.org/resources/protected-debug-stick.102630/)
 [![Spiget Download Size](https://img.shields.io/spiget/download-size/102630?color=a8&style=for-the-badge)](https://www.spigotmc.org/resources/protected-debug-stick.102630/)
