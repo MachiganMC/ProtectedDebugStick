@@ -267,10 +267,6 @@ public class Message {
         return this.replace("{perm}", permission.toString());
     }
 
-    public Message replace(@NotNull Permission.Chunk permission) {
-        return this.replace("{perm}", permission.toString());
-    }
-
 
     /**
      * Finalize the message by colorized and replace personal variable

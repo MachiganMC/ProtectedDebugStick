@@ -6,13 +6,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class Permission {
     public enum Command {
-        USE("pds.be.machigan.protecteddebugstickl.command.use"),
-        GIVE("pds.be.machigan.protecteddebugstickl.command.give"),
-        RELOAD_CONFIG("pds.be.machigan.protecteddebugstickl.command.reload-config"),
-        LOAD("pds.be.machigan.protecteddebugstickl.command.load");
+        USE("pds.command.use"),
+        GIVE("pds.command.give"),
+        RELOAD_CONFIG("pds.command.reload-config"),
+        LOAD("pds.command.load"),
+        CHUNK_INFO("pds.command.chunk.info"),
+        CHUNK_CLEAR("pds.command.chunk.clear");
 
         @NotNull
         private final String perm;
+
         Command(@NotNull String perm) {
             this.perm = perm;
         }
@@ -39,6 +42,7 @@ public class Permission {
 
         @NotNull
         private final String perm;
+
         Item(@NotNull String perm) {
             this.perm = perm;
         }
@@ -61,6 +65,7 @@ public class Permission {
 
         @NotNull
         private final String perm;
+
         Bypass(@NotNull String perm) {
             this.perm = perm;
         }
@@ -132,6 +137,7 @@ public class Permission {
 
         @NotNull
         private final String perm;
+
         Property(@NotNull String perm) {
             this.perm = perm;
         }
@@ -139,28 +145,6 @@ public class Permission {
         public boolean has(@NotNull Player player) {
             return player.hasPermission(this.perm);
         }
-
-        @Override
-        public String toString() {
-            return this.perm;
-        }
-    }
-
-    public enum Chunk {
-        INFO("pds.chunk.info"),
-        CLEAR("pds.chunk.clear");
-
-        @NotNull
-        private final String perm;
-
-        Chunk(@NotNull String perm) {
-            this.perm = perm;
-        }
-
-        public boolean has(@NotNull Player player) {
-            return player.hasPermission(this.perm);
-        }
-
 
         @Override
         public String toString() {

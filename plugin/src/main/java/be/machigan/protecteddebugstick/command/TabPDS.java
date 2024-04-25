@@ -80,9 +80,9 @@ public class TabPDS implements TabCompleter {
         }
 
         if (strings[0].equalsIgnoreCase("chunk")) {
-            if (Permission.Chunk.INFO.has(player))
+            if (Permission.Command.CHUNK_INFO.has(player))
                 arg.add("info");
-            if (Permission.Chunk.CLEAR.has(player))
+            if (Permission.Command.CHUNK_CLEAR.has(player))
                 arg.add("clear");
             StringUtil.copyPartialMatches(strings[1], arg, tab);
             return tab;

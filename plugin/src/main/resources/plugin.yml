@@ -40,6 +40,7 @@ permissions:
       pds.command.give: true
       pds.command.reload-config: true
       pds.command.load: true
+      pds.command.chunk.*: true
   # Children permissions of be.machigan.protecteddebugstickl.command :
   pds.command.use:
     description: Allows player to use the be.machigan.protecteddebugstickl.command /PDS
@@ -53,6 +54,17 @@ permissions:
   pds.command.load:
     description: Allows player to load a file from resources folder
     default: op
+  pds.command.chunk.*:
+    description: Allows player to see and edit the informations about the chunk (about properties)
+    default: op
+    children:
+      pds.command.chunk.info: true
+      pds.command.chunk.clear: true
+  pds.command.chunk.info:
+    description: Allows player to see all locations that cannot be edited by physic of Minecraft
+    default: op
+  pds.command.chunk.clear:
+    description: Allows player to remove all locations (of the chunks) that cannot be edited by the physic of Minecraft
 
 
   # Item permissions :
@@ -136,20 +148,6 @@ permissions:
   pds.bypass.blacklist.world:
     description: Allows player to bypass the world blacklist
     default: op
-
-  # Permissions of chunk
-  pds.chunk.*:
-    description: Allows player to see and edit the informations about the chunk (about properties)
-    default: op
-    children:
-      pds.chunk.info: true
-      pds.chunk.clear: true
-
-  pds.chunk.info:
-    description: Allows player to see all locations that cannot be edited by physic of Minecraft
-    default: op
-  pds.chunk.clear:
-    description: Allows player to remove all locations (of the chunks) that cannot be edited by the physic of Minecraft
 
 
 

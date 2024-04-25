@@ -190,8 +190,8 @@ public class CommandPDS implements CommandExecutor {
             }
             if (strings[1].equalsIgnoreCase("info")) {
                 Chunk chunk = player.getLocation().getChunk();
-                if (!Permission.Chunk.INFO.has(player)) {
-                    Message.getMessage("Command.PDS.Arg.Chunk.Arg.Info.NoPerm", false).replace(Permission.Chunk.INFO).send(player);
+                if (!Permission.Command.CHUNK_INFO.has(player)) {
+                    Message.getMessage("Command.PDS.Arg.Chunk.Arg.Info.NoPerm", false).replace(Permission.Command.CHUNK_INFO).send(player);
                     return true;
                 }
                 if (!LocationListDataType.chunkHasLocation(chunk) ||LocationListDataType.getChunkLocations(chunk).isEmpty()) {
@@ -208,8 +208,8 @@ public class CommandPDS implements CommandExecutor {
             }
 
             if (strings[1].equalsIgnoreCase("clear")) {
-                if (!Permission.Chunk.CLEAR.has(player)) {
-                    Message.getMessage("Command.PDS.Arg.Chunk.Arg.Clear.NoPerm", false).replace(Permission.Chunk.INFO).send(player);
+                if (!Permission.Command.CHUNK_CLEAR.has(player)) {
+                    Message.getMessage("Command.PDS.Arg.Chunk.Arg.Clear.NoPerm", false).replace(Permission.Command.CHUNK_CLEAR).send(player);
                     return true;
                 }
                 LocationListDataType.clearLocations(player.getLocation().getChunk());
