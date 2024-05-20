@@ -57,7 +57,7 @@ public class Property_v1_19_R0 implements PropertyHandler {
                 new Property("shape-rail", Rail.class, new ShapeRailAction()),
                 new Property("shape-stairs", Stairs.class, new ShapeStairsAction()),
                 new Property("shrieking", SculkShrieker.class, new ShriekingAction()),
-                new Property("signal-fire", Fire.class, new SignalFireAction()),
+                new Property("signal-fire", Campfire.class, new SignalFireAction()),
                 new Property("slab", Slab.class, new SlabAction()),
                 new Property("snowable", Snowable.class, new SnowableAction()),
                 new Property("stage", Sapling.class, new StageAction()),
