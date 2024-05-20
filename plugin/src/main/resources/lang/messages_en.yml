@@ -19,7 +19,7 @@
 #
 #
 #
-# First, the plugin allow you to use the Minecraft color code. For example, if you want to put the message
+# First, the plugin allows you to use the Minecraft color code. For example, if you want to put the message
 # in red, you have to use "&4" before the text (all allowed color code are here : https://minecraft.tools/fr/color-code.php)
 # But you can alose generate a gradient (=variation of one color A to another color B) in a chars string
 # by using the code : "<s:[code RGB of the first color]>[your chars string]<e:[code RGB of the second color]>"
@@ -36,14 +36,14 @@
 # A message isn't just a text in the tchat ! You can do more.
 # For each message, you can add :
 # - a hover message : when the player puts his mouse cursor on the message in the tchat
-# - a run be.machigan.protecteddebugstickl.command : when the player clicks on the message
-# - a suggest be.machigan.protecteddebugstickl.command : when the player clicks on the message
+# - a run command : when the player clicks on the message
+# - a suggest command : when the player clicks on the message
 # - an actionbar message : to display the message above his hotbar
 #
 # To configure them, it's very easy. You've to add a field with the same name as the message but with a word after :
 # - Hover : for hover message
-# - Run : to add a run be.machigan.protecteddebugstickl.command
-# - Suggest : to add a suggest be.machigan.protecteddebugstickl.command
+# - Run : to add a run command
+# - Suggest : to add a suggest command
 # - Hotbar : to add a message above the hotbar
 # Exemple :
 #   HelloMessage: "Hello player !"
@@ -52,7 +52,7 @@
 #   HelloHotbar: "Hello from the hotbar !"
 #
 # In our example, the message will send a message in the tchat to the player. When the player put his mouse cursor
-# on the message, he will see "Ho you put your mouse on me !". When he will click on it, he will execute the be.machigan.protecteddebugstickl.command
+# on the message, he will see "Ho you put your mouse on me !". When he will click on it, he will execute the command
 # "/hello". And he will also see above his hotbar the message "Hello from the hotbar"
 #
 # You have to know that (if the message isn't necessary), you don't have to configure the original message to
@@ -60,7 +60,7 @@
 #
 #
 #
-# Some messages aren't necessaries. It's always wrote when you can skip the configuration of a message or not
+# Some messages aren't necessaries. It's always written when you can skip the configuration of a message or not
 #
 #
 #

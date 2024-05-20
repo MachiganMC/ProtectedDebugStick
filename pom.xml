@@ -38,6 +38,12 @@
                     <exclude>icon.png</exclude>
                 </excludes>
             </resource>
+            <resource>
+                <directory>docs</directory>
+                <excludes>
+                    <exclude>*</exclude>
+                </excludes>
+            </resource>
         </resources>
         <plugins>
             <plugin>
