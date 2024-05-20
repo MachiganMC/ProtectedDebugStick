@@ -173,6 +173,7 @@ Settings:
     SHRIEKING: 1
     PICKLES: 10
     DISARMED: 3
+    MOISTURE: 3
 
     # v1.19.3
     OCCUPIED_SLOT: 5
