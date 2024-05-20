@@ -6,7 +6,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.EndPortalFrame;
 import org.jetbrains.annotations.NotNull;
 
-public class EndPortalFrameAction implements PropertyAction {
+public class EyedAction implements PropertyAction {
 
     @Override
     public void modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {

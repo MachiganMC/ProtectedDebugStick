@@ -28,7 +28,7 @@ public class Property_v1_19_R0 implements PropertyHandler {
                 new Property("disarmed",Tripwire.class,new DisarmedAction()),
                 new Property("distance", Leaves.class, new DistanceAction()),
                 new Property("eggs", TurtleEgg.class, new EggsAction()),
-                new Property("end-portal-frame", EndPortalFrame.class, new EndPortalFrameAction()),
+                new Property("eyed", EndPortalFrame.class, new EyedAction()),
                 new Property("extendable", Piston.class, new ExtendableAction()),
                 new Property("face-attachable", FaceAttachable.class, new FaceAttachableAction()),
                 new Property("gate", Gate.class, new GateAction()),

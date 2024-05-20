@@ -164,7 +164,7 @@ Settings:
     BERRY: 10
     CONDITIONAL: 10
     OPENABLE: 1
-    END_PORTAL_FRAME: 5
+    EYED: 5
     FACE_ATTACHABLE: 3
     FARMLAND: 3
     GATE: 3

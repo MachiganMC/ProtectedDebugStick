@@ -188,7 +188,7 @@ permissions:
       pds.property.berry: true
       pds.property.conditional: true
       pds.property.openable: true
-      pds.property.end-portal-frame: true
+      pds.property.eyed: true
       pds.property.face-attachable: true
       pds.property.moisture: true
       pds.property.gate: true
@@ -306,7 +306,7 @@ permissions:
   pds.property.openable:
     description: Allows player to edit openable property
     default: true
-  pds.property.end-portal-frame:
+  pds.property.eyed:
     description: Allows player to the eye of an end portal frame
     default: true
   pds.property.face-attachable:
