@@ -69,7 +69,9 @@ public class Property_v1_19_R0 implements PropertyHandler {
                 new Property("wall-east", "wall", Wall.class, new WallAction(BlockFace.EAST)),
                 new Property("wall-south", "wall", Wall.class, new WallAction(BlockFace.SOUTH)),
                 new Property("wall-west", "wall", Wall.class, new WallAction(BlockFace.WEST)),
-                new Property("water-logged", Waterlogged.class, new WaterLoggedAction())
+                new Property("water-logged", Waterlogged.class, new WaterLoggedAction()),
+                new Property("chest-type", Chest.class, new ChestTypeAction()),
+                new Property("triggered", Dispenser.class, new DispenserTriggeredAction())
         );
     }
 }

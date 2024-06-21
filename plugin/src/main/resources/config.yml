@@ -181,6 +181,8 @@ Settings:
     PICKLES: 10
     DISARMED: 3
     MOISTURE: 3
+    CHEST_TYPE: 5
+    TRIGGERED: 1
 
     # v1.19.3
     OCCUPIED_SLOT: 5
@@ -189,6 +191,15 @@ Settings:
     BRUSHABLE: 3
     HATCH: 20
     PETALS: 20
+
+    # v1.20.5
+    BOTTLES: 5
+
+    # v1.21.0
+    CRAFTING: 1
+    TRIAL_SPAWNER_STATE: 5
+    OMINOUS: 15
+    VAULT_STATE: 5
 
 
   # The properties that the player doesn't have the permissions to edit will be hide

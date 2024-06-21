@@ -206,6 +206,13 @@ permissions:
       pds.property.brushable: true
       pds.property.occupied-slot: true
       pds.property.petals: true
+      pds.property.bottles: true
+      pds.property.chest-type: true
+      pds.property.triggered: true
+      pds.property.crafting: true
+      pds.property.trial-spawner-state: true
+      pds.property.ominous: true
+      pds.property.vault-state: true
   # Children permissions of property :
   pds.property.orientable:
     description: Allows player to edit the property orientable
@@ -360,3 +367,24 @@ permissions:
   pds.property.petals:
     description: Allows player to set the number of petals
     default: true
+  pds.property.bottles:
+    description: Allows player to defines the number of bottles on a brewing stand
+    default: false
+  pds.property.chest-type:
+    description: Allows player to set the type of the chest
+    default: false
+  pds.property.triggered:
+    description: Allows player to set if a redstone machine is triggered
+    default: true
+  pds.property.crafting:
+    description: Allows player to define if the crafter is crafting or not
+    default: true
+  pds.property.trial-spawner-state:
+    description: Allows player to define the state of the trial spawner
+    default: false
+  pds.property.ominous:
+    description: Allows player to define if a trial spawner (or vault) is ominous or not (ominous = better loots)
+    default: false
+  pds.property.vault-state:
+    description: Allows player to define the state of the vault
+    default: false
