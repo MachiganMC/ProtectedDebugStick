@@ -2,6 +2,7 @@ package be.machigan.protecteddebugstick.action;
 
 import be.machigan.protecteddebugstick.property.PropertyAction;
 import org.bukkit.Axis;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Orientable;
@@ -14,7 +15,7 @@ public class OrientableAction implements PropertyAction {
 
         switch (orientableData.getAxis()) {
             case X:
-                orientableData.setAxis(Axis.Y);
+                orientableData.setAxis(block.getType() == Material.NETHER_PORTAL ? Axis.Z : Axis.Y);
                 break;
             case Y:
                 orientableData.setAxis(Axis.Z);
