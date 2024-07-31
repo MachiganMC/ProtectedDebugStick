@@ -20,7 +20,7 @@
 # 定义插件的 3 个项目，这三个项目的设置相同。
 
 # 可用数值: fr,en,zh-cn
-Lang: 'en'
+Lang: 'zh-cn'
 
 Items:
   BasicDebugStick:
@@ -36,16 +36,16 @@ Items:
     Lore:
       - ""
       - "&e&l右键点击"
-      - " &7&o修改方块属性"
+      - " &7&o修改方块属性内容"
       - ""
       - "&a&l左键点击"
-      - " &7&o查看方块可用属性"
+      - " &7&o修改方块属性类型"
       - ""
       - "&c&l按住Shift + 右键点击"
       - " &7&o清除修改"
       - ""
       - "&9&l按住Shift + 左键点击"
-      - " &7&o查看修改记录"
+      - " &7&o列出所有属性"
       - ""
       - "&a剩余耐久 : &e{durability}"
 
@@ -81,16 +81,16 @@ Items:
     Lore:
       - ""
       - "&e&l右键点击"
-      - " &7&o修改属性"
+      - " &7&o修改方块属性内容"
       - ""
       - "&a&l左键点击"
-      - " &7&o查看方块可用属性"
+      - " &7&o修改方块属性类型"
       - ""
       - "&c&l按住Shift + 右键点击"
       - " &7&o清除数值"
       - ""
       - "&9&l按住Shift + 左键点击"
-      - " &7&o查看修改记录"
+      - " &7&o列出所有属性"
       - ""
       - "&a使用次数 : &e∞"
 
@@ -111,8 +111,8 @@ Items:
     Name: "<s:FF8C19>&l查看器<e:FF8C19>"
     Lore:
       - ""
-      - "&a&l右键点击 &7&o来查看"
-      - "&c&l左键点击 &7&o来查看数值"
+      - "&a&l右键点击 &7&o来启用"
+      - "&c&l左键点击 &7&o来获取属性内容"
     Enchants:
       - "unbreaking"
 
@@ -163,7 +163,7 @@ Settings:
     BERRY: 10
     CONDITIONAL: 10
     OPENABLE: 1
-    END_PORTAL_FRAME: 5
+    EYED: 5
     FACE_ATTACHABLE: 3
     FARMLAND: 3
     GATE: 3
@@ -234,8 +234,19 @@ Log:
   # [01:04:27 INFO]: [DebugStick] Machigan edited the property bisected from bottom to top of the block at 39 -60 3 in world
   #
   # 可用变量: (与message_zh-cn.yml)
-  Format: "{player} 使用 {property_name} 将方块的 {old_value} 修改为 {value} 位置: {block_loc_x} {block_loc_y} {block_loc_z} 世界: {block_loc_world}"
-
+  # 所有的变量必须为在线玩家
+  # {property} : 玩家所更改的属性
+  # {value} : 属性的数值
+  # {old_value} : 属性之前的数值
+  # {block} : 玩家编辑的方块
+  # {year} : 年
+  # {month} : 月
+  # {day} : 日
+  # {hour} : 小时
+  # {minute} : 分钟
+  # {second} : 秒
+  # {player} : 玩家名称 (如果你使用 PlaceHoldersAPI, 这个变量是不可用的 -> %player_name%) 
+  Format: "{player} 修改了属性 {property_name} 从 {old_value} 到 {value}. 位置 {block_loc_x} {block_loc_y} {block_loc_z}. 世界: {block_loc_world}" 
   # 是否在控制台输出日志 ?
   Console: false
 

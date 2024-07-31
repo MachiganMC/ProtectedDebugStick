@@ -1,0 +1,431 @@
+#                             #                                                                         #
+#                             #                                                                         #
+#                             #                                                                         #
+#                             ###########################################################################
+#                             #                                                                         #
+#                             #   ███╗░░░███╗███████╗░██████╗░██████╗░█████╗░░██████╗░███████╗░██████╗  #
+#                             #   ████╗░████║██╔════╝██╔════╝██╔════╝██╔══██╗██╔════╝░██╔════╝██╔════╝  #
+#                             #   ██╔████╔██║█████╗░░╚█████╗░╚█████╗░███████║██║░░██╗░█████╗░░╚█████╗░  #
+#                             #   ██║╚██╔╝██║██╔══╝░░░╚═══██╗░╚═══██╗██╔══██║██║░░╚██╗██╔══╝░░░╚═══██╗  #
+#                             #   ██║░╚═╝░██║███████╗██████╔╝██████╔╝██║░░██║╚██████╔╝███████╗██████╔╝  #
+#                             #   ╚═╝░░░░░╚═╝╚══════╝╚═════╝░╚═════╝░╚═╝░░╚═╝░╚═════╝░╚══════╝╚═════╝░  #
+#                             #                                                                         #
+#                             ###########################################################################
+#
+#
+# 欢迎来到本插件的语言文件，你可以在这里修改插件输出的内容。
+# 当你修改完成插件配置后，请直接保存。无需执行be.machigan.protecteddebugstickl.command，插件便会应用你的更改。
+#
+#
+#
+# 以下是此插件允许使用的颜色修改方式:
+# 1.Minecraft颜色
+# 加入你想令插件输出一个红色的信息，你可以在想要修改颜色的语句前添加一个"&4"。
+# (所有可用的颜色代码: https://minecraft.tools/en/color-code.php)
+# 2.渐变颜色
+# 使用格式 : "<s:[最左侧的RGB颜色]>[你的自定义语句]<e:[最右侧对的RGB颜色]>"
+# 例子 :
+# 如果你想要你的文字从浅蓝色 (code : 80FFFF) 渐变到粉色 (code : FF99FF)。"
+# 你可以这样写 :
+#    <s:80FFFF>渐变文字演示<e:FF99FF>
+# 请注意，如果你想修改你的字体样式(例子斜体/粗体)，你需要将类似"&l"这类的语句放在颜色代码之后
+# 例子:
+#    <s:80FFFF>&l渐变演示文字<e:FF99FF>
+#
+#
+#
+# 这类消息不仅仅是聊天栏中的提示，还可以是以下类型。
+# - 悬浮字 : 当玩家将鼠标悬浮在插件消息上时显示一段文字(Hover Text)
+# - 执行指令 : 当玩家点击这条消息时，直接执行设定的指令(Run command)
+# - 提示指令 : 当玩家点击这条消息时，在它的聊天栏输入框内提示指令(Suggest command)
+# - 事件栏 : 在事件栏(ActionBar)显示你设置的消息
+#
+# 配置它们非常简单，你只需要在你的消息后面加一个后缀，格式如下
+# - Hover : 悬浮字
+# - Run : 执行指令
+# - Suggest : 提示指令
+# - Hotbar : 事件栏
+# 例子 :
+#   HelloMessage: "Hello player !"
+#   HelloMessageHover: "Ho you put your mouse on me !"
+#   HelloMessageRun: "/hello"
+#   HelloHotbar: "Hello from the hotbar !"
+#
+# 正如你所见，在上述的例子中，你们首先给玩家发送了一个聊天栏中的提示，当玩家将鼠标
+# 悬浮在这条提示上的时候，它会显示"Ho you put your mouse on me!"，如果玩家点击了这条
+# 提示，玩家便会执行"/hello"的指令。
+# 在发送聊天栏消息的同时，你们也给玩家的事件栏发送了一条消息"Hello from the hotbar"
+#
+# 不过请注意，如果你的提示消息不是必须的，你可以不用设置它，作者在下文中的配置中已经设置了一些。
+#
+#
+#
+#
+# 有些消息并不是必须的，它不会在你不配置的时候出现:)
+#
+#
+#
+# 以下是一些可以写入到消息中的变量
+# {block_material} : 方块的组成材料
+# {block_loc_x} : 方块的x轴坐标
+# {block_loc_y} : 方块的y轴坐标
+# {block_loc_z} : 方块的z轴坐标
+# {block_loc_world} : 此方块所在的世界
+#
+# {property_name} : 调试棒的名称
+# {property_durability} : 调试棒的耐久
+# {property_perm} : 修改所需的权限
+#
+#
+#
+# 此插件同样可以使用PlaceholderAPI，你可以在这里使用任何来自papi的变量
+# 别忘了要"/papi ecloud download <placeholders>"
+# 再一次举一些例子 :
+# - those who concern no player (eg: %server_name%) : usable everywhere in the plugin
+# - those who concern an online player (eg:%player_name%) : your will be notified when you can use them
+# - those who concern an offline player : for the moment, nowhere in the plugin
+#
+#
+#
+# 甚至，你还能在“PersonalVariable”的配置选项中创建你自己的变量
+# 它可以被添加到消息中，格式如下
+# "{name_of_the_variable}".
+# 例子 :
+# PersonalVariable:
+#  prefix: "&3[&6&lProtected&e-DS&3]&r"
+# 如果你想要使用这个prefix变量, 你只需要在消息中直接使用 "{prefix}"。 插件会将它
+# 转化为你配置中的信息
+#
+#
+#
+# 祝您配置愉快 (
+
+
+PersonalVariable:
+  # 你可以在这里配置自定义变量
+  # <!> 请注意 ! {pRefiX} ≠ {prefix}
+  prefix: "#3399FF[<s:667db6>调试棒<e:667db6>#3399FF]&r"
+
+
+# 在OnUse中你可以使用所有PlaceholderAPI变量
+# 这里的变量信息与个人有关的部分将会挂钩到使用它的玩家
+OnUse:
+  # 当玩家想要使用调试棒但其他插件不允许时提示的信息
+  # 这条消息并不是必须的，可以不写
+  # 因为不允许玩家放置的插件大概率已经给玩家发送了一条提示信息了
+  # 可用变量 :
+  # {block} : 玩家想要编辑的方块
+  PluginPrevent:
+
+  NoPerm:
+    #当玩家想要编辑方块缺没有权限时
+    # 这条消息并不是必须的，可以不写
+    # 可用变量 :
+    # {property} : 玩家想要编辑的属性
+    Property:  "{prefix} &c您没有权限来编辑这个属性 !"
+
+    Infinite:
+      # 当玩家使用无限调试棒时
+      # 这条消息并不是必须的，可以不写
+      # 可用变量 :
+      # {block} : 玩家想要编辑的方块
+      # {perm} : 缺少的权限
+      Edit:
+
+      # 当玩家想要使用无限调试棒来查看可编辑的属性时因缺少权限而被拒绝的提示
+      # 这条消息并不是必须的，可以不写
+      # 可用变量 :
+      # {block} : 玩家想要编辑的方块
+      # {perm} : 缺少的权限
+      See:
+
+    # 与无限调试棒相同
+    Basic:
+      Edit:
+      See:
+
+    Inspector:
+      # 当玩家没有权限通过调试棒来插件方块可编辑的属性时
+      # 这条消息并不是必须的，可以不写
+      # 可用变量 :
+      # {block} : 玩家想要编辑的方块
+      # {perm} : 缺少的权限
+      Properties:
+
+      # 当玩家无权查看该方块的可编辑的地方
+      # 这条消息并不是必须的，可以不写
+      # 可用变量 :
+      # {block} : 玩家想要编辑的方块
+      # {perm} : 缺少的权限
+      Implementation:
+
+  # 当耐久度不足时
+  # 这条消息并不是必须的，可以不写
+  # 可用变量 :
+  # {property} : 玩家想要编辑的属性
+  NotEnoughDurability: "{prefix} &c你的调试棒没有耐久了 &7"
+
+  BlackList:
+    # 当玩家所处世界不被允许调试方块时
+    # 这条消息并不是必须的，可以不写
+    # 可用变量 :
+    # {block} : 玩家想要编辑的方块
+    World: "{prefix} &c调试棒在此世界被禁用 !"
+    # 当玩家所编辑的方块不被允许被编辑
+    # 这条消息并不是必须的，可以不写
+    # 可用变量 :
+    # {block} : 玩家想要编辑的方块
+    Material: "{prefix} &c该方块不允许被编辑 !"
+
+  # 当玩家想要修改一种该方块没有的属性时
+  # 这条消息并不是必须的，可以不写
+  # 可用变量 :
+  # {block} : 玩家想要编辑的方块
+  NoPropertyType:
+
+
+  # 当玩家正在使用一个无效/损坏的调试部 (通常是因为插件新旧版本的更替).
+  # 插件无法将他恢复为可用的调试部. 这需要那位玩家重新获取.
+  # 这条消息是必须的.
+  InvalidDebugStick: "{prefix} &c您的调试部已损坏，请联系管理员 !
+  \n他已经无法使用了 !"
+
+  # 当玩家的调试棒信息出现错误(可能是插件旧版本中的调试棒，需要管理员进行更换)
+  # 这条消息是必须的.
+  InvalidDebugStick: "{prefix} &c你的调试棒已过期/不可用，请联系管理员更换 !"
+
+  # 当玩家修改调试棒的属性时
+  # 这条消息并不是必须的，可以不写
+  # 可用变量 :
+  # {property} : 玩家想要编辑的属性
+  # {block} : 玩家想要编辑的方块
+  ChangeProperty:
+  ChangePropertyHotbar: "{prefix} &a已将方块属性修改为 &e{property_name}"
+
+  # 当玩家检查方块的所有属性时
+  # 我建议你不要设置ActionBar，这会导致玩家无法注意到
+  # 插件将会发送这些属性
+  # 1) 调试前
+  # 2) 属性 (全部) 或当前属性 (如果已选择属性)
+  # 3) 调试后
+  ListProperties:
+    # "Before" 与 "After" 的变量信息相同
+    # 这条消息是必须的
+    # 可用变量 :
+    # {block} : 玩家想要编辑的属性
+    Before: "{prefix} &a已列出 &e{block_material} &a的所有属性 :"
+    After:
+
+    # "Property" 与 'Current' 的变量相同
+    # 这些信息是必要的
+    # 可用变量 :
+    # {property} : 选定的属性
+    # {block} : 具有所有属性的方块
+    # {value} : 选定的属性
+    Property: "   &8» &9{property_name} &7= &e{value} &8&o(&e&o{property_durability}&8&o)"
+    Current: "   &8» &9{property_name} &7= &e{value} &8&o(&e&o{property_durability}&8&o) &e«"
+
+  # 当玩家删除属性方块上的数值时
+  # 这条消息并不是必须的，可以不写
+  # 可用变量 :
+  # {block} : 玩家删除数值的方块
+  RemovePermanentValue: "{prefix} &a所有修改已被删除"
+
+  # 当玩家想要更改属性中的值时
+  # 这条消息并不是必须的，可以不写
+  # 可用变量 :
+  # {block} : 玩家想要编辑的方块
+  # {property} : 玩家想要编辑的属性
+  # {value} : 属性的新数值
+  Success:
+  SuccessHotbar: "{prefix} &a已将方块属性 &e{property_name} &a修改为 &e{value}"
+
+  # 当玩家的调试棒坏掉时
+  # 插件将不会输出成功的提示
+  # 这条消息并不是必须的，可以不写
+  # 可用变量 :
+  # {block} : 玩家想要编辑的方块
+  # {property} : 导致玩家调试棒坏掉的属性
+  # {value} : 属性的新数值
+  Break: "{prefix} &a你的调试棒坏掉啦 !"
+
+  # 如果你想要在玩家做出行为导致调试棒坏掉之前提示玩家，您可以选择开启
+  # 这条消息并不是必须的，可以不写 (除非你开启了提示)
+  # 可用变量 :
+  # {block} : 玩家想要编辑的方块
+  # {property} : 玩家想要编辑的属性
+  # {value} : 属性的新数值
+  # {durability} : 调试棒坏掉前的耐久值
+  WarnBreakMessage: "{prefix} &a你的调试棒要坏掉啦 ! 剩余耐久: &7(&e{durability}&7)"
+
+Command:
+  PDS:
+    # 当玩家没有权限执行 be.machigan.protecteddebugstickl.command 时
+    # 这条消息并不是必须的，可以不写
+    # 可用变量 :
+    # {perm} : 所需权限
+    NoPerm: "{prefix} &c你没有权限执行这个插件指令be.machigan.protecteddebugstickl.command!"
+
+    # 当指令 be.machigan.protecteddebugstickl.command 不全时
+    # 这条消息是必须的 !
+    # 可用变量 :
+    NotEnoughArg: "{prefix} &c请输入更多信息 !"
+
+    Arg:
+      Give:
+        # 当玩家使用 be.machigan.protecteddebugstickl.command "/pds give" 但没有权限时
+        # 这条消息时不是必须的
+        # 可用变量 :
+        # {perm} : 对应权限
+        NoPerm: "{prefix} &c你没有足够的权限来执行这条指令 !"
+
+        # 当指令 be.machigan.protecteddebugstickl.command 的发送者没有指定玩家
+        # 这条消息是必须的 !
+        # 可用变量 : /
+        NoPlayer: "{prefix} &c指令不全，请输入要给与的玩家 !"
+
+        # 当指令 be.machigan.protecteddebugstickl.command 的发送者指定了一个不存在的玩家
+        # 这条消息是必须的 !
+        # 可用变量 :
+        # {player} : 不存在的玩家名称
+        UnknownPlayer: "{prefix} &c玩家: &4{player} &c不存在/不在线 !"
+
+        # 当指令 be.machigan.protecteddebugstickl.command 的发送者没有指定物品
+        # 这条消息是必须的 !
+        # 可用变量 :
+        # {player} : 玩家应该收到的物品
+        WhatToGive: "{prefix} &c指令不全，请指定一个物品 !"
+
+        # 当指定的物品不存在时
+        # 这条消息是必须的 !
+        # 可用变量 :
+        # {player} : 应当收到物品的玩家
+        # {item} : 不存在的物品名称
+        UnknownItem: "{prefix} &c物品名称错误 ! 物品 &4{item} &c不存在, 请输入: {infinity/inspector} !"
+
+        # 当给与的物品耐久为0时
+        # 这条消息是必须的 !
+        # 可用变量 :
+        # {player} : 应当收到物品的玩家
+        NoDurability: "{prefix} &c请给与这根调试棒一些耐久 !"
+
+        # 当输入的耐久值错误 (非数字/小于0)
+        # 这条消息是必须的 !
+        # 可用变量 :
+        # {player} : 应当收到物品的玩家
+        # {durability} : 错误的耐久
+        InvalidDurability: "{prefix} &c耐久值错误，它不应该小于0或不为数字 !"
+
+        # 当 be.machigan.protecteddebugstickl.command 执行者成功给与玩家物品时
+        # 这条消息是必须的 !
+        # 可用变量 :
+        # {player} : 应当收到物品的玩家
+        # {item} : 收到的物品
+        Success: "{prefix} &a你将 &2{item} &a给与了 &2{player} &a!"
+
+      ReloadConfig:
+        # 当没有权限执行重载指令时
+        # 这条消息并不是必须的，可以不写
+        # 可用变量 :
+        # {perm} : 缺少的权限
+        NoPerm: "{prefix} &c你没有权限执行这个插件指令 be.machigan.protecteddebugstickl.command !"
+
+        # 当配置文件被重置
+        # 这条消息是必须的 !
+        # 可用变量 : /
+        Success: "{prefix} &a配置文件已重载 !"
+
+        # 当插件配置文件出现错误时
+        # 在此基础下，插件还会记录有关于问题的更多信息并输出
+        # 这条消息是必须的 !
+        # 可用变量 : /
+        Error: "{prefix} &c配置文件出错!
+        \n&4&l正在关闭插件
+        \n&c&o请查看日志以获取更多信息"
+
+      Load:
+        # 当玩家无权限执行指令 be.machigan.protecteddebugstickl.command 时
+        # 这条消息并不是必须的，可以不写
+        # 可用变量 :
+        # {perm} : 缺失的权限
+        NoPerm: "{prefix} &c你没有权限来执行这个指令  !"
+
+        # 当指令没有足够的参数时
+        # 这条消息是必须的 !
+        # 可用变量 : /
+        NotEnoughArg: "{prefix} &c请输入要加载的文件 !"
+
+        # 当文件不存在时
+        # 这条消息是必须的 !
+        # 可用变量 :
+        # {file} : 不存在的文件名称
+        FileNotExists: "{prefix} &c文件 &4{file} &c不存在 !"
+
+        # 当文件已经存在时,但指令 be.machigan.protecteddebugstickl.command 的执行玩家没有覆盖等它时
+        # 这条消息是必须的 !
+        # 可用变量 :
+        # {file} : 已经存在的文件名称
+        FileAlreadyExists: "{prefix} &c文件 &4{file} &c已经存在 !
+        \n&a使用 &2&o/pds load {file} over-write 以 &a覆盖"
+        FileAlreadyExistsHover: "点击获取指令 be.machigan.protecteddebugstickl.command"
+        FileAlreadyExistsSuggest: "/pds load {file} over-write"
+
+        # 当加载成功时
+        # 这条消息是必须的 !
+        # 可用变量 :
+        # {file} : 文件已被加载
+        Success: "{prefix} &a文件 &2{file} &a已被加载 !"
+
+      Chunk:
+
+        # 当指令 be.machigan.protecteddebugstickl.command 发送者不是玩家时(此指令基于本地)
+        # 这条消息是必须的
+        OnlyPlayer:  "{prefix} &c只有玩家可以使用此插件指令 be.machigan.protecteddebugstickl.command !"
+
+        # 当命令不全时
+        # 这条消息是必须的
+        NotEnoughArg: "{prefix} &c请提供更多信息 !"
+
+        Arg:
+          Info:
+            # 当玩家想要使用插件指令 be.machigan.protecteddebugstickl.command "/pds chunk info"
+            # 但没有权限时
+            # 这条消息时不是必须的
+            # 可用变量 :
+            # {perm} : 缺失权限
+            NoPerm: "{prefix} &c你没有权限来执行这条指令 !"
+
+            # 当此区块没有信息时
+            # 这条消息是必须的
+            NoInfo: "{prefix} &8&o此区块没有任何信息 ..."
+
+            # 第一行信息
+            # 这条消息是必须的
+            FirstLine: "{prefix} &a以下方块被修改过 &a:"
+
+            # 信息消息第一行
+            # 这条消息是必须的
+            # 可用变量 :
+            # {block} : 不受物理影响的方块
+            Line: "   &8» &9{block_material} &7= &c{block_loc_x} &2{block_loc_y} &b{block_loc_z}"
+            LineHover: "&a点击传送至 &c{block_loc_x} &2{block_loc_y} &b{block_loc_z}"
+            LineRun: "/tp {block_loc_x} {block_loc_y} {block_loc_z}"
+          Clear:
+            # 当玩家想要使用插件指令 be.machigan.protecteddebugstickl.command "/pds chunk clear"
+            # 但没有权限时
+            # 这条消息时不是必须的
+            # 可用变量 :
+            # {perm} : 该权限
+            NoPerm: "{prefix} &c你没有权限来执行这个指令 !"
+
+            # 成功时
+            # 这条消息是必须的
+            Success: "{prefix} &a此区块已被恢复"
+
+
+
+    # 当找不到对应的插件指令 be.machigan.protecteddebugstickl.command 时
+    # 这条消息并不是必须的，可以不写
+    # 可用变量 :
+    # {arg} : 错误的参数
+    NoCommandFound: "{prefix} &c指令不存在 !"
