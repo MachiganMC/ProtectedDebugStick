@@ -308,7 +308,7 @@ public final class Config {
 
     public static class Lang {
         private static FileConfiguration messageFile;
-        private static final List<String> LANG_FILES = Stream.of("en", "fr", "zh-cn")
+        private static final List<String> LANG_FILES = Stream.of("en", "fr", "zh-cn", "ru")
                 .map(lang -> "messages_" + lang + ".yml")
                 .toList();
         private static final File DEFAULT_LANG = new File(ProtectedDebugStick.getInstance().getDataFolder(), "lang/messages_en.yml");
