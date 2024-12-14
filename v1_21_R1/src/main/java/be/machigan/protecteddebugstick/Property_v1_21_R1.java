@@ -8,6 +8,6 @@ import java.util.List;
 public class Property_v1_21_R1 implements PropertyHandler {
     @Override
     public List<Property> getUsableProperties() {
-        return new Property_v1_20_R0().getUsableProperties();
+        return new Property_v1_21_R0().getUsableProperties();
     }
 }
