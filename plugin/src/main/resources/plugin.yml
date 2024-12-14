@@ -1,6 +1,6 @@
 name: ProtectedDebugStick
 author: Machigan
-version: 2.5.0
+version: ${project.version}
 main: be.machigan.protecteddebugstick.ProtectedDebugStick
 database: false
 api-version: 1.16
