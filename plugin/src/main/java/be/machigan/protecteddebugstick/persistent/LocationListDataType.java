@@ -1,15 +1,7 @@
 package be.machigan.protecteddebugstick.persistent;
 
-import be.machigan.protecteddebugstick.ProtectedDebugStick;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import org.apache.commons.lang3.SerializationUtils;
-import org.bukkit.Chunk;
-import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
 import org.bukkit.persistence.PersistentDataAdapterContext;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,26 +9,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.util.concurrent.TimeUnit;
 
 public class LocationListDataType implements PersistentDataType<byte[], LocationList> {
-    private static final LocationListDataType INSTANCE = new LocationListDataType();
-    private static final NamespacedKey KEY_LOCATION_EDITED_BLOCK = new NamespacedKey(ProtectedDebugStick.getInstance(), "location-edited-block");
-    private static final LoadingCache<LocationSerializable, Boolean> CACHE_LOCATIONS = CacheBuilder
-            .newBuilder()
-            .expireAfterAccess(10, TimeUnit.MINUTES)
-            .maximumSize(1000)
-            .build(new CacheLoader<>() {
-                @Override
-                public Boolean load(LocationSerializable location) {
-                    Chunk chunk = location.toLocation().getChunk();
-                    if (chunkHasLocation(chunk))
-                        return getChunkLocations(chunk).contains(location);
-                    return false;
-                }
-            });
-
-
     @NotNull
     @Override
     public Class<byte[]> getPrimitiveType() {
@@ -49,9 +23,8 @@ public class LocationListDataType implements PersistentDataType<byte[], Location
         return LocationList.class;
     }
 
-    @NotNull
     @Override
-    public byte[] toPrimitive(@NotNull LocationList locations, @NotNull PersistentDataAdapterContext persistentDataAdapterContext) {
+    public byte @NotNull [] toPrimitive(@NotNull LocationList locations, @NotNull PersistentDataAdapterContext persistentDataAdapterContext) {
         return SerializationUtils.serialize(locations);
     }
 
@@ -66,50 +39,4 @@ public class LocationListDataType implements PersistentDataType<byte[], Location
             return new LocationList();
         }
     }
-
-    public static void addNewBlock(@NotNull Block block) {
-        PersistentDataContainer container = block.getChunk().getPersistentDataContainer();
-        LocationList locations;
-        LocationSerializable location = new LocationSerializable(block.getLocation());
-        if (container.has(KEY_LOCATION_EDITED_BLOCK, INSTANCE)) {
-            locations = container.get(KEY_LOCATION_EDITED_BLOCK, INSTANCE);
-        } else {
-            locations = new LocationList();
-        }
-        locations.add(new LocationSerializable(block.getLocation()));
-        container.set(KEY_LOCATION_EDITED_BLOCK, INSTANCE, locations);
-        CACHE_LOCATIONS.put(location, true);
-    }
-
-    public static void removeBlock(@NotNull Block block) {
-        PersistentDataContainer container = block.getChunk().getPersistentDataContainer();
-        LocationSerializable location = new LocationSerializable(block.getLocation());
-        if (container.has(KEY_LOCATION_EDITED_BLOCK, INSTANCE)) {
-            LocationList locations = container.get(KEY_LOCATION_EDITED_BLOCK, INSTANCE);
-            locations.remove(location);
-            container.set(KEY_LOCATION_EDITED_BLOCK, INSTANCE, locations);
-        }
-        CACHE_LOCATIONS.put(location, false);
-    }
-
-    public static boolean isPresent(@NotNull Block block) {
-        return CACHE_LOCATIONS.getUnchecked(new LocationSerializable(block.getLocation()));
-    }
-
-    public static boolean chunkHasLocation(@NotNull Chunk chunk) {
-        return chunk.getPersistentDataContainer().has(KEY_LOCATION_EDITED_BLOCK, INSTANCE);
-    }
-
-    @NotNull
-    public static LocationList getChunkLocations(@NotNull Chunk chunk) {
-        if (!chunkHasLocation(chunk))
-            throw new IllegalStateException("Chunk has no locations");
-        return chunk.getPersistentDataContainer().get(KEY_LOCATION_EDITED_BLOCK, INSTANCE);
-    }
-
-    public static void clearLocations(@NotNull Chunk chunk) {
-        chunk.getPersistentDataContainer().set(KEY_LOCATION_EDITED_BLOCK, INSTANCE, new LocationList());
-    }
-
-    private LocationListDataType() {}
 }

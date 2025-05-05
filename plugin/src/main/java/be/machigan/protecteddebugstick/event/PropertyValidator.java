@@ -3,6 +3,7 @@ package be.machigan.protecteddebugstick.event;
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import be.machigan.protecteddebugstick.def.DebugStick;
 import be.machigan.protecteddebugstick.def.DebugStickDataType;
+import be.machigan.protecteddebugstick.persistent.ChunkDataHandler;
 import be.machigan.protecteddebugstick.persistent.LocationListDataType;
 import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.utils.Config;
@@ -142,7 +143,7 @@ public class PropertyValidator {
     }
 
     public void removeFromEditedBlocks() {
-        LocationListDataType.removeBlock(this.clickedBlock);
+        ChunkDataHandler.removeLocation(this.clickedBlock.getLocation());
         Message.getMessage("OnUse.RemovePermanentValue", this.player, false)
                 .replace(this.clickedBlock)
                 .send(this.player);

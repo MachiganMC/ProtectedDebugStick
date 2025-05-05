@@ -1,6 +1,7 @@
 package be.machigan.protecteddebugstick.event;
 
 import be.machigan.protecteddebugstick.def.DebugStick;
+import be.machigan.protecteddebugstick.persistent.ChunkDataHandler;
 import be.machigan.protecteddebugstick.persistent.LocationListDataType;
 import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.utils.Config;
@@ -70,7 +71,7 @@ public class PropertyEditEvent {
     }
 
     public void registerEditedBlock() {
-        LocationListDataType.addNewBlock(this.block);
+        ChunkDataHandler.addLocation(this.block.getLocation());
     }
 
     public void editBlockData() {

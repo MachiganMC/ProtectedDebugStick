@@ -2,10 +2,8 @@ package be.machigan.protecteddebugstick;
 
 import be.machigan.protecteddebugstick.command.CommandPDS;
 import be.machigan.protecteddebugstick.command.TabPDS;
-import be.machigan.protecteddebugstick.event.OnClickInspector;
-import be.machigan.protecteddebugstick.event.OnJoin;
-import be.machigan.protecteddebugstick.event.OnUpdate;
-import be.machigan.protecteddebugstick.event.OnUse;
+import be.machigan.protecteddebugstick.event.*;
+import be.machigan.protecteddebugstick.persistent.ChunkDataHandler;
 import be.machigan.protecteddebugstick.property.Property;
 import be.machigan.protecteddebugstick.property.PropertyChooser;
 import be.machigan.protecteddebugstick.utils.Config;
@@ -34,6 +32,7 @@ public class ProtectedDebugStick extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnClickInspector(), this);
         getServer().getPluginManager().registerEvents(new OnUpdate(), this);
         getServer().getPluginManager().registerEvents(new OnJoin(), this);
+        getServer().getPluginManager().registerEvents(new OnChunkLoadData(), this);
         getCommand("pds").setExecutor(new CommandPDS());
         getCommand("pds").setTabCompleter(new TabPDS());
 
@@ -87,5 +86,10 @@ public class ProtectedDebugStick extends JavaPlugin {
             LogUtil.getLogger().log(Level.INFO, "Generating \"{0}\" ...", fileName);
             ProtectedDebugStick.getInstance().saveResource(fileName, false);
         }
+    }
+
+    @Override
+    public void onDisable() {
+        ChunkDataHandler.saveAll();
     }
 }
