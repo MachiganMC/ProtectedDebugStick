@@ -126,6 +126,14 @@ Items:
     IsUnbreakable: true		
 ````
 !> Again, pure cosmetic !
+#### **:dress: CustomModelData**
+#### :dress: CustomModelData
+If your server handle resources pack, you can set a custom textures on the 3 items of the plugin via the ``CustomModelData`` non-necessary field.
+````yml
+Items:
+  BasicDebugStick:
+    CustomModelData: 100
+````
 
 <!-- tabs:end -->
 
