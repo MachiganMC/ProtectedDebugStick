@@ -194,6 +194,10 @@ Settings:
     OMINOUS: 15
     VAULT_STATE: 5
 
+    # v1.21.5
+    SEGMENT_AMOUNT: 20
+    TEST_MODE: 1
+
 
   # Lorsqu'un joueur n'a pas la permission d'éditer une propriété, faut-il cacher ou non la propriété
   # au joueur ?

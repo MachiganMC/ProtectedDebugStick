@@ -213,6 +213,8 @@ permissions:
       pds.property.trial-spawner-state: true
       pds.property.ominous: true
       pds.property.vault-state: true
+      pds.property.segment-amount: true
+      pds.property.test-mode: true
   # Children permissions of property :
   pds.property.orientable:
     description: Allows player to edit the property orientable
@@ -387,4 +389,10 @@ permissions:
     default: false
   pds.property.vault-state:
     description: Allows player to define the state of the vault
+    default: false
+  pds.property.segment-amount:
+    description: Allows player to define the number of segment on a leaf litter
+    default: true
+  pds.property.test-mode:
+    description: Allows player to define the mode of the test block
     default: false

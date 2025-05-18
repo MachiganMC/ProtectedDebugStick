@@ -200,6 +200,10 @@ Settings:
     OMINOUS: 15
     VAULT_STATE: 5
 
+    # v1.21.5
+    SEGMENT_AMOUNT: 20
+    TEST_MODE: 1
+
 
   # 隐藏玩家无权限编辑的属性
   HideNoPermProperty: true
