@@ -43,7 +43,8 @@ This property defines the direction of the block.
 - [Tripwire hook](https://minecraft.wiki/w/Tripwire_Hook),
 - [Vault](https://minecraft.wiki/w/Vault),
 - [Wall hanging sign](https://minecraft.wiki/w/Hanging_Sign),
-- [Wall sign](https://minecraft.wiki/w/Sign).
+- [Wall sign](https://minecraft.wiki/w/Sign),
+- [...](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/block/data/Directional.html)
 
 ### :bar_chart: Values
 Depends on the target, but all findable values are :

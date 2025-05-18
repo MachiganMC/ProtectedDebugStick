@@ -8,6 +8,7 @@ Defines the quantity of petals on a block.
 
 ### :dart: Apply on
 - [Pink Petal](https://minecraft.wiki/w/Pink_Petals).
+- [Wildflowers](https://minecraft.wiki/w/Wildflowers)
 
 ### :bar_chart: Values
 From ``1`` to ``4``.

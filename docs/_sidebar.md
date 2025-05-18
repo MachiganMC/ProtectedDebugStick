@@ -74,3 +74,5 @@
   * [:skull: Ominous](/properties/ominous/ "PDS | Ominous")
   * [:crossed_swords: Trial Spawner State](/properties/trial-spawner-state/ "PDS | Trial Spawner State")
   * [:lock: Vault State](/properties/vault-state/ "PDS | Vault State")
+  * [:fallen_leaf: Segment Amount](/properties/segment-amount/ "PDS | Segment Amount")
+  * [:test_tube: Test Mode](/properties/test-mode/ "PDS | Test Mode")
