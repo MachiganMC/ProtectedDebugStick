@@ -19,21 +19,21 @@
     <modules>
         <module>global</module>
         <module>plugin</module>
-        <module>v1_19_R0</module>
-        <module>v1_19_R1</module>
-        <module>v1_19_R2</module>
-        <module>v1_19_R3</module>
-        <module>v1_20_R0</module>
-        <module>v1_20_R1</module>
-        <module>v1_20_R2</module>
-        <module>v1_20_R3</module>
-        <module>v1_20_R4</module>
-        <module>v1_20_R5</module>
-        <module>v1_20_R6</module>
-        <module>v1_21_R0</module>
-        <module>v1_21_R1</module>
-        <module>v1_21_R3</module>
-        <module>v1_21_R4</module>
+        <module>versions/v1_19_R0</module>
+        <module>versions/v1_19_R1</module>
+        <module>versions/v1_19_R2</module>
+        <module>versions/v1_19_R3</module>
+        <module>versions/v1_20_R0</module>
+        <module>versions/v1_20_R1</module>
+        <module>versions/v1_20_R2</module>
+        <module>versions/v1_20_R3</module>
+        <module>versions/v1_20_R4</module>
+        <module>versions/v1_20_R5</module>
+        <module>versions/v1_20_R6</module>
+        <module>versions/v1_21_R0</module>
+        <module>versions/v1_21_R1</module>
+        <module>versions/v1_21_R3</module>
+        <module>versions/v1_21_R4</module>
     </modules>
 
     <build>
