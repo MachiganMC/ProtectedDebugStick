@@ -1,9 +1,11 @@
 package be.machigan.protecteddebugstick.action;
 
 import be.machigan.protecteddebugstick.property.PropertyAction;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Door;
 import org.jetbrains.annotations.NotNull;
 
 public class BisectedAction implements PropertyAction {
@@ -18,8 +20,7 @@ public class BisectedAction implements PropertyAction {
             case BOTTOM:
                 bisectedData.setHalf(Bisected.Half.TOP);
         }
-
-        block.setBlockData(bisectedData);
+        block.setBlockData(bisectedData, !(data instanceof Door));
     }
 
     @Override
