@@ -2,13 +2,25 @@ package be.machigan.protecteddebugstick.action;
 
 import be.machigan.protecteddebugstick.property.PropertyAction;
 import org.bukkit.Bukkit;
+import org.bukkit.CropState;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Door;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class BisectedAction implements PropertyAction {
+    private final static List<Material> BREAK_BLOCK_TYPE_ON_EDIT = List.of(
+            Material.ROSE_BUSH,
+            Material.LILAC,
+            Material.PEONY,
+            Material.SUNFLOWER,
+            Material.TALL_GRASS
+    );
+
     @Override
     public void modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
         Bisected bisectedData = (Bisected) data;
@@ -20,7 +32,12 @@ public class BisectedAction implements PropertyAction {
             case BOTTOM:
                 bisectedData.setHalf(Bisected.Half.TOP);
         }
-        block.setBlockData(bisectedData, !(data instanceof Door));
+        block.setBlockData(bisectedData, applyPhysics(block, data));
+    }
+
+    private static boolean applyPhysics(Block block, BlockData data) {
+        if (data instanceof Door) return false;
+        return !BREAK_BLOCK_TYPE_ON_EDIT.contains(block.getType());
     }
 
     @Override
