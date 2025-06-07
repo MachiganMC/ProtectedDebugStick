@@ -14,7 +14,7 @@ From ``1`` to ``3``.
 
 ### :information_source: Other information
 
-> **Permission** : ``pds.property.layers``<br>
+> **Permission** : ``pds.property.levelled``<br>
 > **Usable by everyone** : yes<br>
 >  **Default cost** : 10<br>
 >  **Min. MC version** : 1.19.2

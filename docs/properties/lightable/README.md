@@ -17,7 +17,7 @@ Boolean value, ``true`` or ``false``.
 
 ### :information_source: Other information
 
-> **Permission** : ``pds.property.layers``<br>
+> **Permission** : ``pds.property.lightable``<br>
 > **Usable by everyone** : yes<br>
 >  **Default cost** : 5<br>
 >  **Min. MC version** : 1.19.2

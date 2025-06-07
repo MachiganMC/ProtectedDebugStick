@@ -6,8 +6,7 @@ Defines the shape of the rail.
 ![Demo of rotatable property](../../assets/properties/shape-rail.gif ':size=90%')
 
 ### :dart: Apply on
-- [Sign](https://minecraft.wiki/w/Sign),
-- [Hanging Sign](https://minecraft.wiki/w/Hanging_Sign).
+- [Rails](https://minecraft.wiki/w/Rail).
 
 ### :bar_chart: Values
 - ``ASCENDING_EAST``,
