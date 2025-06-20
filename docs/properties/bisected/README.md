@@ -10,7 +10,8 @@ This property defines if the block is positioned on top or bottom of it position
 - [Pitcher crop](https://minecraft.wiki/w/Pitcher_Plant),
 - [Small dripleaf](https://minecraft.wiki/w/Small_Dripleaf),
 - [Stairs](https://minecraft.wiki/w/Stairs),
-- [Trapdoor](https://minecraft.wiki/w/Trapdoor).
+- [Trapdoor](https://minecraft.wiki/w/Trapdoor),
+- [Tall flowers](https://minecraft.wiki/w/Flower#Tall_flowers).
 
 ### :bar_chart: Values
 2 possibles values :

@@ -9,8 +9,8 @@ Defines if the block produces light or not.
 ### :dart: Apply on
 - [Campfire](https://minecraft.wiki/w/Campfire),
 - [Candle](https://minecraft.wiki/w/Candle),
-- [Candle](https://minecraft.wiki/w/Candle),
-- [Redstone Wall Torch](https://minecraft.wiki/w/Redstone_Torch).
+- [Furnace](https://minecraft.wiki/w/Furnace),
+- [Redstone Torch](https://minecraft.wiki/w/Redstone_Torch).
 
 ### :bar_chart: Values
 Boolean value, ``true`` or ``false``. 
