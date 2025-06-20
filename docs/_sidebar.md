@@ -76,3 +76,4 @@
   * [:lock: Vault State](/properties/vault-state/ "PDS | Vault State")
   * [:fallen_leaf: Segment Amount](/properties/segment-amount/ "PDS | Segment Amount")
   * [:test_tube: Test Mode](/properties/test-mode/ "PDS | Test Mode")
+  * [:honey_pot: Waxed](/properties/waxed/ "PDS | Waxed")
