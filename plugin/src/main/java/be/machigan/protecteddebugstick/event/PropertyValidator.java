@@ -201,7 +201,7 @@ public class PropertyValidator {
             }
             messages.replace(this.clickedBlock)
                     .replace(property)
-                    .replace("{value}", property.getAction().getValue(this.data))
+                    .replace("{value}", property.getAction().getValue(this.clickedBlock))
                     .send(this.player);
         }
         Message.getMessage("OnUse.ListProperties.After", this.player, false)

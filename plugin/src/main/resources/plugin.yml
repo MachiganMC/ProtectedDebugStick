@@ -215,6 +215,7 @@ permissions:
       pds.property.vault-state: true
       pds.property.segment-amount: true
       pds.property.test-mode: true
+      pds.property.waxed: true
   # Children permissions of property :
   pds.property.orientable:
     description: Allows player to edit the property orientable
@@ -395,4 +396,7 @@ permissions:
     default: true
   pds.property.test-mode:
     description: Allows player to define the mode of the test block
+    default: false
+  pds.property.waxed:
+    description: Allows player to define if a sign is waxed or not
     default: false
