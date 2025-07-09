@@ -400,3 +400,6 @@ permissions:
   pds.property.waxed:
     description: Allows player to define if a sign is waxed or not
     default: false
+  pds.property.bed-part:
+    description: Allows player to switch the part of the bed
+    default: false

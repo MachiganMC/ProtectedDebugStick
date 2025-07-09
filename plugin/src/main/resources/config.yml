@@ -183,6 +183,7 @@ Settings:
     MOISTURE: 3
     CHEST_TYPE: 5
     TRIGGERED: 1
+    BED_PART: 5
 
     # v1.19.3
     OCCUPIED_SLOT: 5
