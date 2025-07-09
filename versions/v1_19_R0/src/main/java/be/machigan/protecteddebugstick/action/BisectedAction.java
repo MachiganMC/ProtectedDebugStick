@@ -18,7 +18,8 @@ public class BisectedAction implements PropertyAction {
             Material.LILAC,
             Material.PEONY,
             Material.SUNFLOWER,
-            Material.TALL_GRASS
+            Material.TALL_GRASS,
+            Material.SMALL_DRIPLEAF
     );
 
     @Override
