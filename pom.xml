@@ -37,6 +37,7 @@
         <module>versions/v1_21_R5</module>
         <module>versions/v1_21_R6</module>
         <module>versions/v1_21_R7</module>
+        <module>versions/v1_21_R8</module>
     </modules>
 
     <build>
