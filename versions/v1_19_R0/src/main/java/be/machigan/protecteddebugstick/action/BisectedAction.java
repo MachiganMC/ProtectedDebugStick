@@ -10,17 +10,18 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Door;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BisectedAction implements PropertyAction {
-    private final static List<Material> BREAK_BLOCK_TYPE_ON_EDIT = List.of(
+    private final static List<Material> BREAK_BLOCK_TYPE_ON_EDIT = new ArrayList<>(List.of(
             Material.ROSE_BUSH,
             Material.LILAC,
             Material.PEONY,
             Material.SUNFLOWER,
             Material.TALL_GRASS,
             Material.SMALL_DRIPLEAF
-    );
+    ));
 
     @Override
     public void modify(@NotNull BlockData data, @NotNull Block block) throws ClassCastException {
@@ -44,5 +45,9 @@ public class BisectedAction implements PropertyAction {
     @Override
     public @NotNull String getValue(@NotNull BlockData data) throws ClassCastException {
         return ((Bisected) data).getHalf().name().toLowerCase();
+    }
+
+    public static void addNewMaterialToBreakTypeOnEdit(Material material) {
+        BREAK_BLOCK_TYPE_ON_EDIT.add(material);
     }
 }

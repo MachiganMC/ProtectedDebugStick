@@ -1,9 +1,11 @@
 package be.machigan.protecteddebugstick;
 
+import be.machigan.protecteddebugstick.action.BisectedAction;
 import be.machigan.protecteddebugstick.action.BrushableAction;
 import be.machigan.protecteddebugstick.action.HatchAction;
 import be.machigan.protecteddebugstick.action.PetalsAction;
 import be.machigan.protecteddebugstick.property.Property;
+import org.bukkit.Material;
 import org.bukkit.block.data.Brushable;
 import org.bukkit.block.data.Hatchable;
 import org.bukkit.block.data.type.PinkPetals;
@@ -22,6 +24,7 @@ public class Property_v1_20_R0 implements PropertyHandler {
                 new Property("petals", PinkPetals.class, new PetalsAction())
         ));
         properties.addAll(new Property_v1_19_R3().getUsableProperties());
+        BisectedAction.addNewMaterialToBreakTypeOnEdit(Material.PITCHER_PLANT);
         return properties;
     }
 }
