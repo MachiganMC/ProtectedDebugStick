@@ -47,7 +47,7 @@ public class Property_v1_19_R0 implements PropertyHandler {
                 new Property("orientable",Orientable.class,new OrientableAction()),
                 new Property("persistent", Leaves.class, new PersistentAction()),
                 new Property("pickles", SeaPickle.class, new PicklesAction()),
-                new Property("phase", SculkShrieker.class, new PhaseAction()),
+                new Property("phase", SculkSensor.class, new PhaseAction()),
                 new Property("powerable", Powerable.class, new PowerableAction()),
                 new Property("redstone-wire-north", "redstone-wire", RedstoneWire.class, new RedstoneWireAction(BlockFace.NORTH)),
                 new Property("redstone-wire-east", "redstone-wire", RedstoneWire.class, new RedstoneWireAction(BlockFace.EAST)),
