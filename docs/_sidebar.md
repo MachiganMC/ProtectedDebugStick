@@ -78,3 +78,4 @@
   * [:test_tube: Test Mode](/properties/test-mode/ "PDS | Test Mode")
   * [:honey_pot: Waxed](/properties/waxed/ "PDS | Waxed")
   * [:bed: Bed Part](/properties/bed-part/ "PDS | Bed Part")
+  * [:dancer: Golem Pose](/properties/golem-pose/ "PDS | Golem Pose")
