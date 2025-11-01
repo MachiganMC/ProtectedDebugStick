@@ -216,6 +216,7 @@ permissions:
       pds.property.segment-amount: true
       pds.property.test-mode: true
       pds.property.waxed: true
+      pds.property.golem-pose: true
   # Children permissions of property :
   pds.property.orientable:
     description: Allows player to edit the property orientable
@@ -403,3 +404,6 @@ permissions:
   pds.property.bed-part:
     description: Allows player to switch the part of the bed
     default: false
+  pds.property.golem-pose:
+    description: Allows player to edit the position of a golem statue
+    default: true

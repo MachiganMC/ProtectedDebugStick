@@ -209,6 +209,9 @@ Settings:
     SEGMENT_AMOUNT: 20
     TEST_MODE: 1
 
+    # v1.21.9
+    GOLEM_POSE: 1
+
 
   # The properties that the player doesn't have the permissions to edit will be hide
   # It's like, for the player, the properties never existed
