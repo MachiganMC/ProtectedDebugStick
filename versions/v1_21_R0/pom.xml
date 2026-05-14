@@ -17,6 +17,7 @@
         <groupId>be.machigan</groupId>
         <artifactId>ProtectedDebugStick-parent</artifactId>
         <version>parent</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <dependencies>

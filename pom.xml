@@ -40,6 +40,9 @@
         <module>versions/v1_21_R8</module>
         <module>versions/v1_21_R10</module>
         <module>versions/v1_21_R11</module>
+        <module>versions/v26_1_R0</module>
+        <module>versions/v26_1_R1</module>
+        <module>versions/v26_1_R2</module>
     </modules>
 
     <build>
