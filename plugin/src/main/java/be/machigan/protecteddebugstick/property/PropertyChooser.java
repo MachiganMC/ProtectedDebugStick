@@ -1,6 +1,7 @@
 package be.machigan.protecteddebugstick.property;
 
 import be.machigan.protecteddebugstick.PropertyHandler;
+import be.machigan.protecteddebugstick.Property_v1_19_R0;
 import be.machigan.protecteddebugstick.ProtectedDebugStick;
 import com.google.common.primitives.Ints;
 import org.bukkit.Bukkit;

@@ -43,6 +43,7 @@
         <module>versions/v26_1_R0</module>
         <module>versions/v26_1_R1</module>
         <module>versions/v26_1_R2</module>
+        <module>versions/v26_2_R0</module>
     </modules>
 
     <build>
